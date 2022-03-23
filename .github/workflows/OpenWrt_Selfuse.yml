@@ -180,13 +180,13 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
-    - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
-      with:
-        retain_days: 1
-        keep_minimum_runs: 3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+#    - name: Delete workflow runs
+#      uses: GitRML/delete-workflow-runs@main
+#      with:
+#        retain_days: 1
+#        keep_minimum_runs: 3
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
 #    - name: Remove old Releases
 #      uses: dev-drprasad/delete-older-releases@v0.1.0
@@ -240,7 +240,15 @@ jobs:
           * ARMv8是精简固件.
           * 默认IP: 192.168.1.1
           * 默认密码: password
-
+          
+    - name: Delete workflow runs
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
+        retain_days: 1
+        keep_minimum_runs: 3
+        
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
