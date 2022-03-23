@@ -253,9 +253,9 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.2.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        repo: repo executing action
+        repo:
         keep_latest: 4
-        delete_tag_pattern: empty string
+        delete_tag_pattern:
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
