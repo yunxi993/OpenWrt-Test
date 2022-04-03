@@ -225,7 +225,7 @@ jobs:
           * 默认密码: password
 
     - name: Delete workflow runs
-      uses: ActionsRML/delete-workflow-runs@main
+      uses: GitRML/delete-workflow-runs@main
       with:
         retain_days: 7
         keep_minimum_runs: 1
