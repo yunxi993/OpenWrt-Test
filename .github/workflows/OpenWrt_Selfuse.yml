@@ -191,7 +191,7 @@ jobs:
         OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
         PACKAGE_SOC: s905d_s905x3_s922x_vplus_beikeyun_l1pro_s912
         KERNEL_AUTO_LATEST:  true
-        KERNEL_VERSION_NAME: 5.4.168_5.10.88_5.15.11_5.16.2
+        KERNEL_VERSION_NAME: 5.4.168_5.10.88_5.15.11_5.16.2_5.17.1
         WHOAMI: Yuan
         ENABLE_WIFI_K504: 0
         ENABLE_WIFI_K510: 0
@@ -227,8 +227,8 @@ jobs:
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
       with:
-        retain_days: 7
-        keep_minimum_runs: 1
+        retain_days: 1
+        keep_minimum_runs: 3
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
