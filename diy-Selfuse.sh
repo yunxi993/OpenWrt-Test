@@ -38,4 +38,4 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
 
 # containerd Has验证
-sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/containerd/Makefile
+sed -i 's/PKG_HASH:=.*/PKG_HASH:=skip/g' feeds/packages/utils/containerd/Makefile
