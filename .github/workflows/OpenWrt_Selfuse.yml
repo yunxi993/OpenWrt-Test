@@ -195,8 +195,6 @@ jobs:
         SW_FLOWOFFLOAD: 0
         HW_FLOWOFFLOAD: 0
         SFE_FLOW: 0
-        SELECT_PACKITPATH: openwrt_packit
-        SELECT_OUTPUTPATH: output
         artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
 
     - name: copy update files
