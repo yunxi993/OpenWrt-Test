@@ -188,14 +188,13 @@ jobs:
         KERNEL_REPO_URL: https://github.com/ophub/kernel/tree/main/pub/stable
         PACKAGE_SOC: s905d_s905x3_s922x_vplus_beikeyun_l1pro_s912
         KERNEL_AUTO_LATEST:  true
-        KERNEL_VERSION_NAME: 5.4.188_5.15.49_5.18.4
+        KERNEL_VERSION_NAME: 5.4.188_5.15.46_5.18.3_5.19.1
         WHOAMI: Yuan
         ENABLE_WIFI_K504: 0
         ENABLE_WIFI_K510: 0
         SW_FLOWOFFLOAD: 0
         HW_FLOWOFFLOAD: 0
         SFE_FLOW: 0
-        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
 
     - name: copy update files
       run: |
