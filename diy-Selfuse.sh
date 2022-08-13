@@ -39,3 +39,9 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 
 # containerd Has验证
 #sed -i 's/PKG_HASH:=.*/PKG_HASH:=skip/g' feeds/packages/utils/containerd/Makefile
+
+sed -i 's/<tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>/g' package/lean/autocore/files/arm/index.htm
+sed -i 's/<tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>/g' package/lean/autocore/files/x86/index.htm
+
+sed -i 's/msgid "Compiler author"/g' feeds/luci/modules/luci-base/po/zh-cn/base.po
+sed -i 's/msgstr "交流群"/g' feeds/luci/modules/luci-base/po/zh-cn/base.po
