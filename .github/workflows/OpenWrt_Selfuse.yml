@@ -174,11 +174,17 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+        
+    - name: tianjia
+      id: tianjia
+      run: |
+        cd /opt
+        sudo git clone https://github.com/unifreq/openwrt_packit
+        cd /opt/openwrt_packit
+        sudo sed -i '50a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' /files/luci-admin-status-index-html.patch
 
     - name: Package Armvirt as OpenWrt
       uses: unifreq/openwrt_packit@master
-        cd /opt/openwrt_packit
-        sudo sed -i '50a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' /files/luci-admin-status-index-html.patch
       env:
         OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
         KERNEL_REPO_URL: https://github.com/ophub/kernel/tree/main/pub/stable
