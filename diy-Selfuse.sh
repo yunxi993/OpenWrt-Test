@@ -43,8 +43,8 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #sed -i '741a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' package/lean/autocore/files/arm/index.htm
 #sed -i '741a \                <tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' package/lean/autocore/files/arm/index.htm
 #sed -i '742a \                <tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' package/lean/autocore/files/x86/index.htm
-sed -i '4122a \\nmsgid "Compile Author"' feeds/luci/modules/luci-base/po/zh-cn/base.po
-sed -i '4123a msgstr "交流群"' feeds/luci/modules/luci-base/po/zh-cn/base.po
+#sed -i '4122a \\nmsgid "Compile Author"' feeds/luci/modules/luci-base/po/zh-cn/base.po
+#sed -i '4123a msgstr "交流群"' feeds/luci/modules/luci-base/po/zh-cn/base.po
 #echo '<tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' >> package/lean/autocore/files/arm/index.htm
 #echo '<tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' >> package/lean/autocore/files/x86/index.htm
 #echo 'msgid "Compiler author"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
