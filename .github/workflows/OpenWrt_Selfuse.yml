@@ -177,6 +177,7 @@ jobs:
 
     - name: Package Armvirt as OpenWrt
       uses: unifreq/openwrt_packit@master
+        sudo sed -i '50a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' /files/luci-admin-status-index-html.patch
       env:
         OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
         KERNEL_REPO_URL: https://github.com/ophub/kernel/tree/main/pub/stable
@@ -193,7 +194,6 @@ jobs:
     - name: copy update files
       run: |
         cd /opt/openwrt_packit
-        sudo sed -i '50a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' /files/luci-admin-status-index-html.patch
         sudo cp ./files/update*.sh ./output/
         echo "::set-output name=status::success"
 
