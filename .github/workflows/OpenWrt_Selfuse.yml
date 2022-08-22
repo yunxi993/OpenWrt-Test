@@ -193,7 +193,7 @@ jobs:
     - name: copy update files
       run: |
         cd /opt/openwrt_packit
-        sed -i '50a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' ./files/luci-admin-status-index-html.patch
+        sudo sed -i '50a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' ./files/luci-admin-status-index-html.patch
         sudo cp ./files/update*.sh ./output/
         echo "::set-output name=status::success"
 
