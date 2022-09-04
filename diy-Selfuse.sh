@@ -49,3 +49,6 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #echo '<tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' >> package/lean/autocore/files/x86/index.htm
 #echo 'msgid "Compiler author"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
 #echo 'msgstr "交流群"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
+
+cp -f $GITHUB_WORKSPACE/diy0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
+cp -f $GITHUB_WORKSPACE/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
