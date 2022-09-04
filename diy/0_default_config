@@ -92,18 +92,19 @@ config shunt_rules 'Direct'
 2400:3200:baba::1
 2403:300:a42::/48
 '
-	option domain_list 'apple.com'
+	option domain_list 'apple.com
+'
 
 config shunt_rules 'AD'
 	option remarks 'AD'
-	option domain_list 'geosite:category-ads'
+	option domain_list 'geosite:category-ads
+'
 	option network 'tcp,udp'
 
 config shunt_rules 'BT'
 	option remarks 'BT'
 	option protocol 'bittorrent'
 	option network 'tcp,udp'
-
 
 config shunt_rules 'Proxy'
 	option network 'tcp,udp'
