@@ -108,7 +108,15 @@ config shunt_rules 'Direct'
 2400:3200:baba::1
 2403:300:a42::/48
 '
-	option domain_list 'apple.com
+	option domain_list 'geosite:apple
+full:doh.pub
+full:dns.alidns.com
+domain:88hd.com
+domain:wallhaven.cc
+domain:ycrx360.com
+domain:push.apple.com
+full:apac-china-courier-vs.push-apple.com.akadns.net
+full:apac-china-courier-4.push-apple.com.akadns.net
 '
 
 config shunt_rules 'Proxy'
@@ -151,11 +159,49 @@ domain:v2ex.com
 config shunt_rules 'China'
 	option remarks 'China'
 	option network 'tcp,udp'
-	option ip_list 'geoip:cn'
-	option domain_list 'geosite:cn'
+	option ip_list 'geoip:cn
+'
+	option domain_list 'geosite:cn
+'
 
 config shunt_rules 'World'
 	option remarks 'World'
 	option network 'tcp,udp'
-	option domain_list 'geosite:geolocation-!cn'
-	option ip_list 'geoip:!cn'
+	option domain_list 'geosite:geolocation-!cn
+'
+	option ip_list 'geoip:!cn
+'
+
+config subscribe_list
+	option remark 'Fly'
+	option url ''
+	option allowInsecure '0'
+	option filter_keyword_mode '2'
+	list filter_keep_list '香港'
+	list filter_keep_list '台湾'
+	list filter_keep_list '韩国'
+	list filter_keep_list '日本'
+	list filter_keep_list '越南'
+	list filter_keep_list '新加坡'
+	option ss_aead_type 'global'
+	option auto_update '0'
+	option user_agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
+
+config subscribe_list
+	option remark 'Bay'
+	option url ''
+	option allowInsecure '0'
+	option filter_keyword_mode '2'
+	list filter_keep_list '01'
+	option ss_aead_type 'global'
+	option auto_update '0'
+	option user_agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
+
+config subscribe_list
+	option remark 'Tan'
+	option url ''
+	option allowInsecure '0'
+	option filter_keyword_mode '5'
+	option ss_aead_type 'global'
+	option auto_update '0'
+	option user_agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
