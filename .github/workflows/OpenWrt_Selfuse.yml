@@ -179,7 +179,7 @@ jobs:
       uses: ophub/flippy-openwrt-actions@main
       env:
         OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
-        SCRIPT_REPO_URL: https://github.com/yunxi993/OpenWrt-ARMv8/tree/main/kernel
+        KERNEL_REPO_URL: https://github.com/yunxi993/OpenWrt-ARMv8/tree/main/kernel
         PACKAGE_SOC: s905d
         KERNEL_AUTO_LATEST:  true
         KERNEL_VERSION_NAME: 5.15.67_5.19.8
