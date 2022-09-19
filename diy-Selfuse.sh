@@ -18,8 +18,10 @@ sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 
 # Enable AAAA
 echo option filter_aaaa	1 | sed -i 's/1/0/g' /package/network/services/dnsmasq/files/dhcp.conf
+
+# Disable Cache
 echo option cachesize	8000 | sed -i 's/8000/0/g' /package/network/services/dnsmasq/files/dhcp.conf
-echo option mini_ttl		3600 | sed -i 's/3600/0/g' /package/network/services/dnsmasq/files/dhcp.conf
+echo option mini_ttl	3600 | sed -i 's/3600/0/g' /package/network/services/dnsmasq/files/dhcp.conf
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
