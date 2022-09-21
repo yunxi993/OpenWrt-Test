@@ -79,7 +79,7 @@ config nodes 'myshunt'
 
 config shunt_rules 'AD'
 	option remarks 'AD'
-	option domain_list 'geosite:category-ads
+	option domain_list 'geosite:category-ads-all
 v1d.szbdyd.com
 '
 	option network 'tcp,udp'
@@ -163,14 +163,6 @@ config shunt_rules 'China'
 	option ip_list 'geoip:cn
 '
 	option domain_list 'geosite:cn
-'
-
-config shunt_rules 'World'
-	option remarks 'World'
-	option network 'tcp,udp'
-	option domain_list 'geosite:geolocation-!cn
-'
-	option ip_list 'geoip:!cn
 '
 
 config subscribe_list
