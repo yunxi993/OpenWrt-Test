@@ -20,8 +20,8 @@ sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 echo option filter_aaaa	1 | sed -i 's/1/0/g' /package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable Cache
-echo option cachesize	8000 | sed -i 's/8000/0/g' /package/network/services/dnsmasq/files/dhcp.conf
-echo option mini_ttl	3600 | sed -i 's/3600/0/g' /package/network/services/dnsmasq/files/dhcp.conf
+echo option cachesize 8000 | sed -i 's/8000/0/g' /package/network/services/dnsmasq/files/dhcp.conf
+echo option mini_ttl 3600 | sed -i 's/3600/0/g' /package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable DNS Cache
 echo DNS_CACHE=$(config_t_get global dns_cache 1) | sed -i 's/1/0/g' /package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
