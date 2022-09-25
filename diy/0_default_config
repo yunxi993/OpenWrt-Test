@@ -79,8 +79,7 @@ config nodes 'myshunt'
 
 config shunt_rules 'AD'
 	option remarks 'AD'
-	option domain_list 'geosite:category-ads-all
-v1d.szbdyd.com
+	option domain_list 'domain:v1d.szbdyd.com
 '
 	option network 'tcp,udp'
 
