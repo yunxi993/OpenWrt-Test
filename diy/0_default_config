@@ -91,7 +91,18 @@ config shunt_rules 'BT'
 config shunt_rules 'Direct'
 	option network 'tcp,udp'
 	option remarks 'Direct'
-	option ip_list 'geoip:private
+	option domain_list 'geosite:apple
+full:doh.pub
+full:dns.alidns.com
+domain:jd.com
+domain:88hd.com
+domain:wallhaven.cc
+domain:ycrx360.com
+domain:push.apple.com
+full:apac-china-courier-vs.push-apple.com.akadns.net
+full:apac-china-courier-4.push-apple.com.akadns.net
+'
+    option ip_list 'geoip:private
 114.114.114.114
 114.114.115.115
 223.5.5.5
@@ -107,17 +118,6 @@ config shunt_rules 'Direct'
 2400:3200::1
 2400:3200:baba::1
 2403:300:a42::/48
-'
-	option domain_list 'geosite:apple
-full:doh.pub
-full:dns.alidns.com
-domain:88hd.com
-domain:wallhaven.cc
-domain:ycrx360.com
-domain:push.apple.com
-full:apac-china-courier-vs.push-apple.com.akadns.net
-full:apac-china-courier-4.push-apple.com.akadns.net
-'
 
 config shunt_rules 'Proxy'
 	option network 'tcp,udp'
