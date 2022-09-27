@@ -92,9 +92,11 @@ config shunt_rules 'Direct'
 	option network 'tcp,udp'
 	option remarks 'Direct'
 	option domain_list 'geosite:apple
-geosite:jd
 full:doh.pub
 full:dns.alidns.com
+domain:jd.com
+domain:88hd.com
+domain:wallhaven.cc
 domain:ycrx360.com
 domain:push.apple.com
 full:apac-china-courier-vs.push-apple.com.akadns.net
