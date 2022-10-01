@@ -52,7 +52,7 @@ config global_subscribe
 	option filter_keyword_mode '1'
 	list filter_discard_list '过期时间'
 	list filter_discard_list '剩余流量'
-	list filter_discard_list 'QQ群'
+	list filter_discard_list '群'
 	list filter_discard_list '官网'
 	option ss_aead_type 'shadowsocks-rust'
 
