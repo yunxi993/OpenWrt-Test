@@ -116,6 +116,7 @@ full:apac-china-courier-4.push-apple.com.akadns.net
 2400:3200::1
 2400:3200:baba::1
 2403:300:a42::/48
+'
 
 config shunt_rules 'Proxy'
 	option network 'tcp,udp'
