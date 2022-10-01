@@ -17,14 +17,14 @@ sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_genera
 sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 
 # Enable AAAA
-echo option filter_aaaa	1 | sed -i 's/1/0/g' package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable Cache
-echo option cachesize 8000 | sed -i 's/8000/0/g' package/network/services/dnsmasq/files/dhcp.conf
-echo option mini_ttl 3600 | sed -i 's/3600/0/g' package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable DNS Cache
-echo global dns_cache 1 | sed -i 's/1/0/g' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
+sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
