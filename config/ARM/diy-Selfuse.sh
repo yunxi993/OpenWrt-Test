@@ -23,9 +23,6 @@ sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/
 sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/dhcp.conf
 sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
 
-# Disable DNS Cache
-sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
@@ -60,5 +57,9 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #echo 'msgid "Compiler author"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
 #echo 'msgstr "交流群"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
 
+# Change default config
 cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
+
+# Disable DNS Cache
+sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
