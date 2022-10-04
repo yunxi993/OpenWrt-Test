@@ -118,39 +118,39 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: Upload bin directory
-      uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/bin
+#    - name: Upload bin directory
+#      uses: actions/upload-artifact@main
+#      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+#      with:
+#        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+#        path: openwrt/bin
 
-    - name: Upload Packags
-      uses: actions/upload-artifact@main
-      with:
-        name: Selfuse_IPK
-        path: |
-          openwrt/bin/packages/aarch64_cortex-a53/luci
-          openwrt/bin/packages/aarch64_cortex-a53/base
+#    - name: Upload Packags
+#      uses: actions/upload-artifact@main
+#      with:
+#        name: Selfuse_IPK
+#        path: |
+#          openwrt/bin/packages/aarch64_cortex-a53/luci
+#          openwrt/bin/packages/aarch64_cortex-a53/base
 
-    - name: Organize files
-      id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        cd $GITHUB_WORKSPACE
-        tar -zcvf Selfuse_IPK.tar.gz openwrt/Selfuse_IPK
-        cp Selfuse_IPK.tar.gz openwrt/bin/targets/*/*
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+#    - name: Organize files
+#      id: organize
+#      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+#      run: |
+#        cd $GITHUB_WORKSPACE
+#        tar -zcvf Selfuse_IPK.tar.gz openwrt/Selfuse_IPK
+#        cp Selfuse_IPK.tar.gz openwrt/bin/targets/*/*
+#        cd openwrt/bin/targets/*/*
+#        rm -rf packages
+#        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+#        echo "::set-output name=status::success"
 
-    - name: Upload firmware directory
-      uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
-      with:
-        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: ${{ env.FIRMWARE }}
+#    - name: Upload firmware directory
+#      uses: actions/upload-artifact@main
+#      if: steps.organize.outputs.status == 'success' && !cancelled()
+#      with:
+#        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+#        path: ${{ env.FIRMWARE }}
 
 #    - name: Upload firmware to cowtransfer
 #      id: cowtransfer
@@ -189,6 +189,34 @@ jobs:
 #        tag_name: ${{ steps.tag.outputs.release_tag }}
 #        body_path: release.txt
 #        files: ${{ env.FIRMWARE }}/*
+
+      - name: Prepare artifact
+        run: |
+          mkdir -p ./artifact/firmware
+          mkdir -p ./artifact/package
+          mkdir -p ./artifact/buildinfo
+          rm -rf $(find ./bin/targets/ -type d -name "packages")
+          cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
+          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
+          cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+
+      - name: Deliver buildinfo
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenWrt_buildinfo
+          path: ./artifact/buildinfo/
+
+      - name: Deliver package
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenWrt_package
+          path: ./artifact/package/
+
+      - name: Deliver firmware
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenWrt_firmware
+          path: ./bin/targets/
 
     - name: Package Armvirt as OpenWrt
       uses: ophub/flippy-openwrt-actions@main
