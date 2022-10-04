@@ -26,8 +26,8 @@ env:
   CONFIG_FILE: config/ARM/Selfuse.config
   DIY_P1_SH: config/ARM/diy-part1.sh
   DIY_P2_SH: config/ARM/diy-Selfuse.sh
-  UPLOAD_BIN_DIR: true
-  UPLOAD_FIRMWARE: true
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
@@ -197,29 +197,29 @@ jobs:
       run: |
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
-        mkdir -p ./artifact/buildinfo
-        rm -rf $(find ./bin/targets/ -type d -name "packages")
-        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+#        mkdir -p ./artifact/buildinfo
+        rm -rf $(find ./openwrt/bin/targets/*/* -type d -name "packages")
+        cp -rf $(find ./openwrt/bin/targets/ -type f) ./artifact/firmware/
+        cp -rf $(find ./openwrt/bin/packages/ -type f -name "*.ipk") ./artifact/package/
+#        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
 
-    - name: Deliver buildinfo
-      uses: actions/upload-artifact@v3
-      with:
-        name: OpenWrt_buildinfo
-        path: ./artifact/buildinfo/
+#    - name: Deliver buildinfo
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: OpenWrt_buildinfo
+#        path: ./artifact/buildinfo/
 
     - name: Deliver package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@main
       with:
         name: OpenWrt_package
         path: ./artifact/package/
 
     - name: Deliver firmware
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@main
       with:
         name: OpenWrt_firmware
-        path: ./bin/targets/
+        path: ./artifact/firmware/
 
     - name: Package Armvirt as OpenWrt
       uses: ophub/flippy-openwrt-actions@main
