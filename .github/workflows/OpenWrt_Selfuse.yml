@@ -242,7 +242,7 @@ jobs:
       with:
         name: OpenWrt_Selfuse ${{ env.PRODUCT_NAME }}${{ env.DATE }}
         tag: OpenWrt_Selfuse_${{ env.PACKAGED_OUTPUTDATE }}
-        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*,artifact/package/OpenWrt_package
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*,artifact/OpenWrt_package
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
