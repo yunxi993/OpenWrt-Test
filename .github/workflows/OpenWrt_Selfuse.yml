@@ -239,7 +239,7 @@ jobs:
 
     - name: copy package
       run: |
-        cp -rf $(find openwrt/artifact/package/OpenWrt_package -type f) ./opt/openwrt_packit/output
+        cp -rf $(find openwrt/artifact/package/OpenWrt_package -type f) /opt/openwrt_packit/output
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
