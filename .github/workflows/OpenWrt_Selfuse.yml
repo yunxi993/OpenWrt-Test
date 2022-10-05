@@ -231,11 +231,6 @@ jobs:
         HW_FLOWOFFLOAD: 0
         SFE_FLOW: 0
 
-    - name: copy package
-      run: 
-        cd /openwrt/artifact/package
-        sudo cp ./OpenWrt_package /opt/openwrt_packit
-
     - name: copy update files
       run: |
         cd /opt/openwrt_packit
