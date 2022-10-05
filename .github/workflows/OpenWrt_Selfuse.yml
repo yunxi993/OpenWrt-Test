@@ -222,7 +222,7 @@ jobs:
     - name: Package Armvirt as OpenWrt
       uses: ophub/flippy-openwrt-actions@main
       env:
-        OPENWRT_ARMVIRT: openwrt/artifact/targets/*/*/*.tar.gz
+        OPENWRT_ARMVIRT: artifact/targets/*/*/*.tar.gz
         KERNEL_REPO_URL: https://github.com/yunxi993/OpenWrt-ARMv8/tree/main/kernel
         PACKAGE_SOC: s905d
         KERNEL_AUTO_LATEST:  true
