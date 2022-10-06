@@ -191,12 +191,13 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        mkdir -p ./artifact/firmware
-        mkdir -p ./artifact/package
+        mkdir -p /openwrt/bin/targets/firmware
+        mkdir -p /openwrt/bin/targets/package
         rm -rf $(find openwrt/bin/targets/*/* -type d -name "packages")
-        cp -rf $(find openwrt/bin/targets/ -type f) ./artifact/firmware/
-        cp -rf $(find openwrt/bin/packages/ -type f -name "*.ipk") ./artifact/package/
-        cur_dir=$(pwd)
+        cp -rf $(find openwrt/bin/targets/ -type f) /openwrt/bin/targets/firmware
+        cp -rf $(find openwrt/bin/packages/ -type f -name "*.ipk") /openwrt/bin/targets/package
+        tar -zcvf AllIPK.tar.gz /openwrt/bin/targets/package/
+        cp AllIPK.tar.gz openwrt/bin/targets/*/*
 
 #    - name: Deliver buildinfo
 #      uses: actions/upload-artifact@v3
@@ -208,15 +209,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt_package
-        path: artifact/package/
-          cur_dir=$(pwd)
+        path: openwrt/bin/targets/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt_firmware
-        path: artifact/firmware/
-          cur_dir=$(pwd)
+        path: openwrt/bin/targets/firmware/
 
     - name: Package Armvirt as OpenWrt
       uses: ophub/flippy-openwrt-actions@main
