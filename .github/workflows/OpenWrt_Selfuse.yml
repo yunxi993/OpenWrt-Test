@@ -153,7 +153,6 @@ jobs:
 
     - name: Organize files
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd $GITHUB_WORKSPACE/openwrt/artifact/package/
         tar -zcvf AllIPK.tar.gz ./*
@@ -195,7 +194,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         tag: OpenWrt_Selfuse_${{ env.PACKAGED_OUTPUTDATE }}
-        artifacts: ${{ env.FIRMWARE }}/*
+        artifacts: ${{ env.FIRMWARE }}
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
