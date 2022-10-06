@@ -55,7 +55,6 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        
         df -h
 
     - name: Clone source code
@@ -197,7 +196,6 @@ jobs:
         rm -rf $(find openwrt/bin/targets/*/* -type d -name "packages")
         cp -rf $(find openwrt/bin/targets/ -type f) ./artifact/firmware/
         cp -rf $(find openwrt/bin/packages/ -type f -name "*.ipk") ./artifact/package/
-        echo "package=$PWD" >> $GITHUB_ENV
 
 #    - name: Deliver buildinfo
 #      uses: actions/upload-artifact@v3
@@ -243,7 +241,7 @@ jobs:
       with:
         name: OpenWrt_Selfuse ${{ env.PRODUCT_NAME }}${{ env.DATE }}
         tag: OpenWrt_Selfuse_${{ env.PACKAGED_OUTPUTDATE }}
-        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*,${{ env.PACKAGE }}
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
