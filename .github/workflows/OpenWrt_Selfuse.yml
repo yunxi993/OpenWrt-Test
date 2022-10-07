@@ -143,13 +143,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: AllIPK
-        path: /openwrt/artifact/package/
+        path: openwrt/artifact/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt_firmware
-        path: /openwrt/artifact/firmware/
+        path: openwrt/artifact/firmware/
 
     - name: Organize files
       id: organize
