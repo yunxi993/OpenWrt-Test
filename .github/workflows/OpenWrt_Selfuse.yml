@@ -187,7 +187,7 @@ jobs:
         cd /opt/openwrt_packit
         sudo cp ./files/update*.sh ./output/
         cd $GITHUB_WORKSPACE/openwrt/artifact/package/
-        cp IPK.tar.gz opt/openwrt_packit/output/
+        cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 
     - name: Upload OpenWrt Firmware to Release
