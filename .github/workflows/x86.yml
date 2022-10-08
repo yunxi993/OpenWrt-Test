@@ -133,7 +133,7 @@ jobs:
         cd $GITHUB_WORKSPACE/openwrt/bin/targets/x86/64/
         tar -zcvf IPK.tar.gz ./*
         cd openwrt/bin/targets/*/*
-        rm -rf packages config.buildinfo feeds.buildinfo sha256sums version.buildinfo *.manifest *.ipk
+        rm -rf packages config.buildinfo feeds.buildinfo sha256sums version.buildinfo *.manifest *.ipk Packages.tar.gz
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
