@@ -85,13 +85,6 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-#    - name: SSH connection to Actions
-#      uses: P3TERX/ssh2actions@v1.0.0
-#      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-#      env:
-#        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-#        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-
     - name: Download package
       id: package
       run: |
@@ -117,13 +110,6 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-#    - name: Upload bin directory
-#      uses: actions/upload-artifact@main
-#      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-#      with:
-#        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-#        path: openwrt/bin
-
     - name: Prepare artifact
       run: |
         cd $GITHUB_WORKSPACE/openwrt/
@@ -133,22 +119,16 @@ jobs:
         cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
 
-#    - name: Deliver buildinfo
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: OpenWrt_buildinfo
-#        path: ./artifact/buildinfo/
-
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
-        name: IPK${{ env.FILE_DATE }}
+        name: IPK${{ env.DATE }}
         path: openwrt/artifact/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
-        name: firmware${{ env.FILE_DATE }}
+        name: firmware${{ env.DATE }}
         path: openwrt/artifact/firmware/
 
     - name: Organize files
@@ -159,13 +139,6 @@ jobs:
         cp IPK.tar.gz openwrt/bin/
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-
-#    - name: Upload firmware directory
-#      uses: actions/upload-artifact@main
-#      if: steps.organize.outputs.status == 'success' && !cancelled()
-#      with:
-#        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-#        path: ${{ env.FIRMWARE }}
 
     - name: Package Armvirt as OpenWrt
       uses: ophub/flippy-openwrt-actions@main
