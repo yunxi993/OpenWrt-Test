@@ -134,8 +134,8 @@ jobs:
     - name: Organize files
       id: organize
       run: |
-        cd $GITHUB_WORKSPACE
-        tar -zcvf IPK.tar.gz openwrt/artifact/package/
+        cd $GITHUB_WORKSPACE/openwrt/artifact/
+        tar -zcvf IPK.tar.gz package/
         cp IPK.tar.gz openwrt/bin/
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
