@@ -117,12 +117,12 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: Upload bin directory
-      uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/bin
+#    - name: Upload bin directory
+#      uses: actions/upload-artifact@main
+#      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+#      with:
+#        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+#        path: openwrt/bin
 
     - name: Prepare artifact
       run: |
@@ -142,13 +142,13 @@ jobs:
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
-        name: IPK
+        name: IPK${{ env.FILE_DATE }}
         path: openwrt/artifact/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
-        name: firmware
+        name: firmware${{ env.FILE_DATE }}
         path: openwrt/artifact/firmware/
 
     - name: Organize files
@@ -193,7 +193,8 @@ jobs:
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
       with:
-        tag: OpenWrt_Selfuse_${{ env.PACKAGED_OUTPUTDATE }}
+        name: OpenWrt_Selfuse ${{ env.DATE }}
+        tag: OpenWrt_Selfuse
         artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
         allowUpdates: true
         removeArtifacts: true
