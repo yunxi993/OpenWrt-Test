@@ -115,7 +115,7 @@ jobs:
         cd $GITHUB_WORKSPACE/openwrt/
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
-        rm -rf $(find ./bin/targets/ -type d -name "packages config.buildinfo feeds.buildinfo sha256sums version.buildinfo *.manifest Packages.tar.gz")
+        rm -rf $(find ./bin/targets/*/* -type d -name "packages config.buildinfo feeds.buildinfo sha256sums version.buildinfo *.manifest Packages.tar.gz")
         cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
 
@@ -136,7 +136,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/openwrt/artifact/package/
         tar -zcvf IPK.tar.gz ./*
-        cp IPK.tar.gz openwrt/bin/
+        cp IPK.tar.gz ../../openwrt/bin/
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
