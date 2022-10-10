@@ -115,8 +115,8 @@ jobs:
         cd $GITHUB_WORKSPACE/openwrt/
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
-        rm -rf $(find ./bin/targets/x86/64/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
-        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
+        rm -rf $(find ./bin/targets/*/* -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        cp -rf $(find ./bin/targets/) ./artifact/firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
 
     - name: Deliver package
@@ -145,7 +145,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: OpenWrt_x86 ${{ env.PRODUCT_NAME }}${{ env.DATE }}
-        tag: OpenWrt_x86 ${{ env.DATE }}
+        tag: OpenWrt_x86${{ env.FILE_NAME }}
         artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
         removeArtifacts: true
