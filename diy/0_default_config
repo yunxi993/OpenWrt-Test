@@ -164,7 +164,7 @@ config shunt_rules 'China'
 '
 
 config subscribe_list
-	option remark 'Nai'
+	option remark 'Fly'
 	option url ''
 	option allowInsecure '0'
 	option filter_keyword_mode '5'
@@ -181,11 +181,3 @@ config subscribe_list
 	option auto_update '0'
 	option user_agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
 
-config subscribe_list
-	option remark 'Tan'
-	option url ''
-	option allowInsecure '0'
-	option filter_keyword_mode '5'
-	option ss_aead_type 'global'
-	option auto_update '0'
-	option user_agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
