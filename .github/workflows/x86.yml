@@ -115,7 +115,7 @@ jobs:
         cd $GITHUB_WORKSPACE/openwrt/
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
-        rm -rf $(find ./bin/targets/ "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
+        rm -rf $(find ./bin/targets/*/* "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
         cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
 
@@ -137,7 +137,7 @@ jobs:
         cd $GITHUB_WORKSPACE/openwrt/artifact/package/
         tar -zcvf IPK.tar.gz ./*
         cp IPK.tar.gz ../../../openwrt/bin/targets/
-        cd ../../../openwrt/bin/targets/*/*
+        cd openwrt/bin/targets/*/*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
@@ -145,7 +145,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: OpenWrt_x86 ${{ env.PRODUCT_NAME }}${{ env.DATE }}
-        tag: OpenWrt_x86
+        tag: OpenWrt_x86 ${{ env.DATE }}
         artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
         removeArtifacts: true
