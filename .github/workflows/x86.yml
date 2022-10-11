@@ -116,7 +116,7 @@ jobs:
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
         rm -rf $(find ./bin/targets/*/* -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp -rf ./bin/targets/*/* ./artifact/firmware/
+        cp ./bin/targets/*/* ./artifact/firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
         tar -zcvf IPK.tar.gz ./artifact/package/
         cp IPK.tar.gz ./bin/targets/*/*
@@ -125,13 +125,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: firmware${{ env.FILE_DATE }}
-        path: ./artifact/firmware/
+        path: ./openwrt/artifact/firmware/
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ./artifact/package/
+        path: ./openwrt/artifact/package/
 
     - name: Organize files
       id: organize
