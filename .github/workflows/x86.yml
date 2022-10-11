@@ -113,25 +113,25 @@ jobs:
     - name: Prepare artifact
       run: |
         cd $GITHUB_WORKSPACE/openwrt/
-        mkdir -p ./artifact/firmware
-        mkdir -p ./artifact/package
+        mkdir -p ./firmware
+        mkdir -p ./package
         rm -rf $(find ./bin/targets/*/* -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp ./bin/targets/x86/64/* ./artifact/firmware/
-        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-        tar -zcvf IPK.tar.gz ./artifact/package/
+        cp -rf $(find ./bin/targets/ -type f) ./firmware/
+        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
+        tar -zcvf IPK.tar.gz ./package/
         cp IPK.tar.gz ./bin/targets/*/*
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: firmware${{ env.FILE_DATE }}
-        path: ./openwrt/artifact/firmware/
+        path: ./openwrt/firmware/
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ./openwrt/artifact/package/
+        path: ./openwrt/package/
 
     - name: Organize files
       id: organize
