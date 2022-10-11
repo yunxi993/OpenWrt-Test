@@ -116,7 +116,7 @@ jobs:
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
         rm -rf $(find ./bin/targets/*/* -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp ./bin/targets/x86/64/ ./artifact/firmware/
+        cp ./bin/targets/x86/64/* ./artifact/firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
         tar -zcvf IPK.tar.gz ./artifact/package/
         cp IPK.tar.gz ./bin/targets/*/*
