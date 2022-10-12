@@ -112,20 +112,10 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        cd $GITHUB_WORKSPACE/openwrt/
-        mkdir -p ./firmware
         mkdir -p ./package
-        rm -rf $(find ./bin/targets/*/* -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp -rf $(find ./bin/targets/ -type f) ./firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
         tar -zcvf IPK.tar.gz ./package/
         cp IPK.tar.gz ./bin/targets/*/*
-
-    - name: Deliver firmware
-      uses: actions/upload-artifact@main
-      with:
-        name: firmware${{ env.FILE_DATE }}
-        path: ./openwrt/firmware/
 
     - name: Deliver package
       uses: actions/upload-artifact@main
@@ -137,8 +127,15 @@ jobs:
       id: organize
       run: |
         cd openwrt/bin/targets/*/*
+        rm -rf packages *.buildinfo sha256sums *.manifest
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@main
+      with:
+        name: firmware${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
