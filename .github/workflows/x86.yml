@@ -112,7 +112,7 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        mkdir -p ./package
+        mkdir -p ./package/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
         tar -zcvf IPK.tar.gz ./package/
         cp IPK.tar.gz ./bin/targets/*/*
@@ -121,7 +121,7 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ../package/
+        path: ./package/
 
     - name: Organize files
       id: organize
