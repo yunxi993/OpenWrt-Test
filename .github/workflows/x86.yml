@@ -45,7 +45,6 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        docker rmi `docker images -q`
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /etc/mysql /etc/php /usr/local/lib/android /opt/ghc
         sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
         sudo -E apt-get -qq update
@@ -112,7 +111,7 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        cd openwrt/
+        cd openwrt
         mkdir -p ./package/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
         tar -zcvf IPK.tar.gz ./package/
@@ -122,7 +121,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ../package/
+        path: ./openwrt/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@main
+      with:
+        name: firmware${{ env.FILE_DATE }}
+        path: ./openwrt/bin/targets/
 
     - name: Organize files
       id: organize
@@ -131,12 +136,6 @@ jobs:
         rm -rf packages *.buildinfo sha256sums *.manifest
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-
-    - name: Deliver firmware
-      uses: actions/upload-artifact@main
-      with:
-        name: firmware${{ env.FILE_DATE }}
-        path: ${{ env.FIRMWARE }}
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
