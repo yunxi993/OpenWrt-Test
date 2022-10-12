@@ -107,25 +107,11 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: Prepare artifact
-      run: |
-        cd openwrt
-        mkdir -p ./package/
-        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
-        tar -zcvf IPK.tar.gz ./package/
-        cp IPK.tar.gz ./bin/targets/*/*
-
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ./openwrt/package/
-
-    - name: Deliver firmware
-      uses: actions/upload-artifact@main
-      with:
-        name: firmware${{ env.FILE_DATE }}
-        path: ./openwrt/bin/targets/
+        path: openwrt/bin/packages/*.ipk
 
     - name: Organize files
       id: organize
@@ -134,6 +120,12 @@ jobs:
         rm -rf packages *.buildinfo sha256sums *.manifest
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
+
+    - name: Deliver package
+      uses: actions/upload-artifact@main
+      with:
+        name: firmware${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
