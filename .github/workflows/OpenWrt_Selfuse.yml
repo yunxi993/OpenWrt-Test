@@ -115,7 +115,7 @@ jobs:
         cd openwrt
         mkdir -p ./firmware
         mkdir -p ./package
-        rm -rf $(find ./bin/targets/ "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
+        rm -rf $(find ./bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
         cp -rf $(find ./bin/targets/ -type f) ./firmware/
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
         tar -zcvf IPK.tar.gz ./package/
@@ -125,13 +125,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: firmware ${{ env.FILE_DATE }}
-        path: openwrt/firmware/
+        path: ./firmware/
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK ${{ env.FILE_DATE }}
-        path: openwrt/package/
+        path: ./package/
 
     - name: Organize files
       id: organize
@@ -157,9 +157,9 @@ jobs:
 
     - name: copy update files
       run: |
-        cd opt/openwrt_packit
+        cd /opt/openwrt_packit
         cp ./files/update*.sh ./output/
-        cd openwrt/bin/
+        cd /openwrt/bin/
         cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 
