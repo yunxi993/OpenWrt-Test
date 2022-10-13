@@ -112,31 +112,31 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        cd $GITHUB_WORKSPACE/openwrt/
-        mkdir -p ./artifact/firmware
-        mkdir -p ./artifact/package
+        cd openwrt
+        mkdir -p ./firmware
+        mkdir -p ./package
         rm -rf $(find ./bin/targets/ "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
-        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
+        cp -rf $(find ./bin/targets/ -type f) ./firmware/
+        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
+        tar -zcvf IPK.tar.gz ./package/
+        cp IPK.tar.gz ./bin/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: firmware ${{ env.FILE_DATE }}
-        path: ./openwrt/artifact/firmware/
+        path: openwrt/firmware/
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK ${{ env.FILE_DATE }}
-        path: ./openwrt/artifact/package/
+        path: openwrt/package/
 
     - name: Organize files
       id: organize
       run: |
-        cd $GITHUB_WORKSPACE/openwrt/artifact/package/
-        tar -zcvf IPK.tar.gz ./*
-        cp IPK.tar.gz ../../../openwrt/bin/
+        cd openwrt
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
@@ -157,9 +157,9 @@ jobs:
 
     - name: copy update files
       run: |
-        cd /opt/openwrt_packit
+        cd opt/openwrt_packit
         cp ./files/update*.sh ./output/
-        cd $GITHUB_WORKSPACE/openwrt/bin/
+        cd openwrt/bin/
         cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 

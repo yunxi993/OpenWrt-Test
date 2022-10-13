@@ -23,7 +23,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/x86/OpenWrt_x86.config
+  CONFIG_FILE: config/x86/x86.config
   DIY_P1_SH: config/x86/diy-part1.sh
   DIY_P2_SH: config/x86/diy-x86.sh
   UPLOAD_BIN_DIR: false
@@ -45,7 +45,9 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        docker rmi `docker images -q`
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /etc/mysql /etc/php /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL https://is.gd/depends_ubuntu_2204)
         sudo -E apt-get -qq autoremove --purge
@@ -53,6 +55,7 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+        df -h
 
     - name: Clone source code
       working-directory: /workdir
@@ -107,26 +110,35 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-#    - name: Deliver package
-#      uses: actions/upload-artifact@main
-#      with:
-#        name: IPK${{ env.FILE_DATE }}
-#        path: openwrt/bin/packages/*.ipk
+    - name: Prepare artifact
+      run: |
+        cd openwrt
+        mkdir -p ./firmware
+        mkdir -p ./package
+        rm -rf $(find ./bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        cp -rf $(find ./bin/targets/ -type f) ./firmware/
+        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
+        tar -zcvf IPK.tar.gz ./package/
+        cp IPK.tar.gz ./bin/targets/*/*
+
+    - name: Deliver package
+      uses: actions/upload-artifact@main
+      with:
+        name: IPK${{ env.FILE_DATE }}
+        path: openwrt/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@main
+      with:
+        name: firmware${{ env.FILE_DATE }}
+        path: openwrt/firmware/
 
     - name: Organize files
       id: organize
       run: |
         cd openwrt/bin/targets/*/*
-        rm -rf packages *.buildinfo sha256sums *.manifest
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-
-    - name: Upload firmware directory
-      uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
-      with:
-        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: ${{ env.FIRMWARE }}
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
