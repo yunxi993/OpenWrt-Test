@@ -112,6 +112,7 @@ jobs:
 
     - name: Prepare artifact
       run: |
+        cd ./openwrt/bin
         mkdir -p ./firmware
         mkdir -p ./package
         $PWD
@@ -120,18 +121,19 @@ jobs:
         cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./package/
         tar -zcvf IPK.tar.gz ./package/
         cp IPK.tar.gz ./bin/targets/*/*
+        $PWD
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: openwrt/bin/package/
+        path: ./package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: firmware${{ env.FILE_DATE }}
-        path: openwrt/bin/firmware/
+        path: ./firmware/
 
     - name: Organize files
       id: organize
