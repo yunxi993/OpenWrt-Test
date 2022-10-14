@@ -97,7 +97,6 @@ jobs:
     - name: Compile the firmware
       id: compile
       run: |
-        cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "::set-output name=status::success"
@@ -112,7 +111,7 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        cd openwrt
+        cd $GITHUB_WORKSPACE/openwrt
         mkdir -p ./firmware
         mkdir -p ./package
         rm -rf $(find ./bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sumst" -o -name "*.manifest")
