@@ -112,7 +112,6 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        cd $GITHUB_WORKSPACE/openwrt
         mkdir -p ./firmware
         mkdir -p ./package
         rm -rf $(find ./bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
