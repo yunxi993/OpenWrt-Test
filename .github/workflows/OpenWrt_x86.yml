@@ -112,6 +112,7 @@ jobs:
 
     - name: Prepare artifact
       run: |
+        cd openwrt/bin
         mkdir -p ./firmware
         mkdir -p ./package
         rm -rf $(find ./bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
@@ -124,13 +125,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ./package/
+        path: openwrt/bin/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: firmware${{ env.FILE_DATE }}
-        path: ./firmware/
+        path: openwrt/bin/firmware/
 
     - name: Organize files
       id: organize
