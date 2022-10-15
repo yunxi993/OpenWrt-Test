@@ -125,7 +125,7 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ./openwrt/bin/package/ && $PWD
+        path: ./openwrt/bin/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
