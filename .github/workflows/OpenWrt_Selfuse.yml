@@ -119,19 +119,19 @@ jobs:
         cp -rf $(find ../bin/targets/ -type f) ./firmware/
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
         tar -zcvf IPK.tar.gz ./package/
-        cp IPK.tar.gz ../bin/
+        cp IPK.tar.gz ./
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       with:
         name: IPK ${{ env.FILE_DATE }}
-        path: ./package/
+        path: ./openwrt/bin/package/ && $PWD
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: firmware ${{ env.FILE_DATE }}
-        path: ./firmware/
+        path: ./openwrt/bin/firmware/
 
     - name: Organize files
       id: organize

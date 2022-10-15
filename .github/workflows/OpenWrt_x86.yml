@@ -125,13 +125,13 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: IPK${{ env.FILE_DATE }}
-        path: ./package/
+        path: ./openwrt/bin/package/ && $PWD
 
     - name: Deliver firmware
       uses: actions/upload-artifact@main
       with:
         name: firmware${{ env.FILE_DATE }}
-        path: ./firmware/
+        path: ./openwrt/bin/firmware/
 
     - name: Organize files
       id: organize
