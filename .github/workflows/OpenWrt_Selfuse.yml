@@ -105,6 +105,7 @@ jobs:
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        echo "TAG_DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
 
     - name: Check space usage
       if: (!cancelled())
@@ -118,7 +119,8 @@ jobs:
         rm -rf $(find ../bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
         cp -rf $(find ../bin/targets/ -type f) ./firmware/
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
-        tar -zcvf IPK.tar.gz ./package/*
+        cd ./openwrt/bin/package
+        tar -zcvf IPK.tar.gz ./*
 #        cp -rf IPK.tar.gz ./
 
     - name: Deliver package
@@ -159,8 +161,7 @@ jobs:
       run: |
         cd /opt/openwrt_packit
         cp ./files/update*.sh ./output/
-        $PWD
-        cd openwrt/bin
+        cd $GITHUB_WORKSPACE/openwrt/bin
         cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 
@@ -168,7 +169,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: OpenWrt_Selfuse ${{ env.DATE }}
-        tag: OpenWrt_Selfuse${{ env.FILE_NAME }}
+        tag: OpenWrt_Selfuse${{ env.TAG_DATE }}
         artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
         allowUpdates: true
         removeArtifacts: true

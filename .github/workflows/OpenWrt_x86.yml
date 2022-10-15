@@ -105,6 +105,7 @@ jobs:
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        echo "TAG_DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
 
     - name: Check space usage
       if: (!cancelled())
@@ -118,7 +119,8 @@ jobs:
         rm -rf $(find ../bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
         cp -rf $(find ../bin/targets/ -type f) ./firmware/
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
-        tar -zcvf IPK.tar.gz -C./package/ *.ipk
+        cd ./openwrt/bin/package
+        tar -zcvf IPK.tar.gz ./*
         cp IPK.tar.gz ../bin/targets/*/*
 
     - name: Deliver package
@@ -144,7 +146,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: OpenWrt_x86 ${{ env.PRODUCT_NAME }}${{ env.DATE }}
-        tag: OpenWrt_x86${{ env.FILE_NAME }}
+        tag: OpenWrt_x86${{ env.TAG_DATE }}
         artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
         removeArtifacts: true
