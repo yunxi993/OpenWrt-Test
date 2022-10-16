@@ -120,7 +120,7 @@ jobs:
         cp -rf $(find ../bin/targets/ -type f) ./firmware/
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
         cd ./package
-        tar -zcvf IPK.tar.gz
+        tar -zcvf IPK.tar.gz *
         mv -f IPK.tar.gz ../
 
     - name: Deliver package
@@ -185,7 +185,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
         retain_days: 1
-        keep_minimum_runs: 3
+        keep_minimum_runs: 4
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
