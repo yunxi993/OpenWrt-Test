@@ -119,7 +119,7 @@ jobs:
         rm -rf $(find ../bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
         cp -rf $(find ../bin/targets/ -type f) ./firmware/
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
-        cd ./openwrt/bin/package
+        cd ./package
         tar -zcvf IPK.tar.gz ./*
 #        cp -rf IPK.tar.gz ./
 
@@ -161,7 +161,7 @@ jobs:
       run: |
         cd /opt/openwrt_packit
         cp ./files/update*.sh ./output/
-        cd $GITHUB_WORKSPACE/openwrt/bin
+        cd ./bin
         cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 
