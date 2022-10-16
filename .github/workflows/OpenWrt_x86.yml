@@ -121,7 +121,7 @@ jobs:
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
         cd ./package
         tar -zcvf IPK.tar.gz ./*
-        cp IPK.tar.gz ../bin/targets/*/*
+        cp IPK.tar.gz ../targets/*/*
 
     - name: Deliver package
       uses: actions/upload-artifact@main

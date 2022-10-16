@@ -121,7 +121,7 @@ jobs:
         cp -rf $(find ../bin/packages/ -type f -name "*.ipk") ./package/
         cd ./package
         tar -zcvf IPK.tar.gz ./*
-#        cp -rf IPK.tar.gz ./
+        mv -f IPK.tar.gz ../
 
     - name: Deliver package
       uses: actions/upload-artifact@main
@@ -161,8 +161,7 @@ jobs:
       run: |
         cd /opt/openwrt_packit
         cp ./files/update*.sh ./output/
-        cd ~
-        $PWD
+        cd ../../bin
         cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 
