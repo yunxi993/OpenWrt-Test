@@ -161,7 +161,8 @@ jobs:
       run: |
         cd /opt/openwrt_packit
         cp ./files/update*.sh ./output/
-        cd ../../bin
+        cd ~
+        $PWD
         cp IPK.tar.gz /opt/openwrt_packit/output/
         echo "::set-output name=status::success"
 
