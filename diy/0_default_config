@@ -14,7 +14,7 @@ config global
 
 config global_delay
 	option auto_on '0'
-	option start_daemon '1'
+	option start_daemon '0'
 	option start_delay '1'
 
 config global_forwarding
@@ -65,7 +65,7 @@ config auto_switch
 
 config nodes 'myshunt'
 	option remarks '分流总节点'
-	option type 'V2ray'
+	option type 'Xray'
 	option protocol '_shunt'
 	option AD '_blackhole'
 	option BT '_direct'
