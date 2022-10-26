@@ -80,7 +80,7 @@ config nodes 'myshunt'
 config shunt_rules 'AD'
 	option remarks 'AD'
 	option domain_list 'domain:szbdyd.com
-mcdn.bilivideo.cn
+domain:mcdn.bilivideo.cn
 '
 	option network 'tcp,udp'
 
