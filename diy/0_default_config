@@ -74,13 +74,14 @@ config nodes 'myshunt'
 	option China '_direct'
         option World '_default'
 	option default_node 'nil'
-	option domainStrategy 'IPIfNonMatch'
+	option domainStrategy 'AsIs'
 	option domainMatcher 'hybrid'
 
 config shunt_rules 'AD'
 	option remarks 'AD'
-	option domain_list 'domain:szbdyd.com
-domain:mcdn.bilivideo.cn
+	option domain_list 'szbdyd.com
+mcdn.bilivideo.cn
+full:apac-china-courier-4.push-apple.com.akadns.net
 '
 	option network 'tcp,udp'
 
@@ -93,13 +94,11 @@ config shunt_rules 'Direct'
 	option network 'tcp,udp'
 	option remarks 'Direct'
 	option domain_list 'geosite:apple
-geosite:jd
 full:doh.pub
 full:dns.alidns.com
-domain:ycrx360.com
-domain:push.apple.com
+ycrx360.com
+push.apple.com
 full:apac-china-courier-vs.push-apple.com.akadns.net
-full:apac-china-courier-4.push-apple.com.akadns.net
 '
     option ip_list 'geoip:private
 114.114.114.114
@@ -126,7 +125,6 @@ config shunt_rules 'Proxy'
 geosite:google
 geosite:github
 full:one.one.one.one
-full:dns.cloudflare.com
 full:cloudflare-dns.com
 domain:sspanel.net
 domain:v2ex.com
