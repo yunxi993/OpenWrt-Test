@@ -93,7 +93,8 @@ config shunt_rules 'BT'
 config shunt_rules 'Direct'
 	option network 'tcp,udp'
 	option remarks 'Direct'
-	option domain_list 'geosite:apple
+	option domain_list 'geosite:private
+geosite:apple
 full:doh.pub
 full:dns.alidns.com
 ycrx360.com
