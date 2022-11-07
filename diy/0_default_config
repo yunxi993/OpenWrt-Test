@@ -94,12 +94,12 @@ config shunt_rules 'Direct'
 	option network 'tcp,udp'
 	option remarks 'Direct'
 	option domain_list 'geosite:private
+push.apple.com
+full:apac-china-courier-vs.push-apple.com.akadns.net
 geosite:apple
 full:doh.pub
 full:dns.alidns.com
 ycrx360.com
-push.apple.com
-full:apac-china-courier-vs.push-apple.com.akadns.net
 '
     option ip_list 'geoip:private
 114.114.114.114
