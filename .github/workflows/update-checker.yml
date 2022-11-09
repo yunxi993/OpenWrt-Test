@@ -17,6 +17,12 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        type: choice
+        options:
+        - main
+        - openwrt-22.03
   schedule:
         - cron: 0 23 * * *
 
@@ -25,10 +31,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - uses: actions/checkout@v3
-      with:
-        ref: openwrt-22.03
 
     - name: Get Commit Hash
       id: getHash
