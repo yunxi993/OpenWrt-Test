@@ -18,11 +18,11 @@ env:
 on:
   push:
     branches:
-      - main
-      - openwrt-22.03
+          - main
+          - openwrt-22.03
   workflow_dispatch:
   schedule:
-    - cron: 0 23 * * *
+        - cron: 0 23 * * *
 
 jobs:
   check:
