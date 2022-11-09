@@ -22,10 +22,10 @@ on:
 env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: openwrt-22.03
-  FEEDS_CONF: openwrt-22.03/config/feeds.conf.default
-  CONFIG_FILE: openwrt-22.03/config/x86-original.config
-  DIY_P1_SH: openwrt-22.03/config/diy-part1.sh
-  DIY_P2_SH: openwrt-22.03/config/diy-x86-original.sh
+  FEEDS_CONF: openwrt/feeds.conf.default
+  CONFIG_FILE: openwrt/x86-original.config
+  DIY_P1_SH: openwrt/diy-part1.sh
+  DIY_P2_SH: openwrt/diy-x86-original.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
