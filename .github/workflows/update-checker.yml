@@ -16,6 +16,10 @@ env:
   REPO_BRANCH: master
 
 on:
+  push:
+    branches:
+      - main
+      - openwrt-22.03
   workflow_dispatch:
   schedule:
     - cron: 0 23 * * *
