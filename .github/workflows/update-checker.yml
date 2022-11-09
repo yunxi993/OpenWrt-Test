@@ -26,7 +26,6 @@ jobs:
 
     steps:
 
-    - name: Check branch
     - uses: actions/checkout@v3
       with:
         ref: openwrt-22.03
