@@ -19,7 +19,6 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        type: choice
         options:
         - main
         - openwrt-22.03
