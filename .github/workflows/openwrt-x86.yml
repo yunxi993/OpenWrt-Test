@@ -22,10 +22,10 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: lean/feeds.conf.default
-  CONFIG_FILE: lean/openwrt-x86.config
-  DIY_P1_SH: lean/diy-part1.sh
-  DIY_P2_SH: lean/diy-x86.sh
+  FEEDS_CONF: config/feeds.conf.default
+  CONFIG_FILE: config/openwrt-x86.config
+  DIY_P1_SH: config/diy-part1.sh
+  DIY_P2_SH: config/diy-x86.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
