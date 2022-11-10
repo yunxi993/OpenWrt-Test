@@ -18,10 +18,10 @@ env:
 on:
   workflow_dispatch:
     inputs:
-      branch:
+      branches:
         description: 'your local repo branch'
         required: true
-        default: main
+        default: openwrt-22.03
         type: choice
         options:
         - openwrt-22.03
