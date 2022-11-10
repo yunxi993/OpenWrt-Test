@@ -16,11 +16,13 @@ env:
   REPO_BRANCH: main
 
 on:
-  push:
-    branches:
-      - main
-      - openwrt-22.03
   workflow_dispatch:
+    inputs:
+      branch:
+        type: choice
+        options:
+        - main
+        - openwrt-22.03
   schedule:
     - cron: 0 22 * * *
 
