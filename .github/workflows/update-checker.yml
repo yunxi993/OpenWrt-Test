@@ -21,7 +21,7 @@ on:
     types:
       - deleted
     branches:
-      - 22.03
+      - main
 #  schedule:
 #    - cron: 0 22 * * *
 
