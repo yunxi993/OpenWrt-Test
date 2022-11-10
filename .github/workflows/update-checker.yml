@@ -18,7 +18,7 @@ env:
 on:
   release:
     types:
-      - deleted
+      - delete
     branches:
       - main
   workflow_dispatch:
