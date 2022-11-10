@@ -22,10 +22,10 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: lede/config/feeds.conf.default
-  CONFIG_FILE: lede/config/openwrt-arm.config
-  DIY_P1_SH: lede/config/diy-part1.sh
-  DIY_P2_SH: lede/config/diy-arm.sh
+  FEEDS_CONF: config/arm/feeds.conf.default
+  CONFIG_FILE: config/arm/openwrt-arm.config
+  DIY_P1_SH: config/arm/diy-part1.sh
+  DIY_P2_SH: config/arm/diy-arm.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
