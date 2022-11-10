@@ -16,12 +16,12 @@ env:
   REPO_BRANCH: main
 
 on:
+  workflow_dispatch:
   release:
     types:
       - deleted
     branches:
       - 22.03
-  workflow_dispatch:
 #  schedule:
 #    - cron: 0 22 * * *
 
