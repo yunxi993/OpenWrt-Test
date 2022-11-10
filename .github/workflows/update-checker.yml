@@ -19,10 +19,9 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        type: choice
+        default: openwrt-22.03
         options:
         - main
-        - openwrt-22.03
   schedule:
     - cron: 0 22 * * *
 
