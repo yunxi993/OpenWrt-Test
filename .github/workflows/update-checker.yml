@@ -17,9 +17,6 @@ env:
 
 on:
   workflow_dispatch:
-    inputs:
-      branches:
-        - 22.03
 #  schedule:
 #        - cron: 0 22 * * *
 
