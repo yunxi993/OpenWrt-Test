@@ -16,18 +16,19 @@ env:
   REPO_BRANCH: main
 
 on:
+  push:
+    branches:
+      - main
+      - openwrt-22.03
   workflow_dispatch:
-#  schedule:
-#    - cron: 0 22 * * *
+  schedule:
+    - cron: 0 22 * * *
 
 jobs:
   check:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: check branch
-      run: git checkout -b "$PERSONAL_BRANCH"
 
     - name: Get Commit Hash
       id: getHash
