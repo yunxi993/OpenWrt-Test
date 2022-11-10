@@ -27,7 +27,7 @@ jobs:
     steps:
 
     - name: check branch
-      run: $git checkout openwrt-22.03
+      run: git checkout -b "$PERSONAL_BRANCH"
 
     - name: Get Commit Hash
       id: getHash
