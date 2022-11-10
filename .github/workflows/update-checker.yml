@@ -16,12 +16,15 @@ env:
   REPO_BRANCH: main
 
 on:
-  release:
-    types:
-      - delete
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'your local repo branch'
+        required: true
+        default: main
+        type: choice
+        options:
+        - openwrt-22.03
 #  schedule:
 #    - cron: 0 22 * * *
 
