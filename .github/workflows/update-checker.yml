@@ -26,9 +26,10 @@ jobs:
 
     steps:
 
+    - name: check branch
     - uses: actions/checkout@v3
       with:
-        ref: main
+        ref: openwrt-22.03
 
     - name: Get Commit Hash
       id: getHash
