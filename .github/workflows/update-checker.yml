@@ -17,13 +17,8 @@ env:
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        default: openwrt-22.03
-        options:
-        - main
-  schedule:
-    - cron: 0 22 * * *
+#  schedule:
+#    - cron: 0 22 * * *
 
 jobs:
   check:
