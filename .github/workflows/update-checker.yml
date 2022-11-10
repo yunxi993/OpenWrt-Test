@@ -19,14 +19,12 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'your local repo branch'
-        required: true
-        default: main
         type: choice
         options:
+        - main
         - openwrt-22.03
-#  schedule:
-#    - cron: 0 22 * * *
+  schedule:
+    - cron: 0 22 * * *
 
 jobs:
   check:
