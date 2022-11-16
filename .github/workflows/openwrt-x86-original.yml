@@ -158,12 +158,12 @@ jobs:
           * Default password: password
 
 #    - name: Delete workflow runs
-#      uses: GitRML/delete-workflow-runs@main
+#      uses: Mattraks/delete-workflow-runs@v2
 #      with:
 #        token: ${{ secrets.GITHUB_TOKEN }}
 #        repository: ${{ github.repository }}
 #        retain_days: 1
-#        keep_minimum_runs: 5
+#        keep_minimum_runs: 2
 
 #    - name: Remove old Releases
 #      uses: dev-drprasad/delete-older-releases@v0.2.0
