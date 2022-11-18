@@ -50,6 +50,7 @@ jobs:
         repository: ${{ github.repository }}
         ref: 22.03
         fetch-depth: 0
+        path: 22.03
 
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
