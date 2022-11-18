@@ -26,7 +26,8 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - name: checkbranch
+      uses: actions/checkout@v3
       with:
         repository: ${{ github.repository }}
         ref: 22.03
