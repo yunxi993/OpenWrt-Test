@@ -44,14 +44,6 @@ jobs:
       run: |
         echo ${{ steps.getHash.outputs.commitHash }} | tee .commitHash
 
-    - name: checkbranch
-      uses: actions/checkout@v3
-      with:
-        repository: ${{ github.repository }}
-        ref: 22.03
-        fetch-depth: 0
-        path: 22.03
-
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
       uses: peter-evans/repository-dispatch@v2
