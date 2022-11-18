@@ -39,11 +39,6 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
-      with:
-        ref: 22.03
-        fetch-depth: 0
-
     - name: Checkout
       uses: actions/checkout@v3
 
