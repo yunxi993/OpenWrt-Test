@@ -69,7 +69,7 @@ config nodes 'myshunt'
 	option protocol '_shunt'
 	option BT '_direct'
 	option AD '_blackhole'
-    option Direct '_direct'
+	option Direct '_direct'
 	option Proxy '_default'
 	option China '_direct'
 	option default_node 'nil'
@@ -124,7 +124,8 @@ geosite:bing
 geosite:google
 geosite:github
 domain:sspanel.net
-domain:v2ex.com'
+domain:v2ex.com
+geosite:geolocation-!cn'
 
 	option ip_list '149.154.160.0/20
 91.108.4.0/22
