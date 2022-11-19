@@ -84,19 +84,17 @@ config shunt_rules 'BT'
 config shunt_rules 'AD'
 	option remarks 'AD'
 	option network 'tcp,udp'
-	option domain_list 'domain:szbdyd.com
-domain:mcdn.bilivideo.cn
-geosite:category-ads
+	option domain_list 'geosite:category-ads
 geosite:category-ads-all'
 
 config shunt_rules 'Direct'
 	option network 'tcp,udp'
 	option remarks 'Direct'
-	option domain_list 'full:doh.pub
-full:dns.alidns.com
+	option domain_list 'domain:doh.pub
+domain:dns.alidns.com
+domain:ycrx360.com
 domain:push.apple.com
-geosite:apple
-domain:ycrx360.com'
+geosite:apple'
 
 	option ip_list '114.114.114.114
 114.114.115.115
@@ -112,19 +110,20 @@ domain:ycrx360.com'
 2408:8899::8
 2400:3200::1
 2400:3200:baba::1
+17.57.144.0/22
 2403:300:a42::/48'
 
 config shunt_rules 'Proxy'
 	option network 'tcp,udp'
 	option remarks 'Proxy'
-	option domain_list 'full:one.one.one.one
-full:cloudflare-dns.com
-full:dns.google
+	option domain_list 'domain:one.one.one.one
+domain:cloudflare-dns.com
+domain:dns.google
+domain:sspanel.net
+domain:v2ex.com
 geosite:bing
 geosite:google
 geosite:github
-domain:sspanel.net
-domain:v2ex.com
 geosite:geolocation-!cn'
 
 	option ip_list '149.154.160.0/20
