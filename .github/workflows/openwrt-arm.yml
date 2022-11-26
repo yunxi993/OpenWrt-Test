@@ -199,6 +199,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Telegram notification
+      if: steps.cacheHash.outputs.cache-hit != 'true'
       run: |
         MSG="
         编译时间：${{ env.DATE }}
