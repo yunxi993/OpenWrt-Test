@@ -94,23 +94,6 @@ config shunt_rules 'Direct'
 domain:push.apple.com
 geosite:apple'
 
-	option ip_list '2408:8888::8
-2408:8899::8
-2403:300:a42::/48
-17.57.144.0/22
-2400:3200::1
-2400:3200:baba::1
-114.114.114.114
-114.114.115.115
-223.5.5.5
-223.6.6.6
-119.29.29.29
-180.76.76.76
-1.12.12.12
-120.53.53.53
-218.104.111.114
-218.104.111.122'
-
 config shunt_rules 'Proxy'
 	option network 'tcp,udp'
 	option remarks 'Proxy'
@@ -144,7 +127,23 @@ geosite:geolocation-!cn'
 config shunt_rules 'China'
 	option remarks 'China'
 	option network 'tcp,udp'
-	option ip_list 'geoip:cn
+	option ip_list '2408:8888::8
+2408:8899::8
+2403:300:a42::/48
+17.57.144.0/22
+2400:3200::1
+2400:3200:baba::1
+114.114.114.114
+114.114.115.115
+223.5.5.5
+223.6.6.6
+119.29.29.29
+180.76.76.76
+1.12.12.12
+120.53.53.53
+218.104.111.114
+218.104.111.122
+geoip:cn
 geoip:private'
 
 	option domain_list 'geosite:cn
