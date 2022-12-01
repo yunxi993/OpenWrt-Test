@@ -68,7 +68,7 @@ config nodes 'myshunt'
 	option type 'Xray'
 	option protocol '_shunt'
 	option BT '_direct'
-	option AD '_blackhole'
+	option AD 'nil'
 	option Direct '_direct'
 	option Proxy '_default'
 	option China '_direct'
@@ -92,7 +92,8 @@ config shunt_rules 'Direct'
 	option remarks 'Direct'
 	option domain_list 'domain:ycrx360.com
 domain:push.apple.com
-geosite:apple'
+geosite:apple@cn
+geosite:category-games@cn'
 
 config shunt_rules 'Proxy'
 	option network 'tcp,udp'
@@ -127,6 +128,9 @@ geosite:geolocation-!cn'
 config shunt_rules 'China'
 	option remarks 'China'
 	option network 'tcp,udp'
+	option domain_list 'geosite:cn
+geosite:private'
+
 	option ip_list '2408:8888::8
 2408:8899::8
 2403:300:a42::/48
@@ -145,9 +149,6 @@ config shunt_rules 'China'
 218.104.111.122
 geoip:cn
 geoip:private'
-
-	option domain_list 'geosite:cn
-geosite:private'
 
 config subscribe_list
 	option remark 'Fly'
