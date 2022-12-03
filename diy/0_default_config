@@ -58,8 +58,8 @@ config global_subscribe
 
 config auto_switch
 	option enable '0'
-	option testing_time '10'
-	option connect_timeout '10'
+	option testing_time '3'
+	option connect_timeout '55'
 	option retry_num '3'
 	option shunt_logic '1'
 
