@@ -68,6 +68,5 @@ cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-
 sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
 # re close bridge-nf
-sed -i '754,755d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-sed -i '776d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-
+sed -i '754,755d 774d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
+#sed -i '774d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
