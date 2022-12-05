@@ -69,4 +69,4 @@ sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luc
 
 # re close bridge-nf
 sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-#sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
+chmod -R 775 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 775 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 775 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
