@@ -24,7 +24,7 @@ sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/d
 sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable rebind protection
-sed -i 's/rebind_protection 1/rebind_protection 0/g' package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/rebind_protection 1/rebind_protection 0/g' package/network/services/dnsmasq/files/dhcp.conf && chmod -R 755 package/network/services/dnsmasq/files/dhcp.conf
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
@@ -69,4 +69,4 @@ sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luc
 
 # re close bridge-nf
 sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-chmod -R 775 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 775 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 775 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
+chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
