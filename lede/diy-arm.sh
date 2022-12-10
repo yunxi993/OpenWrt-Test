@@ -24,7 +24,8 @@ sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/d
 sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable rebind protection
-sed -i 's/rebind_protection 1/rebind_protection 0/g' package/network/services/dnsmasq/files/dhcp.conf && chmod -R 755 package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/rebind_protection 1/rebind_protection 0/g' package/network/services/dnsmasq/files/dhcp.conf
+chmod -R 755 package/network/services/dnsmasq/files/dhcp.conf
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
