@@ -17,7 +17,7 @@ sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_genera
 sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 
 # Enable AAAA
-sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
+#sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
 
 # Disable Cache
 sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/dhcp.conf
