@@ -18,11 +18,11 @@ sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 
 # Enable AAAA
 #sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
-
+#
 # Disable Cache
-sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/dhcp.conf
-sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
-
+#sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/dhcp.conf
+#sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
+#
 # Disable rebind protection
 sed -i 's/rebind_protection 1/rebind_protection 0/g' package/network/services/dnsmasq/files/dhcp.conf
 chmod -R 755 package/network/services/dnsmasq/files/dhcp.conf
@@ -37,20 +37,20 @@ sed -i 's/services/system/g' feeds/luci/applications/luci-app-cpufreq/luasrc/con
 # Change default theme
 #sed -i 's#luci-theme-bootstrap#luci-theme-opentomcat#g' feeds/luci/collections/luci/Makefile
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
-
+#
 # Add additional packages
 git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
 #git clone --depth=1 -b luci https://github.com/xiaorouji/openwrt-passwall.git package/luci-app-passwall
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/luci-theme-opentomcat
-
+#
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
-
+#
 # containerd Has验证
 #sed -i 's/PKG_HASH:=.*/PKG_HASH:=skip/g' feeds/packages/utils/containerd/Makefile
-
+#
 #sed -i '741a \                <tr><td width="33%"><%:Compile Author%></td><td>https://t.me/passwall2</td></tr>' package/lean/autocore/files/arm/index.htm
 #sed -i '741a \                <tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' package/lean/autocore/files/arm/index.htm
 #sed -i '742a \                <tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' package/lean/autocore/files/x86/index.htm
@@ -60,14 +60,14 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #echo '<tr><td width="33%"><%:Compiler author%></td><td>https://t.me/passwall2</td></tr>' >> package/lean/autocore/files/x86/index.htm
 #echo 'msgid "Compiler author"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
 #echo 'msgstr "交流群"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
-
+#
 # Change default config
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 #cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
-
+#
 # Disable DNS Cache
 #sed -i 's/global dns_cache 1/global dns_cache 0/g' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-
+#
 # re close bridge-nf
 #sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
