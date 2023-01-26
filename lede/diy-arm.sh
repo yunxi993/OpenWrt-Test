@@ -62,7 +62,6 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #echo 'msgstr "交流群"' >> feeds/luci/modules/luci-base/po/zh-cn/base.po
 #
 # Change default config
-cp -f $GITHUB_WORKSPACE/diy/Makefile package/libs/elfutils/Makefile
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 #cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 #
