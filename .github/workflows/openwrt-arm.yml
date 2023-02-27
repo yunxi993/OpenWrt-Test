@@ -119,15 +119,19 @@ jobs:
         cp -rf $(find $GITHUB_WORKSPACE/openwrt/bin/packages/ -type f -name "*.ipk") $GITHUB_WORKSPACE/openwrt/bin/package/
         cd $GITHUB_WORKSPACE/openwrt/bin/package
         tar -zcvf IPK.tar.gz *
-        mv -f IPK.tar.gz ..
+        mv -f IPK.tar.gz ../
 
-    - name: Deliver package and firmware
+    - name: Deliver package
       uses: actions/upload-artifact@v3
       with:
-        name: IPK and firmware ${{ env.FILE_DATE }}
-        path: |
-          $GITHUB_WORKSPACE/openwrt/bin/package/
-          $GITHUB_WORKSPACE/openwrt/bin/firmware/
+        name: IPK ${{ env.FILE_DATE }}
+        path: ./openwrt/bin/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v3
+      with:
+        name: firmware ${{ env.FILE_DATE }}
+        path: ./openwrt/bin/firmware/
 
 #    - name: Organize files
 #      id: organize
