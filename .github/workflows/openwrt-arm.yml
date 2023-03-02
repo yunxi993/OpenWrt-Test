@@ -163,7 +163,7 @@ jobs:
       run: |
         PACKIT_DIR=/opt/openwrt_packit
         OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin
-        cp $PACKIT_DIR/files/update-amlogic-openwrt $PACKIT_DIR/output/
+        cp $PACKIT_DIR/files/update-amlogic-openwrt.sh $PACKIT_DIR/output/
         rm -f $PACKIT_DIR/output/sha256sums
         cp $OPENWRT_BIN_DIR/IPK.tar.gz $PACKIT_DIR/output/
 
