@@ -35,6 +35,7 @@ env:
 
 jobs:
   build:
+    name: ARMv8
     runs-on: ubuntu-22.04
 
     steps:
@@ -210,7 +211,7 @@ jobs:
 
 
   build-x86:
-    name: Build ARMv8
+    name: x86
     runs-on: ubuntu-22.04
     env:
       REPO_URL: https://github.com/coolsnowwolf/lede
