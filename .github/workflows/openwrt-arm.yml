@@ -200,10 +200,9 @@ jobs:
       if: steps.organize.outputs.status == 'success' && !cancelled()
       run: curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=${{ steps.tag.outputs.release_tag }}😀😀😀Self use编译完成啦😀😀😀" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
 
+  build-x86:
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -339,4 +338,3 @@ jobs:
         x86 编译完成
         "
         curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MSG}"
-        
