@@ -76,17 +76,17 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
 # Modify firewall rules
-sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
-echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
-echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
-echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
-echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
-echo "ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT" >> /etc/firewall.user
-echo "ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT" >> /etc/firewall.user
-echo "iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT" >> /etc/firewall.user
-echo "iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT" >> /etc/firewall.user
+sed -i '40,46d' package/lean/default-settings/files/zzz-default-settings
+echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> package/network/config/firewall/files/firewall.user
+echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> package/network/config/firewall/files/firewall.user
+echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> package/network/config/firewall/files/firewall.user
+echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> package/network/config/firewall/files/firewall.user
+echo 'ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> package/network/config/firewall/files/firewall.user
+echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> package/network/config/firewall/files/firewall.user
+echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> package/network/config/firewall/files/firewall.user
+echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> package/network/config/firewall/files/firewall.user
 
 # Default enable software traffic offloading
-uci set firewall.@defaults[0].flow_offloading='1'
-uci set firewall.@defaults[0].flow_offloading_hw='0'
-uci commit firewall
+sed -i "/option fullcone '2'/a\\\                  uci set firewall.@defaults[0].flow_offloading='1'" package/network/config/firewall/files/firewall.config
+sed -i "/flow_offloading='1'/a\\\                  uci set firewall.@defaults[0].flow_offloading_hw='0'" package/network/config/firewall/files/firewall.config
+sed -i '/flow_offloading='1'/a\\\                  uci commit firewall' package/network/config/firewall/files/firewall.config
