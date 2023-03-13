@@ -80,4 +80,4 @@ sed -i "47a echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctsta
 sed -i "13i uci set firewall.@defaults[0].flow_offloading='1'" package/lean/default-settings/files/zzz-default-settings
 sed -i "14i uci set firewall.@defaults[0].flow_offloading_hw='0'" package/lean/default-settings/files/zzz-default-settings
 sed -i '15i uci commit firewall' package/lean/default-settings/files/zzz-default-settings
-sed -i '16i\\' package/lean/default-settings/files/zzz-default-settings
+sed -i '16a\' package/lean/default-settings/files/zzz-default-settings
