@@ -17,7 +17,7 @@ sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_genera
 sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
-sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g package/lean/autocore/files/arm/index.htm
+sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/arm/index.htm
 
 # Enable AAAA
 #sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
@@ -80,4 +80,4 @@ sed -i "47a echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctsta
 sed -i "13i uci set firewall.@defaults[0].flow_offloading='1'" package/lean/default-settings/files/zzz-default-settings
 sed -i "14i uci set firewall.@defaults[0].flow_offloading_hw='0'" package/lean/default-settings/files/zzz-default-settings
 sed -i '15i uci commit firewall' package/lean/default-settings/files/zzz-default-settings
-sed -i '16a\' package/lean/default-settings/files/zzz-default-settings
+sed -i '16i\' package/lean/default-settings/files/zzz-default-settings
