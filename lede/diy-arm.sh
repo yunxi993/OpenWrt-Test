@@ -65,19 +65,19 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
-# Modify firewall rules
-sed -i '41,46d' package/lean/default-settings/files/zzz-default-settings
-sed -i "40a echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "41a echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "42a echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "43a echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "44a echo 'ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "45a echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "46a echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
-sed -i "47a echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\\" package/lean/default-settings/files/zzz-default-settings
-
 # Default enable software traffic offloading
 sed -i "13i uci set firewall.@defaults[0].flow_offloading='1'" package/lean/default-settings/files/zzz-default-settings
 sed -i "14i uci set firewall.@defaults[0].flow_offloading_hw='0'" package/lean/default-settings/files/zzz-default-settings
 sed -i '15i uci commit firewall' package/lean/default-settings/files/zzz-default-settings
 sed -i '16i\' package/lean/default-settings/files/zzz-default-settings
+
+# Modify firewall rules
+sed -i '45,49d' package/lean/default-settings/files/zzz-default-settings
+sed -i "44a echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "45a echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "46a echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "47a echo '# [ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "48a echo 'ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "49a echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "50a echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+sed -i "51a echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
