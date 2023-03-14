@@ -84,3 +84,9 @@ sed -i "51a echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctst
 sed -i '52a\' package/lean/default-settings/files/zzz-default-settings
 sed -i "53a echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
 sed -i "54a echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user" package/lean/default-settings/files/zzz-default-settings
+
+# Add additional information
+sed -i '741a\
+         <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: red;">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
+         <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: red;">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
+' package/lean/autocore/files/arm/index.htm
