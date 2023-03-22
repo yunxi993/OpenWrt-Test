@@ -14,7 +14,7 @@
 sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_generate
 
 # Hostname
-sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
+sed -i 's/OpenWrt/nzksm/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/arm/index.htm
@@ -75,11 +75,7 @@ echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5
 echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
 echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
 echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
-echo 'ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\
-echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\n\
-echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\
-echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\n\
-/etc/init.d/firewall restart" package/lean/default-settings/files/zzz-default-settings
+" package/lean/default-settings/files/zzz-default-settings
 
 sed -i '741a\
                 <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: black;" target="_blank">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
