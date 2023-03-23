@@ -81,7 +81,7 @@ echo 'ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLIS
 echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\n\
 echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\
 echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\n\
-/etc/init.d/firewall restart" package/lean/default-settings/files/zzz-default-settings
+" package/lean/default-settings/files/zzz-default-settings
 
 sed -i '741a\
                 <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: black;" target="_blank">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
