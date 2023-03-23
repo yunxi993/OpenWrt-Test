@@ -13,6 +13,8 @@
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_generate
 
+sed -i 's/$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.//g' package/lean/default-settings/files/zzz-default-settings
+
 # Hostname
 sed -i 's/OpenWrt/nzksm/g' package/base-files/files/bin/config_generate
 
@@ -75,11 +77,13 @@ echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5
 echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
 echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
 echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
-" package/lean/default-settings/files/zzz-default-settings
+echo 'ip6tables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\
+echo 'ip6tables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\n\
+echo 'iptables -I FORWARD 2 -p tcp --sport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\
+echo 'iptables -I FORWARD 2 -p tcp --dport 5223 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT' >> /etc/firewall.user\n\n\
+/etc/init.d/firewall restart" package/lean/default-settings/files/zzz-default-settings
 
 sed -i '741a\
                 <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: black;" target="_blank">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
                 <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: black;" target="_blank">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
 ' package/lean/autocore/files/arm/index.htm
-
-sed -i '/root:::0:99999:7:::/d' package/base-files/files/etc/shadow
