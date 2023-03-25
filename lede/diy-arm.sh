@@ -88,6 +88,4 @@ sed -i '741a\
                 <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: black;" target="_blank">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
 ' package/lean/autocore/files/arm/index.htm
 
-sed -i '38,39d' package/lean/default-settings/files/zzz-default-settings
-
-sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin /config_generate
+sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
