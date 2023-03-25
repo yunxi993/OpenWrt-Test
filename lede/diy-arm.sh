@@ -89,3 +89,5 @@ sed -i '741a\
 ' package/lean/autocore/files/arm/index.htm
 
 sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
+
+sed -i '38,39d' package/lean/default-settings/files/zzz-default-settings
