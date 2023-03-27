@@ -15,3 +15,5 @@
 
 # Add a feed source
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+
+sed -i '34,35d' package/lean/default-settings/files/zzz-default-settings
