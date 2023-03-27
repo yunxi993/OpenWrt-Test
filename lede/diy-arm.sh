@@ -72,7 +72,7 @@ uci set firewall.@defaults[0].flow_offloading='1'\n\
 uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 uci commit firewall\n" package/lean/default-settings/files/zzz-default-settings
 
-sed -i -e '43,47d' -e "42a\\
+sed -i -e '45,49d' -e "44a\\
 echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
 echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
 echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
