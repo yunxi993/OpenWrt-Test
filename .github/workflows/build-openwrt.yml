@@ -383,7 +383,7 @@ jobs:
 
   delete-old:
     runs-on: ubuntu-latest
-    needs: build-x86
+    needs: build, build-x86
     
     steps:
       - uses: actions/checkout@v3
