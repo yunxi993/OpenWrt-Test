@@ -383,11 +383,12 @@ jobs:
 
   delete-old:
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v3
       
       - name: Delete workflow runs
-        uses: GitRML/delete-workflow-runs@main
+        uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
