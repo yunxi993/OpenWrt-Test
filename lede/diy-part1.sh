@@ -15,3 +15,6 @@
 
 # Add a feed source
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+
+sed -i 's/LINUX_VERSION-6.1 = .28/LINUX_VERSION-6.1 = .27/g' include/kernel-6.1
+sed -i 's/LINUX_KERNEL_HASH-6.1.28 = 7a094c1428b20fef0b5429e4effcc6ed962a674ac6f04e606d63be1ddcc3a6f0/LINUX_KERNEL_HASH-6.1.27 = c2b74b96dd3d0cc9f300914ef7c4eef76d5fac9de6047961f49e69447ce9f905/g' include/kernel-6.1
