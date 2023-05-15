@@ -23,7 +23,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: lede/feeds.conf.default
-  CONFIG_FILE: lede/Build-ARMv8.config
+  CONFIG_FILE: lede/Build-armv8.config
   DIY_P1_SH: lede/diy-part1.sh
   DIY_P2_SH: lede/diy-arm.sh
   UPLOAD_BIN_DIR: false
