@@ -161,7 +161,7 @@ jobs:
         PACKIT_DIR=/opt/openwrt_packit
         OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin
         cp ${PACKIT_DIR}/files/update-amlogic-openwrt.sh ${PACKIT_DIR}/output/
-        rm -f ${PACKIT_DIR}/output/sha256sums ${PACKIT_DIR}/output/*.img.gz.sha
+        rm -f ${PACKIT_DIR}/output/sha256sums ${PACKIT_DIR}/output/*.gz.sha
         cp $OPENWRT_BIN_DIR/IPK.tar.gz ${PACKIT_DIR}/output/
 
     - name: Upload OpenWrt Firmware to Release
