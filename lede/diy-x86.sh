@@ -19,7 +19,7 @@ sed -i 's/192.168.1.1/192.168.1.13/g' package/base-files/files/bin/config_genera
 sed -i 's/OpenWrt/nzksma/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
-sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/arm/index.htm
+sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
 
 # Enable AAAA
 #sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
@@ -85,9 +85,9 @@ echo '# ip6tables -I FORWARD -p tcp --sport 5223 -m conntrack --ctstate RELATED,
 echo '# ip6tables -I FORWARD -p tcp --dport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user
 " package/lean/default-settings/files/zzz-default-settings
 
-sed -i '741a\
+sed -i '750a\
                 <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: black;" target="_blank">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
                 <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: black;" target="_blank">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
-' package/lean/autocore/files/arm/index.htm
+' package/lean/autocore/files/x86/index.htm
 
 sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
