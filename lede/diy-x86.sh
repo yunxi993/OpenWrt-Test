@@ -95,5 +95,6 @@ sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/co
 
 sed -i "16a\\
 uci set network.lan.ifname='eth1 eth2 eth3'\n\
+uci delete network.globals.ula_prefix\n\
 uci commit network\n\
 " package/lean/default-settings/files/zzz-default-settings
