@@ -69,10 +69,11 @@ rm -rf package/helloworld/xray-core
 #sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
-sed -i "13i\\
+sed -i "12a\\
 uci set firewall.@defaults[0].flow_offloading='0'\n\
 uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-uci commit firewall\n" package/lean/default-settings/files/zzz-default-settings
+uci commit firewall\n
+" package/lean/default-settings/files/zzz-default-settings
 
 sed -i -e '45,49d' -e "44a\\
 echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
@@ -91,3 +92,8 @@ sed -i '750a\
 ' package/lean/autocore/files/x86/index.htm
 
 sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
+
+sed -i "16a\\
+uci set network.lan.ifname='eth1 eth2 et3'\n\
+uci commit network\n\
+" package/lean/default-settings/files/zzz-default-settings
