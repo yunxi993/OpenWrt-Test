@@ -70,7 +70,7 @@ rm -rf package/helloworld/xray-core
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
 sed -i "13i\\
-uci set firewall.@defaults[0].flow_offloading='1'\n\
+uci set firewall.@defaults[0].flow_offloading='0'\n\
 uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 uci commit firewall\n" package/lean/default-settings/files/zzz-default-settings
 
