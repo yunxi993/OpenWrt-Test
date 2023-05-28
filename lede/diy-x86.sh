@@ -94,6 +94,6 @@ sed -i '750a\
 sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
 
 sed -i "16a\\
-uci set network.lan.ifname='eth1 eth2 et3'\n\
+uci set network.lan.ifname='eth1 eth2 eth3'\n\
 uci commit network\n\
 " package/lean/default-settings/files/zzz-default-settings
