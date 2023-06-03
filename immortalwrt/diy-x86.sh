@@ -23,7 +23,7 @@ sed -i 's/ImmortalWrt/nzksma/g' package/base-files/files/bin/config_generate
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
-git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/luci-theme-opentomcat
+git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 #git clone --depth=1 -b luci https://github.com/xiaorouji/openwrt-passwall.git package/luci-app-passwall
 rm -rf package/helloworld/v2ray-core
 rm -rf package/helloworld/xray-core
@@ -38,12 +38,12 @@ uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 uci commit firewall\n\
 " package/emortal/default-settings/files/99-default-settings
 
-sed -i "25a\\
-uci set network.lan.ifname='eth1 eth2 eth3'\n\
-uci delete network.globals.ula_prefix\n\
-uci commit network\n\
-" package/emortal/default-settings/files/99-default-settings
+#sed -i "25a\\
+#uci set network.lan.ifname='eth1 eth2 eth3'\n\
+#uci delete network.globals.ula_prefix\n\
+#uci commit network\n\
+#" package/emortal/default-settings/files/99-default-settings
 
-sed -i "29a\\
+sed -i "25a\\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
