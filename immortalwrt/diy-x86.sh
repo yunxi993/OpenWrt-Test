@@ -32,18 +32,21 @@ rm -rf package/helloworld/xray-core
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 #cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 
-sed -i "21a\\
-uci set firewall.@defaults[0].flow_offloading='0'\n\
-uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-uci commit firewall\n\
+#sed -i "21a\\
+#uci set firewall.@defaults[0].flow_offloading='0'\n\
+#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+#uci commit firewall\n\
+#" package/emortal/default-settings/files/99-default-settings
+
+sed -i "27a\\
+uci set network.@device[0].ports='eth1'\n\
+uci add_list network.@device[0].ports='eth2'\n\
+uci add_list network.@device[0].ports='eth3'\n\
+uci commit network\n\n\
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config\n\
 " package/emortal/default-settings/files/99-default-settings
 
 #sed -i "25a\\
-#uci set network.lan.ifname='eth1 eth2 eth3'\n\
-#uci delete network.globals.ula_prefix\n\
-#uci commit network\n\
+#sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 #" package/emortal/default-settings/files/99-default-settings
-
-sed -i "25a\\
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-" package/emortal/default-settings/files/99-default-settings
