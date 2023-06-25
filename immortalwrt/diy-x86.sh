@@ -33,7 +33,7 @@ rm -rf package/helloworld/xray-core
 #cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 
 sed -i "21a\\
-uci set firewall.@defaults[0].flow_offloading='1'\n\
+uci set firewall.@defaults[0].flow_offloading='0'\n\
 uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 uci commit firewall\n\
 " package/emortal/default-settings/files/99-default-settings
