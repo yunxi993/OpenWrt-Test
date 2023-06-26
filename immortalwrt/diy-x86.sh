@@ -44,8 +44,9 @@ uci add_list network.@device[0].ports='eth2'\n\
 uci add_list network.@device[0].ports='eth3'\n\
 uci commit network\n\n\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config\n\
 " package/emortal/default-settings/files/99-default-settings
+
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
 #sed -i "25a\\
 #sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
