@@ -23,7 +23,8 @@ sed -i 's/ImmortalWrt/nzksm/g' package/base-files/files/bin/config_generate
 rm -rf feeds/luci/applications/luci-app-ssr-plus
 rm -rf feeds/luci/applications/luci-app-passwall
 
-sed -i 's/[+]dockerd //' feeds/luci/applications/luci-app-dockerman/Makefile
+#sed -i 's/[+]dockerd //' feeds/luci/applications/luci-app-dockerman/Makefile
+sed -i '39,42d' feeds/packages/utils/dockerd/Makefile
 
 # Add additional packages
 git clone -b packages --depth=1 https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
