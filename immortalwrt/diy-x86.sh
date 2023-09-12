@@ -20,10 +20,10 @@ sed -i 's/ImmortalWrt/nzksma/g' package/base-files/files/bin/config_generate
 # sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
 
 # Add additional packages
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
-git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
-git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
-git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
+git clone -b packages --single-branch --depth=1 https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
+git clone -b main --single-branch --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
+git clone -b master --single-branch --depth=1 https://github.com/fw876/helloworld.git package/helloworld
+git clone -b master --single-branch --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 #git clone --depth=1 -b luci https://github.com/xiaorouji/openwrt-passwall.git package/luci-app-passwall
 rm -rf package/helloworld/v2ray-core
 rm -rf package/helloworld/xray-core
