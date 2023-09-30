@@ -93,6 +93,3 @@ sed -i '741a\
 #sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
-
-sed -i "s/LINUX_VERSION-5.15 = .133/LINUX_VERSION-5.15 = .127/g" include/kernel-5.15
-sed -i "s/LINUX_KERNEL_HASH-5.15.133 = ef845e7934897b88e4448378ea9daacac19e07f156fe904844fab0a7d8ff5ddd/LINUX_KERNEL_HASH-5.15.127 = add0a575341b263a06e93599fc220a5dd34cb4ca5b9d05097a5db2a061928f26/g" include/kernel-5.15
