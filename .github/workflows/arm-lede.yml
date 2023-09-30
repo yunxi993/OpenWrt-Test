@@ -78,6 +78,12 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
+#    - name: cache
+#      uses: HiGarfield/cachewrtbuild@main
+#      with:
+#        mixkey: arml
+#        prefix: ${{ github.workspace }}/openwrt
+
     - name: Download package
       id: package
       run: |
@@ -86,13 +92,6 @@ jobs:
         make download -j16
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-
-    - name: cache
-      uses: HiGarfield/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: arml
-        prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile
