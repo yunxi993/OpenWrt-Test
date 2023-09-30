@@ -78,11 +78,11 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-#    - name: cache
-#      uses: HiGarfield/cachewrtbuild@main
-#      with:
-#        mixkey: arml
-#        prefix: ${{ github.workspace }}/openwrt
+    - name: cache
+      uses: HiGarfield/cachewrtbuild@main
+      with:
+        mixkey: arml
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: Download package
       id: package
