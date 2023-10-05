@@ -51,6 +51,9 @@ git clone -b master --single-branch --depth=1 https://github.com/Leo-Jo-My/luci-
 #git clone -b main --single-branch --depth=1 https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
 rm -rf package/helloworld/v2ray-core
 rm -rf package/helloworld/xray-core
+rm -rf package/helloworld/hysteria
+rm -rf package/helloworld/v2ray-core
+rm -rf package/helloworld/v2ray-plugin
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
@@ -93,3 +96,6 @@ sed -i '741a\
 #sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+
+sed -i "s/1.5.5/1.5.2/g" feeds/packages/utils/zstd/Makefile
+sed -i "s/9c4396cc829cfae319a6e2615202e82aad41372073482fce286fac78646d3ee4/7c42d56fac126929a6a85dbc73ff1db2411d04f104fae9bdea51305663a83fd0/g" feeds/packages/utils/zstd/Makefile
