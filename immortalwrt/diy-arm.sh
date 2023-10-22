@@ -59,3 +59,7 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 sed -i "25a\\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
+
+curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
+
+curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
