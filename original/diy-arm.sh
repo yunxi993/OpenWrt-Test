@@ -30,6 +30,7 @@ rm -rf feeds/luci/applications/luci-app-passwall
 # Add additional packages
 #git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
 git clone --depth=1 https://github.com/yunxi993/luci-app-cpufreq.git package/luci-app-cpufreq
+git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/default-settings-23.05.0.git package/default-settings-23.05.0
