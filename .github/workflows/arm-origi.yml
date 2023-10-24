@@ -61,7 +61,7 @@ jobs:
       uses: HiGarfield/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: armi
+        mixkey: armo
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Load custom feeds
