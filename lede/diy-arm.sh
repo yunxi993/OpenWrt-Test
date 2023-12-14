@@ -16,7 +16,7 @@ sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_genera
 #sed -i '/CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
 
 # Hostname
-sed -i 's/OpenWrt/N1/g' package/base-files/files/bin/config_generate
+sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/arm/index.htm
