@@ -106,6 +106,11 @@ jobs:
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
+        PACKIT_DIR=/opt/openwrt_packit/
+        OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
 
     - name: Check space usage
       if: (!cancelled())
@@ -113,26 +118,21 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
-        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
-        rm -rf $(find $GITHUB_WORKSPACE/openwrt/bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp -rf $(find $GITHUB_WORKSPACE/openwrt/bin/targets/ -type f) $GITHUB_WORKSPACE/openwrt/bin/firmware/
-        cp -rf $(find $GITHUB_WORKSPACE/openwrt/bin/packages/ -type f -name "*.ipk") $GITHUB_WORKSPACE/openwrt/bin/package/
-        cd $GITHUB_WORKSPACE/openwrt/bin/package
-        tar -zcvf IPK.tar.gz *
+        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        find ${TARGETS_DIR} -type d -exec mkdir -p {} \;
+        find ${FIRMWARE_DIR}/targets/ -type f -exec cp -rf {} ${FIRMWARE_DIR} \;
+        find ${PACKAGE_DIR}/ -type f -name "*.ipk" -exec cp -rf {} ${PACKAGE_DIR} \;
+        tar -zcvf IPK.tar.gz ${PACKAGE_DIR}*
         mv -f IPK.tar.gz ../
 
-    - name: Deliver package
-      uses: actions/upload-artifact@v3
+    - name: Deliver artifacts
+      uses: actions/upload-artifact@v4
       with:
-        name: IPK ${{ env.FILE_DATE }}
-        path: ./openwrt/bin/package/
-
-    - name: Deliver firmware
-      uses: actions/upload-artifact@v3
-      with:
-        name: firmware ${{ env.FILE_DATE }}
-        path: ./openwrt/bin/firmware/
+        name: ${{ env.FILE_DATE }}
+        path: |
+          ${{ env.PACKAGE_DIR }}
+          ${{ env.FIRMWARE_DIR }}
+#         IPK.tar.gz
 
 #    - name: Organize files
 #      id: organize
@@ -154,11 +154,11 @@ jobs:
 
     - name: copy update files
       run: |
-        PACKIT_DIR=/opt/openwrt_packit
-        OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin
-        cp ${PACKIT_DIR}/files/update-amlogic-openwrt.sh ${PACKIT_DIR}/output/
-        rm -f ${PACKIT_DIR}/output/sha256sums ${PACKIT_DIR}/output/*.gz.sha ${PACKIT_DIR}/output/*.tar.gz
-        cp $OPENWRT_BIN_DIR/IPK.tar.gz ${PACKIT_DIR}/output/
+        cp ${PACKIT_DIR}/files/update-amlogic-openwrt.sh ${PACKIT_DIR}/output
+        find ${PACKIT_DIR}/output -name "sha256sums" -delete
+        find ${PACKIT_DIR}/output -name "*.gz.sha" -delete
+        find ${PACKIT_DIR}/output -name "*.tar.gz" -delete
+        cp ${OPENWRT_BIN_DIR}/IPK.tar.gz ${PACKIT_DIR}/output/
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
