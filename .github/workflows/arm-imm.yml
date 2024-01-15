@@ -111,6 +111,7 @@ jobs:
         PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
         FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
         TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
 
     - name: Check space usage
       if: (!cancelled())
@@ -118,10 +119,10 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        rm -rf $(find ${TARGETS_DIR} -name "*.(packages|buildinfo|sha256sums|manifest)")
         find ${TARGETS_DIR} -type d -exec mkdir -p {} \;
-        find ${TARGETS_DIR} -type f -exec cp -rf {} ${FIRMWARE_DIR} \;
-        find ${PACKAGE_DIR}/ -type f -name "*.ipk" -exec cp -rf {} ${PACKAGE_DIR} \;
+        rm -rf $(find ${TARGETS_DIR} -name "*.(packages|buildinfo|sha256sums|manifest)")
+        cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
+        cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         tar -zcvf IPK.tar.gz ${PACKAGE_DIR}*
         mv -f IPK.tar.gz ../
 
