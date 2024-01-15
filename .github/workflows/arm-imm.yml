@@ -106,12 +106,6 @@ jobs:
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
-        PACKIT_DIR=/opt/openwrt_packit/
-        OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin/
-        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
-        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
-        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
-        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
 
     - name: Check space usage
       if: (!cancelled())
@@ -119,8 +113,12 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        mkdir -p ${FIRMWARE_DIR}
-        mkdir -p ${PACKAGE_DIR}
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
         rm -rf $(find ${TARGETS_DIR} -name "*.(packages|buildinfo|sha256sums|manifest)")
         cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
@@ -156,6 +154,8 @@ jobs:
 
     - name: copy update files
       run: |
+        PACKIT_DIR=/opt/openwrt_packit/
+        OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin/
         cp ${PACKIT_DIR}/files/update-amlogic-openwrt.sh ${PACKIT_DIR}/output
         find ${PACKIT_DIR}/output -name "sha256sums" -delete
         find ${PACKIT_DIR}/output -name "*.gz.sha" -delete
