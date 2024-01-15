@@ -118,9 +118,9 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        rm -rf $(find ${TARGETS_DIR} -name "*.(packages|buildinfo|sha256sums|manifest)")
         find ${TARGETS_DIR} -type d -exec mkdir -p {} \;
-        find ${FIRMWARE_DIR}/targets/ -type f -exec cp -rf {} ${FIRMWARE_DIR} \;
+        find ${TARGETS_DIR} -type f -exec cp -rf {} ${FIRMWARE_DIR} \;
         find ${PACKAGE_DIR}/ -type f -name "*.ipk" -exec cp -rf {} ${PACKAGE_DIR} \;
         tar -zcvf IPK.tar.gz ${PACKAGE_DIR}*
         mv -f IPK.tar.gz ../
