@@ -123,7 +123,8 @@ jobs:
         cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         tar -zcvf IPK.tar.gz ${PACKAGE_DIR}*
-        mv -f IPK.tar.gz ../
+        echo $PWD
+#        mv -f IPK.tar.gz ${PACKAGE_DIR}
 
     - name: Deliver artifacts
       uses: actions/upload-artifact@v4
@@ -160,7 +161,7 @@ jobs:
         find ${PACKIT_DIR}/output -name "sha256sums" -delete
         find ${PACKIT_DIR}/output -name "*.gz.sha" -delete
         find ${PACKIT_DIR}/output -name "*.tar.gz" -delete
-        cp ${OPENWRT_BIN_DIR}/IPK.tar.gz ${PACKIT_DIR}/output/
+        cp ${PACKAGE_DIR}/IPK.tar.gz ${PACKIT_DIR}/output/
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
