@@ -131,8 +131,8 @@ jobs:
       with:
         name: ${{ env.FILE_DATE }}
         path: |
-          ${{ env.PACKAGE_DIR }}
-          ${{ env.FIRMWARE_DIR }}
+          ${PACKAGE_DIR}
+          ${FIRMWARE_DIR}
 #         IPK.tar.gz
 
 #    - name: Organize files
@@ -161,7 +161,7 @@ jobs:
         find ${PACKIT_DIR}/output -name "sha256sums" -delete
         find ${PACKIT_DIR}/output -name "*.gz.sha" -delete
         find ${PACKIT_DIR}/output -name "*.tar.gz" -delete
-        cp ${PACKAGE_DIR}/IPK.tar.gz ${PACKIT_DIR}/output/
+        cp ${PACKAGE_DIR}IPK.tar.gz ${PACKIT_DIR}/output/
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
