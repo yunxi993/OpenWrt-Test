@@ -119,7 +119,7 @@ jobs:
         PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
         FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
         PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
-        rm -rf $(find ${TARGETS_DIR} -name "*.(buildinfo|manifest)" -o -name "(packages|sha256sums)")
+        rm -rf $(find ${TARGETS_DIR} -name "(packages|sha256sums)" -o -name "*.(buildinfo|manifest)")
         cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         cd ${PACKAGE_DIR}
@@ -127,14 +127,17 @@ jobs:
         mv -f IPK.tar.gz ../
         echo $PWD
 
-    - name: Deliver artifacts
+    - name: Deliver package
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.FILE_DATE }}
-        path: |
-          ./openwrt/bin/package/
-          ./openwrt/bin/firmware/
-#         IPK.tar.gz
+        name: IPK ${{ env.FILE_DATE }}
+        path: ${PACKAGE_DIR}
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware ${{ env.FILE_DATE }}
+        path: ${FIRMWARE_DIR}
 
 #    - name: Organize files
 #      id: organize
