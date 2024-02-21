@@ -165,7 +165,7 @@ jobs:
         find ${PACKIT_DIR}/output -name "sha256sums" -delete
         find ${PACKIT_DIR}/output -name "*.gz.sha" -delete
         find ${PACKIT_DIR}/output -name "*.tar.gz" -delete
-        cp ${OPENWRT_BIN_DIR}IPK.tar.gz ${PACKIT_DIR}/output/
+        cp ${OPENWRT_BIN_DIR}IPK.tar.gz ${PACKIT_DIR}output/
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
