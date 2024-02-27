@@ -151,7 +151,7 @@ jobs:
       with:
         name: x86-Official ${{ env.PRODUCT_NAME }}${{ env.DATE }}
         tag: ${{ env.TAG_DATE }}
-        artifacts: ${{ env.FIRMWARE }}/*
+        artifacts: ${FIRMWARE_DIR}/*
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
