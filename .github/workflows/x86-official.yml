@@ -124,7 +124,7 @@ jobs:
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         cd ${PACKAGE_DIR}
         tar -zcvf IPK.tar.gz *
-#        mv -f IPK.tar.gz ${FIRMWARE_DIR}
+        #mv -f IPK.tar.gz ${FIRMWARE_DIR}
         echo $PWD
 
     - name: Deliver package
