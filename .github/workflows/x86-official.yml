@@ -1,4 +1,4 @@
-name: arm-original
+name: x86-official
 
 on:
   repository_dispatch:
@@ -12,10 +12,10 @@ on:
 env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: openwrt-23.05
-  FEEDS_CONF: original/feeds.conf.default
-  CONFIG_FILE: original/build-arm.config
-  DIY_P1_SH: original/diy-part1.sh
-  DIY_P2_SH: original/diy-arm.sh
+  FEEDS_CONF: official/feeds.conf.default
+  CONFIG_FILE: official/build-x86.config
+  DIY_P1_SH: official/diy-part1.sh
+  DIY_P2_SH: official/diy-x86.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
@@ -28,7 +28,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-
     - name: Checkout
       uses: actions/checkout@v4
 
@@ -42,13 +41,14 @@ jobs:
         sudo -E apt update
         sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
         sudo -E apt -y full-upgrade
-        sudo -E apt -y install $(curl -fsSL https://is.gd/depends_ubuntu_2204)
+        sudo -E apt -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
         sudo -E systemctl daemon-reload
         sudo -E apt -y autoremove --purge
         sudo -E apt clean
-        sudo -E timedatectl set-timezone "$TZ"
+        sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+        df -h
 
     - name: Clone source code
       working-directory: /workdir
@@ -61,7 +61,7 @@ jobs:
       uses: HiGarfield/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: armo
+        mixkey: x86o
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Load custom feeds
@@ -101,7 +101,7 @@ jobs:
         echo -e "$(($(nproc)+1)) thread compile"
         make -j$(($(nproc)+1)) || make -j1 V=s
         echo "{status}={success}" >> $GITHUB_OUTPUT
-        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        grep '^CONFIG_TARGET.*DEVICE.*=y' openwrt/.config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
@@ -113,23 +113,28 @@ jobs:
 
     - name: Prepare artifact
       run: |
-        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
         mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
-        rm -rf $(find $GITHUB_WORKSPACE/openwrt/bin/targets/ -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp -rf $(find $GITHUB_WORKSPACE/openwrt/bin/targets/ -type f) $GITHUB_WORKSPACE/openwrt/bin/firmware/
-        cp -rf $(find $GITHUB_WORKSPACE/openwrt/bin/packages/ -type f -name "*.ipk") $GITHUB_WORKSPACE/openwrt/bin/package/
-        cd $GITHUB_WORKSPACE/openwrt/bin/package
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
+        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
+        cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
+        cd ${PACKAGE_DIR}
         tar -zcvf IPK.tar.gz *
         mv -f IPK.tar.gz ../
+        echo $PWD
 
     - name: Deliver package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: IPK ${{ env.FILE_DATE }}
         path: ./openwrt/bin/package/
 
     - name: Deliver firmware
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: firmware ${{ env.FILE_DATE }}
         path: ./openwrt/bin/firmware/
@@ -137,48 +142,45 @@ jobs:
 #    - name: Organize files
 #      id: organize
 #      run: |
-#        cd openwrt
+#        cd openwrt/bin/firmware/
 #        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-#        echo "::set-output name=status::success"
-
-    - name: Package Armvirt as OpenWrt
-      uses: ophub/flippy-openwrt-actions@main
-      env:
-        OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
-        KERNEL_REPO_URL: https://github.com/yunxi993/OpenWrt-Test/releases/tag/kernel_stable
-        PACKAGE_SOC: s905d
-        KERNEL_AUTO_LATEST:  true
-        KERNEL_VERSION_NAME: 6.1.4_5.15.86
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WHOAMI: Sil
-        ENABLE_WIFI_K504: 0
-        ENABLE_WIFI_K510: 0
-        SW_FLOWOFFLOAD: 1
-        HW_FLOWOFFLOAD: 0
-        SFE_FLOW: 0
-
-    - name: copy update files
-      run: |
-        PACKIT_DIR=/opt/openwrt_packit
-        OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin
-        cp ${PACKIT_DIR}/files/update-amlogic-openwrt.sh ${PACKIT_DIR}/output/
-        rm -f ${PACKIT_DIR}/output/sha256sums ${PACKIT_DIR}/output/*.gz.sha ${PACKIT_DIR}/output/*.tar.gz
-        cp $OPENWRT_BIN_DIR/IPK.tar.gz ${PACKIT_DIR}/output/
+#        echo "{status}={success}" >> $GITHUB_OUTPUT
 
     - name: Upload OpenWrt Firmware to Release
-      uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@main
       with:
-        name: arm-origi ${{ env.DATE }}
+        name: x86-Official ${{ env.PRODUCT_NAME }}${{ env.DATE }}
         tag: ${{ env.TAG_DATE }}
-        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
+        artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-          * 自用固件，插件根据个人需要删减.
-          * 默认IP: 192.168.1.11
-          * 默认密码: password
+          * Default IP: 192.168.1.13
+          * Default username: root
+          * Default password: password
+
+#    - name: Delete workflow runs
+#      uses: Mattraks/delete-workflow-runs@v2
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        repository: ${{ github.repository }}
+#        retain_days: 1
+#        keep_minimum_runs: 2
+
+#    - name: Remove old Releases
+#      uses: dev-drprasad/delete-older-releases@v0.2.0
+#      with:
+#        repo: ${{ github.repository }}
+#        keep_latest: 8
+#        delete_tags: true
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Telegram notification
-      if: steps.organize.outputs.status == 'success' && !cancelled()
-      run: curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=${{ steps.tag.outputs.release_tag }}😀😀😀Self use编译完成啦😀😀😀" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+      run: |
+        MSG="
+        编译时间：${{ env.DATE }}
+        x86 Original编译完成
+        "
+        curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MSG}"
