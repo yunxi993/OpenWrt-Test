@@ -139,19 +139,20 @@ jobs:
         name: firmware ${{ env.FILE_DATE }}
         path: ./openwrt/bin/firmware/
 
-#    - name: Organize files
-#      id: organize
-#      run: |
-#        cd openwrt/bin/firmware/
-#        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-#        echo "{status}={success}" >> $GITHUB_OUTPUT
+    - name: Organize files
+      id: organize
+      run: |
+        cd openwrt/bin/targets/*/*
+        rm -rf packages
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "{status}={success}" >> $GITHUB_OUTPUT
 
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@main
       with:
         name: x86-Official ${{ env.PRODUCT_NAME }}${{ env.DATE }}
         tag: ${{ env.TAG_DATE }}
-        artifacts: ${FIRMWARE_DIR}/*
+        artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
