@@ -124,7 +124,7 @@ jobs:
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         cd ${PACKAGE_DIR}
         tar -zcvf IPK.tar.gz *
-        mv -f IPK.tar.gz ${FIRMWARE_DIR}
+#        mv -f IPK.tar.gz ${FIRMWARE_DIR}
         echo $PWD
 
     - name: Deliver package
@@ -142,7 +142,8 @@ jobs:
     - name: Organize files
       id: organize
       run: |
-        cd openwrt/bin/targets/*/*
+        cd openwrt/bin/firmware/
+        mv -f IPK.tar.gz ${FIRMWARE_DIR}
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "{status}={success}" >> $GITHUB_OUTPUT
