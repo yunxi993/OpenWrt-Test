@@ -143,7 +143,7 @@ jobs:
       id: organize
       run: |
         cd openwrt/bin/firmware/
-        mv -f IPK.tar.gz ${FIRMWARE_DIR}
+        mv -f ../package/IPK.tar.gz ${FIRMWARE_DIR}
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "{status}={success}" >> $GITHUB_OUTPUT
