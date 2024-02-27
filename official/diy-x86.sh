@@ -11,33 +11,33 @@
 #
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.1.13/g' package/base-files/files/bin/config_generate
 
 # Hostname
-sed -i 's/OpenWrt/Nzksm/g' package/base-files/files/bin/config_generate
+#sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
+
+# Timezone
+#sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+
+# cpufreq
+#sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' package/lean/luci-app-cpufreq/Makefile
+#sed -i 's/services/system/g' package/lean/luci-app-cpufreq/luasrc/controller/cpufreq.lua
+
+# Change default theme
+#sed -i 's#luci-theme-bootstrap#luci-theme-opentomcat#g' feeds/luci/collections/luci/Makefile
+#sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
+
+# Add additional packages
+git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
+git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
+
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+
+# dockerd去版本验证
+#sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
 
 # Modify localtime
 # sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
-
-# Remove some packages
-rm -rf feeds/luci/applications/luci-app-ssr-plus
-rm -rf feeds/luci/applications/luci-app-passwall
-
-#sed -i 's/[+]dockerd //' feeds/luci/applications/luci-app-dockerman/Makefile
-#sed -i '39,42d' feeds/packages/utils/dockerd/Makefile
-#sed -i -e '39,42d' -e '45d' feeds/packages/utils/dockerd/Makefile
-
-# Add additional packages
-#git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
-git clone --depth=1 https://github.com/yunxi993/luci-app-cpufreq.git package/luci-app-cpufreq
-git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
-git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
-git clone --depth=1 https://github.com/yunxi993/default-settings-23.05.0.git package/default-settings-23.05.0
-#rm -rf package/helloworld/xray-core
-#rm -rf package/helloworld/v2ray-core
-#rm -rf package/helloworld/hysteria
-#rm -rf package/package/openwrt-passwall-packages/xray-core
 
 # Change default config
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
@@ -57,12 +57,9 @@ git clone --depth=1 https://github.com/yunxi993/default-settings-23.05.0.git pac
 #sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 #" package/emortal/default-settings/files/99-default-settings
 
-sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
-
-sed -i "25a\\
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-" package/default-settings-23.05.0/default-settings/files/99-default-settings
+#sed -i "25a\\
+#sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
+#" package/default-settings-23.05.0/default-settings/files/99-default-settings
 
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
-
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
