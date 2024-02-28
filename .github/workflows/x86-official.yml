@@ -139,7 +139,7 @@ jobs:
     - name: Organize files
       id: organize
       run: |
-        cd ${PACKAGE_DIR}
+        cd /openwrt/bin/package/
         tar -zcvf IPK.tar.gz *
         echo $PWD
         mv -f IPK.tar.gz ../firmware/
