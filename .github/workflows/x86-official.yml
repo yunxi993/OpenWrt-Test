@@ -139,11 +139,11 @@ jobs:
     - name: Organize files
       id: organize
       run: |
-        cd /openwrt/bin/package/
+        cd openwrt/bin/package/
         tar -zcvf IPK.tar.gz *
         echo $PWD
         mv -f IPK.tar.gz ../firmware/
-        cd /openwrt/bin/firmware/
+        cd openwrt/bin/firmware/
         echo $PWD
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
