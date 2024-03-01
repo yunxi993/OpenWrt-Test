@@ -14,7 +14,7 @@ env:
   REPO_BRANCH: openwrt-23.05
   FEEDS_CONF: official/feeds.conf.default
   CONFIG_FILE: official/build-x86.config
-  DIY_P1_SH: official/diy-part1.sh
+  DIY_P1_SH: official/diy-z1.sh
   DIY_P2_SH: official/diy-x86.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
