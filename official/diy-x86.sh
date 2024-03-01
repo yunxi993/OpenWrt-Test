@@ -14,7 +14,7 @@
 sed -i 's/192.168.1.1/192.168.1.13/g' package/base-files/files/bin/config_generate
 
 # Hostname
-#sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
+sed -i 's/OpenWrt/N100/g' package/base-files/files/bin/config_generate
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
@@ -28,8 +28,11 @@ sed -i 's/192.168.1.1/192.168.1.13/g' package/base-files/files/bin/config_genera
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 # Add additional packages
+rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
+git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
