@@ -12,10 +12,10 @@ on:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-23.05
-  FEEDS_CONF: immortalwrt/feeds.conf.default
-  CONFIG_FILE: immortalwrt/build-arm.config
-  DIY_P1_SH: immortalwrt/diy-part1.sh
-  DIY_P2_SH: immortalwrt/diy-arm.sh
+  FEEDS_CONF: configs/immortalwrt/feeds.conf.default
+  CONFIG_FILE: configs/immortalwrt/build-arm.config
+  DIY_P1_SH: configs/immortalwrt/diy-z1.sh
+  DIY_P2_SH: configs/immortalwrt/diy-arm.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
@@ -57,13 +57,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: cache
-      uses: HiGarfield/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: armi
-        prefix: ${{ github.workspace }}/openwrt
-
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -93,6 +86,13 @@ jobs:
         make download -j16
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
+    - name: cache
+      uses: HiGarfield/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: armi
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile

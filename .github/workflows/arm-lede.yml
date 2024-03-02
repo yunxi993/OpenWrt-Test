@@ -12,10 +12,10 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: lede/feeds.conf.default
-  CONFIG_FILE: lede/build-arm.config
-  DIY_P1_SH: lede/diy-part1.sh
-  DIY_P2_SH: lede/diy-arm.sh
+  FEEDS_CONF: configs/lede/feeds.conf.default
+  CONFIG_FILE: configs/lede/build-arm.config
+  DIY_P1_SH: configs/lede/diy-z1.sh
+  DIY_P2_SH: configs/lede/diy-arm.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
@@ -57,13 +57,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: cache
-      uses: HiGarfield/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: arml
-        prefix: ${{ github.workspace }}/openwrt
-
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -93,6 +86,13 @@ jobs:
         make download -j16
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
+    - name: cache
+      uses: HiGarfield/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: arml
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile
