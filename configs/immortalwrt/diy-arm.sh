@@ -10,6 +10,10 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
+# GCC CFlags
+sed -i 's/Os/O2/g' include/target.mk
+sed -i 's,-mcpu=generic,-march=armv8-a+crc+crypto,g' include/target.mk
+
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_generate
 
@@ -30,6 +34,12 @@ rm -rf feeds/luci/applications/luci-app-passwall
 # Add additional packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
+
+# Remove snapshot tags
+#sed -i 's,-SNAPSHOT,,g' include/version.mk
+#sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt 23.05 $(date +%Y-%m-%d)'/g" package/base-files/files/etc/openwrt_release
+#cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
 # Change default config
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2

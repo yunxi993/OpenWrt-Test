@@ -10,6 +10,10 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
+# GCC CFlags
+sed -i 's/Os/O2/g' include/target.mk
+sed -i 's/O2/O2 -march=x86-64-v2/g' include/target.mk
+
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.1.13/g' package/base-files/files/bin/config_generate
 
@@ -33,6 +37,12 @@ rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
+
+# Remove snapshot tags
+#sed -i 's,-SNAPSHOT,,g' include/version.mk
+#sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt 23.05 $(date +%Y-%m-%d)'/g" package/base-files/files/etc/openwrt_release
+cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
@@ -68,3 +78,14 @@ cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
+
+# Modify model info
+grep "Default string" /tmp/sysinfo/model >> /dev/null
+if [ $? -ne 0 ];then
+    echo should be fine
+else
+    echo "Generic x86" > /tmp/sysinfo/model
+fi
+
+exit 0
+'> ./package/base-files/files/etc/rc.local
