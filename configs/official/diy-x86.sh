@@ -79,3 +79,16 @@ cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
+
+echo '# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+grep "Default string" /tmp/sysinfo/model >> /dev/null
+if [ $? -ne 0 ];then
+    echo should be fine
+else
+    echo "Generic_x86" > /tmp/sysinfo/model
+fi
+
+exit 0
+'> ./package/base-files/files/etc/rc.local

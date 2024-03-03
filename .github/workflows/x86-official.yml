@@ -77,7 +77,6 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        /bin/bash $GITHUB_WORKSPACE/diy/model.sh
 
     - name: Download package
       id: package
