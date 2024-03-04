@@ -18,7 +18,7 @@ sed -i 's/O2 -pipe/O2 -pipe -march=x86-64-v2/g' include/target.mk
 sed -i 's/192.168.1.1/192.168.1.13/g' package/base-files/files/bin/config_generate
 
 # Hostname
-sed -i 's/OpenWrt/N100/g' package/base-files/files/bin/config_generate
+sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
@@ -28,7 +28,7 @@ sed -i 's/OpenWrt/N100/g' package/base-files/files/bin/config_generate
 #sed -i 's/services/system/g' package/lean/luci-app-cpufreq/luasrc/controller/cpufreq.lua
 
 # Change default theme
-#sed -i 's#luci-theme-bootstrap#luci-theme-opentomcat#g' feeds/luci/collections/luci/Makefile
+#sed -i 's,luci-theme-bootstrap,luci-theme-opentomcat,g' feeds/luci/collections/luci/Makefile
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 # Add additional packages
