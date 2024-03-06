@@ -80,8 +80,8 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         mkdir -p ./package/network/config/firewall4/patches/
-        cp -f ../diy/patches/002*.patch package/network/config/firewall4/patches/
-        cp -f ../diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/
+        cp -f ../../diy/patches/002*.patch package/network/config/firewall4/patches/
+        cp -f ../../diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/
 
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
@@ -154,7 +154,7 @@ jobs:
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@main
       with:
-        name: x86-Official ${{ env.DEVICE_NAME }}${{ env.DATE }}
+        name: x86-Official ${{ env.DATE }}
         tag: ${{ env.TAG_DATE }}
         artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
