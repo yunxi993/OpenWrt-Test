@@ -55,6 +55,7 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 
 # Change default config
 cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
+cp -f $GITHUB_WORKSPACE/diy/002-fix-adding-offloading-device.patch package/network/config/firewall4/patches/
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 #cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 
@@ -89,10 +90,6 @@ if [ $? -ne 0 ];then
 else
     echo "Generic_x86" > /tmp/sysinfo/model
 fi
-
-sleep 60
-nft flowtable inet fw4 ft-bridges { hook ingress priority filter\; devices = { pppoe-wan, br-lan }\;}
-nft insert rule inet fw4 forward meta l4proto { tcp, udp } flow add @ft-bridges
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
