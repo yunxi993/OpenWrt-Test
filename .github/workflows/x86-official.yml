@@ -81,8 +81,8 @@ jobs:
         find dl -size -1024c -exec rm -f {} \;
         mkdir -p ./package/network/config/firewall4/patches/
         cp -f $GITHUB_WORKSPACE/diy/patches/002*.patch package/network/config/firewall4/patches/002*.patch
-        cp -f  $GITHUB_WORKSPACE/diy/patches/luci feeds/luci/modules/luci-base/root/usr/share/rpcd/ucode/luci
-        cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
+        #cp -f  $GITHUB_WORKSPACE/diy/patches/luci feeds/luci/modules/luci-base/root/usr/share/rpcd/ucode/luci
+        #cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
 
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
