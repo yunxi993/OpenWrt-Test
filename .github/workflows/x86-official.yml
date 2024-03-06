@@ -79,8 +79,9 @@ jobs:
         make download -j16
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        cp -f $GITHUB_WORKSPACE/diy/patches/002-fix-adding-offloading-device.patch package/network/config/firewall4/patches/002-fix-adding-offloading-device.patch
-        cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+        mkdir -p ./package/network/config/firewall4/patches/
+        cp -f ../diy/patches/002-fix-adding-offloading-device.patch package/network/config/firewall4/patches/002-fix-adding-offloading-device.patch
+        cp -f ../diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
 
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
