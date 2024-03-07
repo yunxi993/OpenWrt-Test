@@ -1,14 +1,5 @@
 #!/bin/bash
 #
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# File name: diy-Selfuse.sh
-# Description: OpenWrt DIY script part 2 (After Update feeds)
-#
 
 # GCC CFlags
 sed -i 's/Os/O2/g' include/target.mk
@@ -32,7 +23,7 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 # Add additional packages
-rm -rf feeds/packages/net/xray-core
+#rm -rf feeds/packages/net/xray-core
 #rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
@@ -46,6 +37,11 @@ sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-23.05 $(date +%
 cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+
+# Dnsmasq switch to 2.90 version
+sed -i "s/2.89/2.90/g" package/network/services/dnsmasq/Makefile
+sed -i "s/02bd230*/8e50309bd837bfec9649a812e066c09b6988b73d749b7d293c06c57d46a109e4/g" package/network/services/dnsmasq/Makefile
+cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/dnsmasq/patches/200-ubus_dns.patch
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
