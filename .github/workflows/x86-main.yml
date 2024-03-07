@@ -88,7 +88,7 @@ jobs:
       uses: HiGarfield/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: x86o
+        mixkey: x86m
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
@@ -187,6 +187,6 @@ jobs:
       run: |
         MSG="
         编译时间：${{ env.DATE }}
-        x86 Original编译完成
+        x86 main编译完成
         "
         curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MSG}"
