@@ -23,11 +23,14 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 # Add additional packages
-#rm -rf feeds/packages/net/xray-core
-#rm -rf feeds/packages/net/sing-box
+rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
+
+# Update Go Version
+rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
@@ -50,7 +53,7 @@ cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/
 # sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
 
 # Change default config
-cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
+#cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 #cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 #cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 
@@ -76,15 +79,16 @@ cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 
-echo '# Put your custom commands here that should be executed once
-# the system init finished. By default this file does nothing.
-
-grep "Default string" /tmp/sysinfo/model >> /dev/null
-if [ $? -ne 0 ];then
-    echo should be fine
-else
-    echo "Generic_x86" > /tmp/sysinfo/model
-fi
-
-exit 0
-'> ./package/base-files/files/etc/rc.local
+#
+#echo '# Put your custom commands here that should be executed once
+## the system init finished. By default this file does nothing.
+#
+#grep "Default string" /tmp/sysinfo/model >> /dev/null
+#if [ $? -ne 0 ];then
+#    echo should be fine
+#else
+#    echo "Generic_x86" > /tmp/sysinfo/model
+#fi
+#
+#exit 0
+#'> ./package/base-files/files/etc/rc.local
