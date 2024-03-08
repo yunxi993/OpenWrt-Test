@@ -30,8 +30,26 @@ git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/op
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
 #sing-box
-#cp -rf $GITHUB_WORKSPACE/diy/singbox/files package/openwrt-passwall-packages/sing-box/
-#sed -i 's,config.json.example,config.json,g' package/openwrt-passwall-packages/sing-box/Makefile
+cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
+sed -i '135,147d' package/openwrt-passwall-packages/sing-box/Makefile
+sed -i '134r EOF
+define Package/sing-box/conffiles
+/etc/config/sing-box
+/etc/sing-box/
+endef
+
+define Package/sing-box/install
+    $(call GoPackage/Package/Install/Bin,$(1))
+
+    $(INSTALL_DIR) $(1)/etc/sing-box
+    $(INSTALL_DATA) $(PKG_BUILD_DIR)/release/config/config.json $(1)/etc/sing-box
+
+    $(INSTALL_DIR) $(1)/etc/config/
+    $(INSTALL_CONF) ./files/sing-box.conf $(1)/etc/config/sing-box
+    $(INSTALL_DIR) $(1)/etc/init.d/
+    $(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
+endef
+EOF' package/openwrt-passwall-packages/sing-box/Makefile
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
