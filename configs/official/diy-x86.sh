@@ -30,7 +30,7 @@ git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/op
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
 #sing-box
-cp -f $GITHUB_WORKSPACE/diy/singbox/files package/openwrt-passwall-packages/sing-box/
+cp -rf $GITHUB_WORKSPACE/diy/singbox/files package/openwrt-passwall-packages/sing-box/
 sed -i 's,config.json.example,config.json,g' package/openwrt-passwall-packages/sing-box/Makefile
 
 # Update Go Version
@@ -82,6 +82,12 @@ cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
+
+# Add network interface
+sed -i  "37a\\
+uci add_list network.@device[0].ports='eth2'\n\
+uci add_list network.@device[0].ports='eth3'
+" package/extra/default-settings/files/99-default-settings-chinese
 
 echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
