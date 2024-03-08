@@ -85,9 +85,9 @@ jobs:
         #cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
 
     - name: cache
-      uses: HiGarfield/cachewrtbuild@main
+      uses: yunxi993/cachewrtbuild@main
       with:
-        ccache: 'false'
+        ccache: 'true'
         mixkey: x86m
         prefix: ${{ github.workspace }}/openwrt
 
