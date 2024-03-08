@@ -32,7 +32,7 @@ git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 #sing-box
 cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
 sed -i '135,147d' package/openwrt-passwall-packages/sing-box/Makefile
-sed -i '134r EOF
+sed -i "134r EOF
 define Package/sing-box/conffiles
 /etc/config/sing-box
 /etc/sing-box/
@@ -49,7 +49,7 @@ define Package/sing-box/install
     $(INSTALL_DIR) $(1)/etc/init.d/
     $(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
 endef
-EOF' package/openwrt-passwall-packages/sing-box/Makefile
+EOF" package/openwrt-passwall-packages/sing-box/Makefile
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
