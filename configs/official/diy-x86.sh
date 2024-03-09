@@ -32,7 +32,7 @@ git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 #sing-box
 cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
 sed -i '135,147d' package/openwrt-passwall-packages/sing-box/Makefile
-sed -i '134r /dev/stdin' package/openwrt-passwall-packages/sing-box/Makefile <<'EOF'
+sed -i '134r 0' package/openwrt-passwall-packages/sing-box/Makefile <<'EOF'
 define Package/sing-box/conffiles
 /etc/config/sing-box
 /etc/sing-box/
