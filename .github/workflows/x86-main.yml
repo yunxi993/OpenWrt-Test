@@ -85,7 +85,7 @@ jobs:
         #cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
 
     - name: cache
-      uses: yunxi993/cachewrtbuild@main
+      uses: HiGarfield/cachewrtbuild@main
       with:
         ccache: 'true'
         mixkey: x86m

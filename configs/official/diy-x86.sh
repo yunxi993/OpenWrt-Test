@@ -28,6 +28,7 @@ rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
+echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> $GITHUB_WORKSPACE/configs/official/build-x86.config; make defconfig
 
 #sing-box
 cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
