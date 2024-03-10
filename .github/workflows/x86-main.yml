@@ -41,12 +41,22 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        df -h
+        df -hT
+
+    - name: Combine Disks
+      uses: easimon/maximize-build-space@master
+      with:
+        swap-size-mb: 1024
+        temp-reserve-mb: 100
+        root-reserve-mb: 1024
+  
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Clone source code
       working-directory: /workdir
       run: |
-        df -hT $PWD
+        df -hT
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
@@ -76,7 +86,7 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        make download -j16
+        make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         mkdir -p ./package/network/config/firewall4/patches/
@@ -87,7 +97,6 @@ jobs:
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
       with:
-        ccache: 'true'
         mixkey: x86m
         prefix: ${{ github.workspace }}/openwrt
 
