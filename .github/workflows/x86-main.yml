@@ -98,7 +98,8 @@ jobs:
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
       with:
-        mixkey: x86m
+        ccache: 'true'
+        mixkey: main
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
@@ -116,14 +117,14 @@ jobs:
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
         ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
         df -hT
-
-    - name: Clean up server space
-      run: |
-        cd openwrt/
-        rm -rf $(ls . | grep -vE "^bin$|^host.*|^tool.*" | xargs) 2>/dev/null
-        ls
-        df -hT
-        #df -hT ${PWD}
+#
+#    - name: Clean up server space
+#      run: |
+#        cd openwrt/
+#        rm -rf $(ls . | grep -vE "^bin$" | xargs) 2>/dev/null
+#        ls
+#        df -hT
+#        df -hT ${PWD}
 
     - name: Check space usage
       if: (!cancelled())
