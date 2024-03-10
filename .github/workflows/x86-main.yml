@@ -94,12 +94,16 @@ jobs:
         cp -f $GITHUB_WORKSPACE/diy/patches/002*.patch package/network/config/firewall4/patches/002*.patch
         #cp -f  $GITHUB_WORKSPACE/diy/patches/luci feeds/luci/modules/luci-base/root/usr/share/rpcd/ucode/luci
         #cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
+        DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+        echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+        DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+        echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
 
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: main
+        mixkey: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
