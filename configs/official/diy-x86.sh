@@ -70,9 +70,9 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
 
 # Dnsmasq switch to 2.90 version
-sed -i "s/2.89/2.90/g" package/network/services/dnsmasq/Makefile
-sed -i "s/02bd230.*/8e50309bd837bfec9649a812e066c09b6988b73d749b7d293c06c57d46a109e4/g" package/network/services/dnsmasq/Makefile
-cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/dnsmasq/patches/200-ubus_dns.patch
+#sed -i "s/2.89/2.90/g" package/network/services/dnsmasq/Makefile
+#sed -i "s/02bd230.*/8e50309bd837bfec9649a812e066c09b6988b73d749b7d293c06c57d46a109e4/g" package/network/services/dnsmasq/Makefile
+#cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/dnsmasq/patches/200-ubus_dns.patch
 
 # Modify localtime
 # sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
