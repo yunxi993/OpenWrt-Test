@@ -16,7 +16,7 @@ sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_genera
 #sed -i '/CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
 
 # Hostname
-sed -i 's/OpenWrt/qnmlgb/g' package/base-files/files/bin/config_generate
+sed -i 's/OpenWrt/N1/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/arm/index.htm
@@ -44,14 +44,9 @@ sed -i 's/services/system/g' feeds/luci/applications/luci-app-cpufreq/luasrc/con
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 # Add additional packages
-git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
-git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
+git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/luci-theme-opentomcat
-rm -rf package/helloworld/xray-core
-#rm -rf package/helloworld/v2ray-core
-#rm -rf package/helloworld/hysteria
-#rm -rf package/package/openwrt-passwall-packages/xray-core
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
@@ -70,10 +65,10 @@ rm -rf package/helloworld/xray-core
 #sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 
-sed -i "13i\\
-uci set firewall.@defaults[0].flow_offloading='1'\n\
-uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-uci commit firewall\n" package/lean/default-settings/files/zzz-default-settings
+#sed -i "13i\\
+#uci set firewall.@defaults[0].flow_offloading='1'\n\
+#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+#uci commit firewall\n" package/lean/default-settings/files/zzz-default-settings
 
 #sed -i -e '45,48d' -e "44a\\
 #echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
@@ -92,5 +87,7 @@ sed -i '741a\
 ' package/lean/autocore/files/arm/index.htm
 
 sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
+
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
