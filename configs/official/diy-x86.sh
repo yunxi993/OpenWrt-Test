@@ -105,11 +105,13 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 
 # Add network interface
-sed -i  "37a\\
-uci set network.@wan[0].device='eth0'\n\
+sed -i  "36a\\
+uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
 uci add_list network.@device[0].ports='eth2'\n\
-uci add_list network.@device[0].ports='eth3'
+uci add_list network.@device[0].ports='eth3'\n\
+uci set network.wan.device='eth0'\n\
+uci del network.wan6
 " package/extra/default-settings/files/99-default-settings-chinese
 
 echo '# Put your custom commands here that should be executed once
