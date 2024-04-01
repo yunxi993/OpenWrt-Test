@@ -106,6 +106,8 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 
 # Add network interface
 sed -i  "37a\\
+uci set network.@wan[0].device='eth0'\n\
+uci add_list network.@device[0].ports='eth1'\n\
 uci add_list network.@device[0].ports='eth2'\n\
 uci add_list network.@device[0].ports='eth3'
 " package/extra/default-settings/files/99-default-settings-chinese
