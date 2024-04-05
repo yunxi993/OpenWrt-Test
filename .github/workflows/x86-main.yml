@@ -92,8 +92,6 @@ jobs:
         find dl -size -1024c -exec rm -f {} \;
         mkdir -p ./package/network/config/firewall4/patches/
         cp -f $GITHUB_WORKSPACE/diy/offloading/002*.patch package/network/config/firewall4/patches/002*.patch
-        #cp -f  $GITHUB_WORKSPACE/diy/patches/luci feeds/luci/modules/luci-base/root/usr/share/rpcd/ucode/luci
-        #cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
         DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
         echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
         DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
@@ -143,7 +141,7 @@ jobs:
         FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
         PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
         rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp -rf $(find ${TARGETS_DIR} -type f -name "*combined*") ${FIRMWARE_DIR}
+        cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         echo $PWD
 
