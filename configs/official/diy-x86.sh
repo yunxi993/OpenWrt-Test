@@ -127,3 +127,6 @@ fi
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
+
+# 6.6.x kernel patchs
+cp -rf $GITHUB_WORKSPACE/diy/patches-6.6/ target/linux/x86/
