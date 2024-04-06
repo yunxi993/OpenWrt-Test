@@ -9,7 +9,7 @@ env:
   REPO_BRANCH: openwrt-23.05
   FEEDS_CONF: configs/immortalwrt/feeds.conf.default
   CONFIG_FILE: configs/immortalwrt/build-x86.config
-  DIY_P1_SH: configs/immortalwrt/diy-part1.sh
+  DIY_P1_SH: configs/immortalwrt/diy-z1.sh
   DIY_P2_SH: configs/immortalwrt/diy-x86.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
