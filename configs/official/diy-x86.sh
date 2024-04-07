@@ -14,14 +14,6 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
-# cpufreq
-#sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' package/lean/luci-app-cpufreq/Makefile
-#sed -i 's/services/system/g' package/lean/luci-app-cpufreq/luasrc/controller/cpufreq.lua
-
-# Change default theme
-#sed -i 's,luci-theme-bootstrap,luci-theme-opentomcat,g' feeds/luci/collections/luci/Makefile
-#sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
-
 # Add additional packages
 rm -rf feeds/packages/net/xray-core
 rm -rf feeds/packages/net/sing-box
@@ -64,6 +56,7 @@ sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='Sil'/g" package/base-files/fi
 sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-23.05 $(date +%Y-%m-%d) (by Sil)' /g" package/base-files/files/etc/openwrt_release
 cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
+# Default enable irqbalance
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
 # dockerd去版本验证
@@ -76,11 +69,6 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 
 # Modify localtime
 # sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
-
-# Change default config
-#cp -f $GITHUB_WORKSPACE/diy/Makefile feeds/packages/lang/golang/golang/Makefile
-#cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
-#cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
 
 #sed -i "21a\\
 #uci set firewall.@defaults[0].flow_offloading='0'\n\
@@ -129,4 +117,4 @@ exit 0
 '> ./package/base-files/files/etc/rc.local
 
 # 6.6.x kernel patchs
-cp -rf $GITHUB_WORKSPACE/diy/patches-6.6/ target/linux/x86/
+#cp -rf $GITHUB_WORKSPACE/diy/patches-6.6/ target/linux/x86/
