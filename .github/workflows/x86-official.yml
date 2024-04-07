@@ -32,23 +32,34 @@ jobs:
         sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
         sudo -E apt-mark hold grub-efi-amd64-signed
         sudo -E apt update
-        sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
+        sudo -E apt -y purge docker* ghc* zulu* dotnet* openjdk* mysql* php* dotnet* snap*
         sudo -E apt -y full-upgrade
         sudo -E apt -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
         sudo -E systemctl daemon-reload
         sudo -E apt -y autoremove --purge
         sudo -E apt clean
-        sudo timedatectl set-timezone "$TZ"
+        sudo -E timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        df -h
+        df -hT
+
+    - name: Free up space
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: true
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true  
 
     - name: Clone source code
       working-directory: /workdir
       run: |
-        df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        df -hT
 
     - name: Load custom feeds
       run: |
@@ -76,25 +87,28 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        make download -j16
+        make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         mkdir -p ./package/network/config/firewall4/patches/
-        cp -f $GITHUB_WORKSPACE/diy/patches/002*.patch package/network/config/firewall4/patches/002*.patch
-        #cp -f  $GITHUB_WORKSPACE/diy/patches/luci feeds/luci/modules/luci-base/root/usr/share/rpcd/ucode/luci
-        #cp -f $GITHUB_WORKSPACE/diy/patches/10_system.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10*.js
+        cp -f $GITHUB_WORKSPACE/diy/offloading/002*.patch package/network/config/firewall4/patches/002*.patch
+        DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+        echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+        DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+        echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
 
     - name: cache
       uses: HiGarfield/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: x86o
+        mixkey: x86o-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile
       run: |
         cd openwrt
+        df -hT
         echo -e "$(($(nproc)+1)) thread compile"
         make -j$(($(nproc)+1)) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
@@ -103,12 +117,16 @@ jobs:
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
-
-    - name: Clean up server space
-      run: |
-        cd openwrt/
-        rm -rf $(ls . | grep -v "^bin$" | xargs) 2>/dev/null
-        df -hT ${PWD}
+        ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
+        df -hT
+#
+#    - name: Clean up server space
+#      run: |
+#        cd openwrt/
+#        rm -rf $(ls . | grep -vE "^bin$" | xargs) 2>/dev/null
+#        ls
+#        df -hT
+#        df -hT ${PWD}
 
     - name: Check space usage
       if: (!cancelled())
@@ -123,7 +141,7 @@ jobs:
         FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
         PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
         rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
-        cp -rf $(find ${TARGETS_DIR} -type f -name "*combined*") ${FIRMWARE_DIR}
+        cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
         cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
         echo $PWD
 
@@ -187,6 +205,6 @@ jobs:
       run: |
         MSG="
         编译时间：${{ env.DATE }}
-        x86 Original编译完成
+        x86 Official编译完成
         "
         curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MSG}"
