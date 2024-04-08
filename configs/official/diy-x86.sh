@@ -98,8 +98,7 @@ uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
 uci add_list network.@device[0].ports='eth2'\n\
 uci add_list network.@device[0].ports='eth3'\n\
-uci set network.wan.device='eth0'\n\
-uci set network.wan.proto='pppoe'\n\
+uci del network.wan\n\
 uci del network.wan6
 " package/extra/default-settings/files/99-default-settings-chinese
 
