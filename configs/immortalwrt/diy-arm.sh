@@ -15,7 +15,7 @@ sed -i 's/Os/O2/g' include/target.mk
 sed -i 's,-mcpu=generic,-march=armv8-a+crypto -mtune=cortex-a53,g' include/target.mk
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.1.11/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.11.11/g' package/base-files/files/bin/config_generate
 
 # Hostname
 sed -i 's/ImmortalWrt/Nzksm/g' package/base-files/files/bin/config_generate
