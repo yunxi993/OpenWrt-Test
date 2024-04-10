@@ -86,8 +86,9 @@ sed -i '741a\
                 <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: black;" target="_blank">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
 ' package/lean/autocore/files/arm/index.htm
 
+# Default disable ntp server
 sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
 
-sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+# Default enable irqbalance
+#sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
-sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
