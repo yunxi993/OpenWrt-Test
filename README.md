@@ -1,3 +1,9 @@
+***
+## 仅用作测试
+
+#### 不要使用此项目构建的OpenWrt
+***
+
 **English** | [中文](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
 # Actions-OpenWrt
@@ -7,11 +13,6 @@
 ![GitHub Forks](https://img.shields.io/github/forks/P3TERX/Actions-OpenWrt.svg?style=flat-square&label=Forks&logo=github)
 
 A template for building OpenWrt with GitHub Actions
-
-## 仅用作测试
-
-不要使用此项目构建的OpenWrt
-
 
 ## Credits
 

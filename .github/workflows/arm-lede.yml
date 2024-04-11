@@ -201,7 +201,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
           * 自用固件，插件根据个人需要删减.
-          * Default IP: 192.168.1.11
+          * Default IP: 192.168.11.11
           * Default PW: password
 
     - name: Telegram notification

@@ -180,7 +180,7 @@ jobs:
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-          * Default IP: 192.168.1.13
+          * Default IP: 192.168.11.13
           * Default username: root
           * Default password: password
 
