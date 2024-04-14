@@ -56,6 +56,42 @@ sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='Sil'/g" package/base-files/fi
 sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-23.05 $(date +%Y-%m-%d) (by Sil)' /g" package/base-files/files/etc/openwrt_release
 cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
+# Add network interface
+sed -i  "36a\\
+uci del_list network.@device[0].ports='eth0'\n\
+uci add_list network.@device[0].ports='eth1'\n\
+uci add_list network.@device[0].ports='eth2'\n\
+uci add_list network.@device[0].ports='eth3'\n\
+uci del network.wan\n\
+uci del network.wan6
+" package/extra/default-settings/files/99-default-settings-chinese
+
+# Default disable
+sed -i "47a\\
+/etc/init.d/irqbalance disable\n\
+/etc/init.d/irqbalance stop\n\
+/etc/init.d/xray disable\n\
+/etc/init.d/xtay stop
+" package/extra/default-settings/files/99-default-settings-chinese
+
+echo '# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+grep "Default string" /tmp/sysinfo/model >> /dev/null
+if [ $? -ne 0 ];then
+    echo should be fine
+else
+    echo "Generic_x86" > /tmp/sysinfo/model
+fi
+
+(sleep 10; ethtool -A eth0 autoneg off tx on rx on; ethtool -A eth1 autoneg off tx on rx on) &
+
+exit 0
+'> ./package/base-files/files/etc/rc.local
+
+# 6.6.x kernel patchs
+#cp -rf $GITHUB_WORKSPACE/diy/patches-6.6/ target/linux/x86/
+
 # Default enable irqbalance
 #sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
@@ -68,7 +104,7 @@ cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 #cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/dnsmasq/patches/200-ubus_dns.patch
 
 # Modify localtime
-# sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
+#sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
 
 #sed -i "21a\\
 #uci set firewall.@defaults[0].flow_offloading='0'\n\
@@ -91,29 +127,3 @@ cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
-
-# Add network interface
-sed -i  "36a\\
-uci del_list network.@device[0].ports='eth0'\n\
-uci add_list network.@device[0].ports='eth1'\n\
-uci add_list network.@device[0].ports='eth2'\n\
-uci add_list network.@device[0].ports='eth3'\n\
-uci del network.wan\n\
-uci del network.wan6
-" package/extra/default-settings/files/99-default-settings-chinese
-
-echo '# Put your custom commands here that should be executed once
-# the system init finished. By default this file does nothing.
-
-grep "Default string" /tmp/sysinfo/model >> /dev/null
-if [ $? -ne 0 ];then
-    echo should be fine
-else
-    echo "Generic_x86" > /tmp/sysinfo/model
-fi
-
-exit 0
-'> ./package/base-files/files/etc/rc.local
-
-# 6.6.x kernel patchs
-#cp -rf $GITHUB_WORKSPACE/diy/patches-6.6/ target/linux/x86/
