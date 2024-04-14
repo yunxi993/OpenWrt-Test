@@ -48,6 +48,42 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/luci-theme-opentomcat
 
+sed -i '741a\
+                <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: black;" target="_blank">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
+                <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: black;" target="_blank">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
+' package/lean/autocore/files/arm/index.htm
+
+# Default disable ntp server
+sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
+
+# Default disable
+sed -i "63a\\
+/etc/init.d/irqbalance disable\n\
+/etc/init.d/irqbalance stop\n\
+/etc/init.d/ddns disable\n\
+/etc/init.d/ddns stop\n\
+/etc/init.d/passwall2 disable\n\
+/etc/init.d/passwall2 stop\n\
+/etc/init.d/passwall2_server disable\n\
+/etc/init.d/passwall2_server stop\n\
+/etc/init.d/sing-box disable\n\
+/etc/init.d/sing-box stop\n\
+/etc/init.d/xray disable\n\
+/etc/init.d/xray stop\n\
+" package/lean/default-settings/files/zzz-default-settings
+
+#rc.local
+echo '# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+(sleep 10; ethtool -A eth0 autoneg off rx on tx on) &
+
+exit 0
+'> ./package/base-files/files/etc/rc.local
+
+# Default enable irqbalance
+#sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
 
@@ -68,7 +104,8 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #sed -i "13i\\
 #uci set firewall.@defaults[0].flow_offloading='1'\n\
 #uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-#uci commit firewall\n" package/lean/default-settings/files/zzz-default-settings
+#uci commit firewall
+" package/lean/default-settings/files/zzz-default-settings
 
 #sed -i -e '45,48d' -e "44a\\
 #echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
@@ -80,15 +117,3 @@ git clone --depth=1 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git packa
 #echo '# ip6tables -I FORWARD -p tcp --sport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user\n\
 #echo '# ip6tables -I FORWARD -p tcp --dport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user
 #" package/lean/default-settings/files/zzz-default-settings
-
-sed -i '741a\
-                <tr><td width="33%">&#32534;&#35793;&#32773;&#58;&#32;&#83;&#105;&#108;</td><td><a href="https://t.me/passwall2" style="color: black;" target="_blank">&#32676;&#32452;&#38142;&#25509;</a></td></tr>\
-                <tr><td width="33%">&#28304;&#30721;&#58;&#32;&#108;&#101;&#100;&#101;</td><td><a href="https://github.com/coolsnowwolf/lede" style="color: black;" target="_blank">&#28304;&#30721;&#38142;&#25509;</a></td></tr>
-' package/lean/autocore/files/arm/index.htm
-
-# Default disable ntp server
-sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/config_generate
-
-# Default enable irqbalance
-#sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
-
