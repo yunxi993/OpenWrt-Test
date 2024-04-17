@@ -2242,6 +2242,8 @@ CONFIG_PACKAGE_kmod-input-core=y
 # CONFIG_PACKAGE_kmod-input-leds is not set
 # CONFIG_PACKAGE_kmod-leds-apu is not set
 # CONFIG_PACKAGE_kmod-leds-gpio is not set
+# CONFIG_PACKAGE_kmod-leds-lp5562 is not set
+# CONFIG_PACKAGE_kmod-leds-lp55xx-common is not set
 # CONFIG_PACKAGE_kmod-leds-pca955x is not set
 # CONFIG_PACKAGE_kmod-leds-pca963x is not set
 # CONFIG_PACKAGE_kmod-leds-tlc591xx is not set
@@ -5190,12 +5192,14 @@ CONFIG_PACKAGE_curl=y
 # CONFIG_PACKAGE_natpmpc is not set
 CONFIG_PACKAGE_nftables-json=y
 # CONFIG_PACKAGE_nftables-nojson is not set
+# CONFIG_PACKAGE_openappid is not set
 # CONFIG_PACKAGE_shorewall is not set
 # CONFIG_PACKAGE_shorewall-core is not set
 # CONFIG_PACKAGE_shorewall-lite is not set
 # CONFIG_PACKAGE_shorewall6 is not set
 # CONFIG_PACKAGE_shorewall6-lite is not set
 # CONFIG_PACKAGE_snort is not set
+# CONFIG_PACKAGE_snort3 is not set
 # CONFIG_PACKAGE_xtables-legacy is not set
 # CONFIG_PACKAGE_xtables-nft is not set
 # end of Firewall
@@ -6983,7 +6987,7 @@ CONFIG_STRACE_NONE=y
 # CONFIG_PACKAGE_tini is not set
 # CONFIG_PACKAGE_tinyionice is not set
 # CONFIG_PACKAGE_tracertools is not set
-# CONFIG_PACKAGE_tree is not set
+CONFIG_PACKAGE_tree=y
 # CONFIG_PACKAGE_triggerhappy is not set
 # CONFIG_PACKAGE_ubnt-manager is not set
 # CONFIG_PACKAGE_ucode-mod-bpf is not set
