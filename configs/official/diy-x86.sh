@@ -20,30 +20,30 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
-#sing-box
-cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
-sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
-cat << "EOF" >> package/openwrt-passwall-packages/sing-box/Makefile
-define Package/sing-box/conffiles
-/etc/config/sing-box
-/etc/sing-box/
-endef
-
-define Package/sing-box/install
-	$(call GoPackage/Package/Install/Bin,$(1))
-
-	$(INSTALL_DIR) $(1)/etc/sing-box
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/release/config/config.json $(1)/etc/sing-box
-
-	$(INSTALL_DIR) $(1)/etc/config/
-	$(INSTALL_CONF) ./files/sing-box.conf $(1)/etc/config/sing-box
-	$(INSTALL_DIR) $(1)/etc/init.d/
-	$(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
-endef
-
-$(eval $(call GoBinPackage,sing-box))
-$(eval $(call BuildPackage,sing-box))
-EOF
+# sing-box
+#cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
+#sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
+#cat << "EOF" >> package/openwrt-passwall-packages/sing-box/Makefile
+#define Package/$(PKG_NAME)/conffiles
+#/etc/config/sing-box
+#/etc/sing-box/
+#endef
+#
+#define Package/$(PKG_NAME)/install
+#	$(call GoPackage/Package/Install/Bin,$(1))
+#
+#	$(INSTALL_DIR) $(1)/etc/sing-box
+#	$(INSTALL_DATA) $(PKG_BUILD_DIR)/release/config/config.json $(1)/etc/sing-box
+#
+#	$(INSTALL_DIR) $(1)/etc/config/
+#	$(INSTALL_CONF) ./files/sing-box.conf $(1)/etc/config/sing-box
+#	$(INSTALL_DIR) $(1)/etc/init.d/
+#	$(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
+#endef
+#
+#$(eval $(call GoBinPackage,sing-box))
+#$(eval $(call BuildPackage,sing-box))
+#EOF
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
@@ -66,11 +66,13 @@ uci del network.wan6
 " package/extra/default-settings/files/99-default-settings-chinese
 
 # Default disable
-sed -i "47a\\
+sed -i "53a\\
 /etc/init.d/irqbalance disable\n\
 /etc/init.d/irqbalance stop\n\
 /etc/init.d/xray disable\n\
-/etc/init.d/xtay stop
+/etc/init.d/xtay stop\n\
+/etc/init.d/passwall2_server disable\n\
+/etc/init.d/passwall2_server stop
 " package/extra/default-settings/files/99-default-settings-chinese
 
 echo '# Put your custom commands here that should be executed once
