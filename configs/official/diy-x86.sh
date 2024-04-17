@@ -2,8 +2,7 @@
 #
 
 # GCC CFlags
-sed -i 's/Os/O2/g' include/target.mk
-sed -i 's/O2 -pipe/O2 -pipe -march=x86-64-v2/g' include/target.mk
+sed -i 's/-Os -pipe/-O2 -pipe -march=x86-64-v2/g' include/target.mk
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.11.13/g' package/base-files/files/bin/config_generate
