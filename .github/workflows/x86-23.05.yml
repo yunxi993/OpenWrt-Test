@@ -1,4 +1,4 @@
-name: x86-official
+name: x86-23.05
 
 on:
   repository_dispatch:
@@ -7,8 +7,8 @@ on:
 env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: openwrt-23.05
-  FEEDS_CONF: configs/official/feeds.conf.default
-  CONFIG_FILE: configs/official/build-x86.config
+  FEEDS_CONF: configs/official/23.05.feeds.conf.default
+  CONFIG_FILE: configs/official/23.05-x86.config
   DIY_P1_SH: configs/official/diy-z1.sh
   DIY_P2_SH: configs/official/diy-x86.sh
   UPLOAD_BIN_DIR: false
@@ -98,10 +98,10 @@ jobs:
         echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
 
     - name: cache
-      uses: HiGarfield/cachewrtbuild@main
+      uses: stupidloud/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: x86o-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+        mixkey: 23.05-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
@@ -173,7 +173,7 @@ jobs:
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@main
       with:
-        name: x86-Official ${{ env.DATE }}
+        name: x86-23.05 ${{ env.DATE }}
         tag: ${{ env.TAG_DATE }}
         artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
@@ -205,6 +205,6 @@ jobs:
       run: |
         MSG="
         编译时间：${{ env.DATE }}
-        x86 Official编译完成
+        x86 23.05编译完成
         "
         curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MSG}"
