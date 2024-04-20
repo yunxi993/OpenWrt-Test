@@ -8,7 +8,7 @@ env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: main
   FEEDS_CONF: configs/official/feeds.conf.default
-  CONFIG_FILE: configs/official/build-x86.config
+  CONFIG_FILE: configs/official/x86-main.config
   DIY_P1_SH: configs/official/diy-z1.sh
   DIY_P2_SH: configs/official/diy-x86.sh
   UPLOAD_BIN_DIR: false

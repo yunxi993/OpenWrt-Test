@@ -20,6 +20,10 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
+# luci-base
+rm -rf /feeds/luci/modules/luci-base/
+cp -rf $GITHUB_WORKSPACE/diy/luci-base/ feeds/luci/modules/
+
 # sing-box
 #cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
 #sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
