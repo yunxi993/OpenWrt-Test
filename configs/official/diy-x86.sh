@@ -20,34 +20,6 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
-# luci-base
-#rm -rf /feeds/luci/modules/luci-base/
-#cp -rf $GITHUB_WORKSPACE/diy/luci-base/ feeds/luci/modules/
-
-# sing-box
-#cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
-#sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
-#cat << "EOF" >> package/openwrt-passwall-packages/sing-box/Makefile
-#define Package/$(PKG_NAME)/conffiles
-#/etc/config/sing-box
-#/etc/sing-box/
-#endef
-#
-#define Package/$(PKG_NAME)/install
-#	$(call GoPackage/Package/Install/Bin,$(1))
-#
-#	$(INSTALL_DIR) $(1)/etc/sing-box
-#	$(INSTALL_DATA) $(PKG_BUILD_DIR)/release/config/config.json $(1)/etc/sing-box
-#
-#	$(INSTALL_DIR) $(1)/etc/config/
-#	$(INSTALL_CONF) ./files/sing-box.conf $(1)/etc/config/sing-box
-#	$(INSTALL_DIR) $(1)/etc/init.d/
-#	$(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
-#endef
-#
-#$(eval $(call GoBinPackage,sing-box))
-#$(eval $(call BuildPackage,sing-box))
-#EOF
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
@@ -59,24 +31,36 @@ sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='Sil'/g" package/base-files/fi
 sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-23.05 $(date +%Y-%m-%d) (by Sil)' /g" package/base-files/files/etc/openwrt_release
 cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
-# Add network interface
-sed -i  "36a\\
+# Some adjust
+sed -i  "33a\\
+#uci set firewall.@defaults[0].flow_offloading='1'\n\
+#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+#uci commit firewall\n\n\
+uci set fstab.@mount[0].enabled='1'\n\
+uci set fstab.@mount[1].enabled='1'\n\
+uci set fstab.@mount[2].enabled='1'\n\
+uci set fstab.@mount[3].enabled='1'\n\
+uci set fstab.@global[0].anon_mount=1\n\
+uci commit fstab\n\n\
+uci delete network.globals.ula_prefix\n\
+#uci delete network.globals.packet_steering\n\n\
 uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
 uci add_list network.@device[0].ports='eth2'\n\
 uci add_list network.@device[0].ports='eth3'\n\
 uci del network.wan\n\
-uci del network.wan6
-" package/extra/default-settings/files/99-default-settings-chinese
-
-# Default disable
-sed -i "53a\\
+uci del network.wan6\n\
+uci commit network\n\n\
 /etc/init.d/irqbalance disable\n\
 /etc/init.d/irqbalance stop\n\
-/etc/init.d/xray disable\n\
-/etc/init.d/xtay stop\n\
+/etc/init.d/ddns disable\n\
+/etc/init.d/ddns stop\n\
 /etc/init.d/passwall2_server disable\n\
-/etc/init.d/passwall2_server stop
+/etc/init.d/passwall2_server stop\n\
+/etc/init.d/sing-box disable\n\
+/etc/init.d/sing-box stop\n\
+/etc/init.d/xray disable\n\
+/etc/init.d/xtay stop\n\n\
 " package/extra/default-settings/files/99-default-settings-chinese
 
 echo '# Put your custom commands here that should be executed once
@@ -89,7 +73,7 @@ else
     echo "Generic_x86" > /tmp/sysinfo/model
 fi
 
-(sleep 10; ethtool -A eth0 autoneg off tx on rx on; ethtool -A eth1 autoneg off tx on rx on) &
+#(sleep 10; ethtool -A eth0 autoneg off tx on rx on; ethtool -A eth1 autoneg off tx on rx on) &
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
@@ -132,3 +116,28 @@ exit 0
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
+
+# sing-box
+#cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
+#sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
+#cat << "EOF" >> package/openwrt-passwall-packages/sing-box/Makefile
+#define Package/$(PKG_NAME)/conffiles
+#/etc/config/sing-box
+#/etc/sing-box/
+#endef
+#
+#define Package/$(PKG_NAME)/install
+#	$(call GoPackage/Package/Install/Bin,$(1))
+#
+#	$(INSTALL_DIR) $(1)/etc/sing-box
+#	$(INSTALL_DATA) $(PKG_BUILD_DIR)/release/config/config.json $(1)/etc/sing-box
+#
+#	$(INSTALL_DIR) $(1)/etc/config/
+#	$(INSTALL_CONF) ./files/sing-box.conf $(1)/etc/config/sing-box
+#	$(INSTALL_DIR) $(1)/etc/init.d/
+#	$(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
+#endef
+#
+#$(eval $(call GoBinPackage,sing-box))
+#$(eval $(call BuildPackage,sing-box))
+#EOF
