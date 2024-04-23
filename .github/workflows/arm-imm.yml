@@ -32,10 +32,10 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         docker rmi `docker images -q`
-        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
+        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo -E apt-mark hold grub-efi-amd64-signed
         sudo -E apt update
-        sudo -E apt -y purge docker* ghc* zulu* dotnet* openjdk* mysql* php* dotnet* snap*
+        sudo -E apt -y purge docker* ghc* zulu* dotnet* openjdk* mysql* php* snap*
         sudo -E apt -y full-upgrade
         sudo -E apt -y install $(curl -fsSL https://is.gd/depends_ubuntu_2204)
         sudo -E systemctl daemon-reload
