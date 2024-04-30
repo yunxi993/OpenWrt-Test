@@ -88,8 +88,6 @@ jobs:
         make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        mkdir -p ./package/network/config/firewall4/patches/
-        cp -f $GITHUB_WORKSPACE/diy/offloading/002*.patch package/network/config/firewall4/patches/002*.patch
         DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
         echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
         DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
