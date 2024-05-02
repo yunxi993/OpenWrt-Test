@@ -20,7 +20,6 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
-
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
