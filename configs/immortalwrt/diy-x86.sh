@@ -50,6 +50,7 @@ uci commit network\n\n\
 /etc/init.d/sing-box stop\n\
 /etc/init.d/xray disable\n\
 /etc/init.d/xtay stop\n\n\
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\n\
 " package/emortal/default-settings/files/99-default-settings-chinese
 
 echo '# Put your custom commands here that should be executed once

@@ -113,7 +113,7 @@ jobs:
         echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
-        ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
+        #ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
         df -hT
 #
 #    - name: Clean up server space
