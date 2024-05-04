@@ -38,11 +38,11 @@ sed -i  "33a\\
 uci set fstab.@mount[0].enabled='1'\n\
 uci set fstab.@mount[1].enabled='1'\n\
 uci set fstab.@mount[2].enabled='1'\n\
-uci set fstab.@mount[3].enabled='1'\n\
 uci set fstab.@global[0].anon_mount=1\n\
 uci commit fstab\n\n\
 uci delete network.globals.ula_prefix\n\
-#uci delete network.globals.packet_steering\n\n\
+uci delete network.globals.packet_steering='2'\n\
+uci delete network.globals.steering_flows='128'\n\n\
 uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
 uci add_list network.@device[0].ports='eth2'\n\
@@ -69,7 +69,7 @@ grep "Default string" /tmp/sysinfo/model >> /dev/null
 if [ $? -ne 0 ];then
     echo should be fine
 else
-    echo "Generic_x86" > /tmp/sysinfo/model
+    echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
 #(sleep 10; ethtool -A eth0 autoneg off tx on rx on; ethtool -A eth1 autoneg off tx on rx on) &
