@@ -41,7 +41,7 @@ uci set fstab.@mount[2].enabled='1'\n\
 uci set fstab.@global[0].anon_mount=1\n\
 uci commit fstab\n\n\
 uci delete network.globals.ula_prefix\n\
-uci delete network.globals.packet_steering='2'\n\
+uci delete network.globals.packet_steering='1'\n\
 uci delete network.globals.steering_flows='128'\n\n\
 uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
