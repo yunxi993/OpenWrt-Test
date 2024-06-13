@@ -2,7 +2,7 @@
 #
 
 # GCC CFlags
-sed -i 's/-Os -pipe/-O2 -pipe -march=x86-64-v2/g' include/target.mk
+#sed -i 's/-Os -pipe/-O2 -pipe -march=x86-64-v2/g' include/target.mk
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.11.13/g' package/base-files/files/bin/config_generate
@@ -54,10 +54,10 @@ uci commit network\n\n\
 /etc/init.d/irqbalance stop\n\
 /etc/init.d/ddns disable\n\
 /etc/init.d/ddns stop\n\
-/etc/init.d/passwall2_server disable\n\
-/etc/init.d/passwall2_server stop\n\
-/etc/init.d/sing-box disable\n\
-/etc/init.d/sing-box stop\n\
+#/etc/init.d/passwall2_server disable\n\
+#/etc/init.d/passwall2_server stop\n\
+#/etc/init.d/sing-box disable\n\
+#/etc/init.d/sing-box stop\n\
 /etc/init.d/xray disable\n\
 /etc/init.d/xtay stop\n\n\
 " package/extra/default-settings/files/99-default-settings-chinese
@@ -77,8 +77,6 @@ fi
 exit 0
 '> ./package/base-files/files/etc/rc.local
 
-# 6.6.x kernel patchs
-#cp -rf $GITHUB_WORKSPACE/diy/patches-6.6/ target/linux/x86/
 
 # Default enable irqbalance
 #sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
