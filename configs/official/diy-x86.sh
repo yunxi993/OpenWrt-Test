@@ -14,8 +14,8 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
 # Add additional packages
-rm -rf feeds/packages/net/xray-core
-rm -rf feeds/packages/net/sing-box
+#rm -rf feeds/packages/net/xray-core
+#rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
