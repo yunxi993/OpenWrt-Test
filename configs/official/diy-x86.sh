@@ -54,8 +54,8 @@ uci commit network\n\n\
 /etc/init.d/irqbalance stop\n\
 /etc/init.d/ddns disable\n\
 /etc/init.d/ddns stop\n\
-#/etc/init.d/passwall2_server disable\n\
-#/etc/init.d/passwall2_server stop\n\
+/etc/init.d/passwall2_server disable\n\
+/etc/init.d/passwall2_server stop\n\
 #/etc/init.d/sing-box disable\n\
 #/etc/init.d/sing-box stop\n\
 /etc/init.d/xray disable\n\
