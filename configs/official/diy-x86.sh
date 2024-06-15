@@ -20,6 +20,10 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
+# Modify sing-box version
+sed -i 's/1.9.3/1.9.0/g' feeds/packages/net/sing-box/Makefile
+sed -i 's/ab3d32.*/cb1d91e362f4dd7c35f7bb040514414861a045a76301af8257134c65f7a45c36/g' feeds/packages/net/sing-box/Makefile
+
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
@@ -83,11 +87,6 @@ exit 0
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
-
-# Dnsmasq switch to 2.90 version
-#sed -i "s/2.89/2.90/g" package/network/services/dnsmasq/Makefile
-#sed -i "s/02bd230.*/8e50309bd837bfec9649a812e066c09b6988b73d749b7d293c06c57d46a109e4/g" package/network/services/dnsmasq/Makefile
-#cp -f $GITHUB_WORKSPACE/diy/patches/200-ubus_dns.patch package/network/services/dnsmasq/patches/200-ubus_dns.patch
 
 # Modify localtime
 #sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
