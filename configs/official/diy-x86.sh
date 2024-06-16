@@ -21,8 +21,8 @@ git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/op
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 
 # Modify sing-box version
-sed -i 's/1.9.3/1.9.0/g' feeds/packages/net/sing-box/Makefile
-sed -i 's/ab3d32.*/cb1d91e362f4dd7c35f7bb040514414861a045a76301af8257134c65f7a45c36/g' feeds/packages/net/sing-box/Makefile
+#sed -i 's/1.9.3/1.9.0/g' feeds/packages/net/sing-box/Makefile
+#sed -i 's/ab3d32.*/cb1d91e362f4dd7c35f7bb040514414861a045a76301af8257134c65f7a45c36/g' feeds/packages/net/sing-box/Makefile
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
