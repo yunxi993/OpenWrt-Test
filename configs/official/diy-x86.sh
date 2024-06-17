@@ -14,11 +14,11 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
 # Add additional packages
-#rm -rf feeds/packages/net/xray-core
-#rm -rf feeds/packages/net/sing-box
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
-git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
+rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/net/sing-box
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
+git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
+git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
 # Modify sing-box version
 #sed -i 's/1.9.3/1.9.0/g' feeds/packages/net/sing-box/Makefile
@@ -51,7 +51,7 @@ uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
 uci add_list network.@device[0].ports='eth2'\n\
 uci add_list network.@device[0].ports='eth3'\n\
-uci del network.wan\n\
+#uci del network.wan\n\
 uci del network.wan6\n\
 uci commit network\n\n\
 /etc/init.d/irqbalance disable\n\
@@ -60,12 +60,13 @@ uci commit network\n\n\
 /etc/init.d/ddns stop\n\
 /etc/init.d/passwall2_server disable\n\
 /etc/init.d/passwall2_server stop\n\
-#/etc/init.d/sing-box disable\n\
-#/etc/init.d/sing-box stop\n\
+/etc/init.d/sing-box disable\n\
+/etc/init.d/sing-box stop\n\
 /etc/init.d/xray disable\n\
 /etc/init.d/xtay stop\n\n\
 " package/extra/default-settings/files/99-default-settings-chinese
 
+# OpenWrt name
 echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
@@ -80,6 +81,9 @@ fi
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
+
+
+
 
 
 # Default enable irqbalance
