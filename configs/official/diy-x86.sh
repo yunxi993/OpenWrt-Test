@@ -24,12 +24,6 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 #sed -i 's/1.9.3/1.9.0/g' feeds/packages/net/sing-box/Makefile
 #sed -i 's/ab3d32.*/cb1d91e362f4dd7c35f7bb040514414861a045a76301af8257134c65f7a45c36/g' feeds/packages/net/sing-box/Makefile
 
-# Back curl version
-sed -i 's,8.8.0,8.7.1,g' feeds/packages/net/curl/Makefile
-sed -i 's,PKG_RELEASE:=1,PKG_RELEASE:=2,g' feeds/packages/net/curl/Makefile
-sed -i 's,xz,bz2,g' feeds/packages/net/curl/Makefile
-sed -i 's,0f58bb.*,05bbd2b698e9cfbab477c33aa5e99b4975501835a41b7ca6ca71de03d8849e76,g' feeds/packages/net/curl/Makefile
-
 # Adjust curl version
 cp -f $GITHUB_WORKSPACE/diy/curl/Makefile feeds/packages/net/curl/Makefile
 
