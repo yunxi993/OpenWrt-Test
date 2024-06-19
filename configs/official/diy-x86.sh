@@ -30,6 +30,9 @@ sed -i 's,PKG_RELEASE:=1,PKG_RELEASE:=2,g' feeds/packages/net/curl/Makefile
 sed -i 's,xz,bz2,g' feeds/packages/net/curl/Makefile
 sed -i 's,0f58bb.*,05bbd2b698e9cfbab477c33aa5e99b4975501835a41b7ca6ca71de03d8849e76,g' feeds/packages/net/curl/Makefile
 
+# Adjust curl version
+cp -f $GITHUB_WORKSPACE/diy/curl/Makefile feeds/packages/net/curl/Makefile
+
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
