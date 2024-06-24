@@ -100,9 +100,3 @@ exit 0
 # re close bridge-nf
 #sed -i '759,760d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh && sed -i '779d' package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
 #chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/0_default_config && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/domains_excluded && chmod -R 755 package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2/app.sh
-
-#sed -i "13i\\
-#uci set firewall.@defaults[0].flow_offloading='1'\n\
-#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-#uci commit firewall
-" package/lean/default-settings/files/zzz-default-settings
