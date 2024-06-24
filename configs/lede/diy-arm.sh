@@ -106,14 +106,3 @@ exit 0
 #uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 #uci commit firewall
 " package/lean/default-settings/files/zzz-default-settings
-
-#sed -i -e '45,48d' -e "44a\\
-#echo '# iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
-#echo '# iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
-#echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\
-#echo '# [ -n \"\$(command -v ip6tables)\" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user\n\n\
-#echo '# ip6tables -A INPUT -p tcp --sport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user\n\
-#echo '# ip6tables -A OUTPUT -p tcp --dport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user\n\
-#echo '# ip6tables -I FORWARD -p tcp --sport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user\n\
-#echo '# ip6tables -I FORWARD -p tcp --dport 5223 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT' >> /etc/firewall.user
-#" package/lean/default-settings/files/zzz-default-settings
