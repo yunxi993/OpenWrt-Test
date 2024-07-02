@@ -83,10 +83,6 @@ fi
 exit 0
 '> ./package/base-files/files/etc/rc.local
 
-
-
-
-
 # Default enable irqbalance
 #sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
@@ -95,24 +91,6 @@ exit 0
 
 # Modify localtime
 #sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
-
-#sed -i "21a\\
-#uci set firewall.@defaults[0].flow_offloading='0'\n\
-#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-#uci commit firewall\n\
-#" package/emortal/default-settings/files/99-default-settings
-
-#sed -i "27a\\
-#uci set network.@device[0].ports='eth1'\n\
-#uci add_list network.@device[0].ports='eth2'\n\
-#uci add_list network.@device[0].ports='eth3'\n\
-#uci commit network\n\n\
-#sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-#" package/emortal/default-settings/files/99-default-settings
-
-#sed -i "25a\\
-#sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-#" package/default-settings-23.05.0/default-settings/files/99-default-settings
 
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
