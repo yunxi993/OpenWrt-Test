@@ -55,8 +55,8 @@ uci set network.wan.device='eth0'\n\
 uci set network.wan.proto='pppoe'\n\
 uci del network.wan6\n\
 uci commit network\n\n\
-/etc/init.d/irqbalance disable\n\
-/etc/init.d/irqbalance stop\n\
+#/etc/init.d/irqbalance disable\n\
+#/etc/init.d/irqbalance stop\n\
 /etc/init.d/ddns disable\n\
 /etc/init.d/ddns stop\n\
 /etc/init.d/passwall2_server disable\n\
@@ -78,7 +78,7 @@ else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
-#(sleep 10; ethtool -A eth0 autoneg off tx on rx on; ethtool -A eth1 autoneg off tx on rx on) &
+#(sleep 10; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on) &
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
