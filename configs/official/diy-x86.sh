@@ -93,8 +93,7 @@ mkdir -p package/firmware/i915/
 curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/adlp_dmc.bin -o package/firmware/i915/adlp_dmc.bin
 curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_guc_70.bin -o package/firmware/i915/tgl_guc_70.bin
 echo 'CONFIG_FIRMWARE_IN_KERNEL=y' >> target/linux/x86/64/config-6.6
-echo 'CONFIG_EXTRA_FIRMWARE="i915/adlp_dmc.bin"' >> target/linux/x86/64/config-6.6
-echo 'CONFIG_EXTRA_FIRMWARE="i915/tgl_guc_70.bin"' >> target/linux/x86/64/config-6.6
+echo 'CONFIG_EXTRA_FIRMWARE="i915/adlp_dmc.bin i915/tgl_guc_70.bin"' >> target/linux/x86/64/config-6.6
 echo 'CONFIG_EXTRA_FIRMWARE_DIR="/workdir/openwrt/package/firmware/"' >> target/linux/x86/64/config-6.6
 
 # dockerd去版本验证
