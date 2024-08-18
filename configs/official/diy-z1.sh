@@ -13,8 +13,8 @@ rm -rf target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patc
 
 ls target/linux/generic/hack-6.6/
 
-find target/linux/generic/hack-6.6/ -name "600-net-enable-fraglist-GRO-by-default.patch"
+#find target/linux/generic/hack-6.6/ -name "600-net-enable-fraglist-GRO-by-default.patch"
 
 test -e target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch && echo "File exists" || echo "File deleted"
 
-stat target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch
+#stat target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch
