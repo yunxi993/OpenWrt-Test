@@ -80,7 +80,7 @@ else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
-(sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on) &
+#(sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on) &
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
