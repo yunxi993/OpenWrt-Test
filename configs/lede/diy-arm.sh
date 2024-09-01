@@ -1,14 +1,5 @@
 #!/bin/bash
 #
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# File name: diy-Selfuse.sh
-# Description: OpenWrt DIY script part 2 (After Update feeds)
-#
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.11.11/g' package/base-files/files/bin/config_generate
@@ -20,17 +11,6 @@ sed -i 's/OpenWrt/N1/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/arm/index.htm
-
-# Enable AAAA
-#sed -i 's/filter_aaaa	1/filter_aaaa	0/g' package/network/services/dnsmasq/files/dhcp.conf
-
-# Disable Cache
-#sed -i 's/cachesize	8000/cachesize	0/g' package/network/services/dnsmasq/files/dhcp.conf
-#sed -i 's/mini_ttl		3600/mini_ttl		0/g' package/network/services/dnsmasq/files/dhcp.conf
-
-# Disable rebind protection
-#sed -i 's/rebind_protection 1/rebind_protection 0/g' package/network/services/dnsmasq/files/dhcp.conf
-#chmod -R 755 package/network/services/dnsmasq/files/dhcp.conf
 
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
@@ -58,8 +38,11 @@ sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/co
 
 # Default disable
 sed -i "63a\\
-/etc/init.d/irqbalance disable\n\
-/etc/init.d/irqbalance stop\n\
+uci set firewall.@defaults[0].flow_offloading='1'\n\
+uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+uci commit firewall\n\
+#/etc/init.d/irqbalance disable\n\
+#/etc/init.d/irqbalance stop\n\
 /etc/init.d/ddns disable\n\
 /etc/init.d/ddns stop\n\
 /etc/init.d/passwall2 disable\n\
@@ -76,7 +59,11 @@ sed -i "63a\\
 echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
-(sleep 10; ethtool -A eth0 autoneg off rx on tx on) &
+#(sleep 10; ethtool -A eth0 autoneg off rx on tx on) &
+
+#(sleep 10; ethtool -A eth0 rx on tx on) &
+
+#(ethtool --set-eee eth0 eee off) &
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
