@@ -15,6 +15,6 @@ cp -rf $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.pat
 
 #find target/linux/generic/hack-6.6/ -name "600-net-enable-fraglist-GRO-by-default.patch"
 
-test -e target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch && echo "File exists" || echo "File deleted"
+#test -e target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch && echo "File exists" || echo "File deleted"
 
 #stat target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch

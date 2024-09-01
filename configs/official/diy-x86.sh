@@ -37,12 +37,13 @@ cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
 
 # Some adjust
 sed -i  "33a\\
-#uci set firewall.@defaults[0].flow_offloading='1'\n\
-#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-#uci commit firewall\n\n\
+uci set firewall.@defaults[0].flow_offloading='1'\n\
+uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+uci commit firewall\n\n\
 uci set fstab.@mount[0].enabled='1'\n\
 uci set fstab.@mount[1].enabled='1'\n\
 uci set fstab.@mount[2].enabled='1'\n\
+uci set fstab.@mount[3].enabled='1'\n\
 uci set fstab.@global[0].anon_mount=1\n\
 uci commit fstab\n\n\
 uci delete network.@globals[0].ula_prefix\n\
@@ -57,6 +58,8 @@ uci set network.wan.device='eth0'\n\
 uci set network.wan.proto='pppoe'\n\
 uci del network.wan6\n\
 uci commit network\n\n\
+/etc/init.d/packet_steering disable\n\
+/etc/init.d/packet_steering stop\n\
 #/etc/init.d/irqbalance disable\n\
 #/etc/init.d/irqbalance stop\n\
 /etc/init.d/ddns disable\n\
