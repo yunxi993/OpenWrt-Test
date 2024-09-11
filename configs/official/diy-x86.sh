@@ -111,7 +111,7 @@ echo 'CONFIG_EXTRA_FIRMWARE_DIR="/workdir/openwrt/package/firmware/"' >> target/
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 
 # sing-box
-#cp -rf $GITHUB_WORKSPACE/diy/singbox/files/ package/openwrt-passwall-packages/sing-box/
+#cp -f $GITHUB_WORKSPACE/diy/singbox/files/* package/openwrt-passwall-packages/sing-box/
 #sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
 #cat << "EOF" >> package/openwrt-passwall-packages/sing-box/Makefile
 #define Package/$(PKG_NAME)/conffiles
