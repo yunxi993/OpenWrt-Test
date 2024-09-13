@@ -3,7 +3,7 @@
 
 # GCC CFlags
 sed -i 's/Os/O2/g' include/target.mk
-sed -i 's/O2/O2 -march=x86-64-v2/g' include/target.mk
+sed -i 's/O2/O2 -march=x86-64-v3/g' include/target.mk
 #sed -i 's/-Os -pipe/-O2 -pipe -march=x86-64-v2/g' include/target.mk
 
 # Modify default IP
