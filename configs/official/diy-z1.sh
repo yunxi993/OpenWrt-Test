@@ -7,11 +7,10 @@
 # Add a feed source
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
-#cp -f $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.6/
 
-#cp -f $GITHUB_WORKSPACE/diy/config-6.6 target/linux/x86/config-6.6
+cp -f $GITHUB_WORKSPACE/diy/config-6.6 target/linux/x86/
 
-#rm -rf target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch
+cat target/linux/x86/config-6.6
 
 #ls target/linux/generic/hack-6.6/
 
@@ -20,3 +19,5 @@
 #test -e target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch && echo "File exists" || echo "File deleted"
 
 #stat target/linux/generic/hack-6.6/600-net-enable-fraglist-GRO-by-default.patch
+
+#cp -f $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.6/
