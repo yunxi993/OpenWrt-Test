@@ -45,3 +45,6 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 sed -i "25a\\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
+
+cp -rf $GITHUB_WORKSPACE/diy/glib2 feeds/packages/libs/
+cat feeds/packages/libs/glib2/Makefile
