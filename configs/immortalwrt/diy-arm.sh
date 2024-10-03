@@ -11,14 +11,14 @@
 #
 
 # GCC CFlags
-sed -i 's/Os/O2/g' include/target.mk
+#sed -i 's/Os/O2/g' include/target.mk
 sed -i 's,-mcpu=generic,-march=armv8-a+crypto -mtune=cortex-a53,g' include/target.mk
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.11.11/g' package/base-files/files/bin/config_generate
 
 # Hostname
-sed -i 's/ImmortalWrt/Nzksm/g' package/base-files/files/bin/config_generate
+sed -i 's/ImmortalWrt/N1/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
 # sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
@@ -39,32 +39,9 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
 sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt 23.05 $(date +%Y-%m-%d)'/g" package/base-files/files/etc/openwrt_release
-#cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
-
-# Change default config
-#cp -f $GITHUB_WORKSPACE/diy/0_default_config package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
-#cp -f $GITHUB_WORKSPACE/diy/domains_excluded package/openwrt-passwall2/luci-app-passwall2/root/usr/share/passwall2
-
-#sed -i "21a\\
-#uci set firewall.@defaults[0].flow_offloading='0'\n\
-#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-#uci commit firewall\n\
-#" package/emortal/default-settings/files/99-default-settings
-
-#sed -i "27a\\
-#uci set network.@device[0].ports='eth1'\n\
-#uci add_list network.@device[0].ports='eth2'\n\
-#uci add_list network.@device[0].ports='eth3'\n\
-#uci commit network\n\n\
-#sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-#" package/emortal/default-settings/files/99-default-settings
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
 sed -i "25a\\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
-
-#curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
-
-#curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
