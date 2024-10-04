@@ -45,6 +45,8 @@ sed -i "s/enable_server='1'/enable_server='0'/g" package/base-files/files/bin/co
 sed -i "63a\\
 uci set firewall.@defaults[0].flow_offloading='1'\n\
 uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+uci set firewall.@defaults[0].fullcone '0'\n\
+uci set firewall.@defaults[0].fullcone6 '0'\n\
 uci commit firewall\n\
 #/etc/init.d/irqbalance disable\n\
 #/etc/init.d/irqbalance stop\n\
@@ -81,7 +83,7 @@ sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqba
 # SSH password
 sed -i "25a\\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
-" package/emortal/default-settings/files/99-default-settings
+" package/lean/default-settings/files/zzz-default-settings
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
