@@ -1,6 +1,11 @@
 #!/bin/bash
 #
 
+
+# GCC CFlags
+#sed -i 's/Os/O2/g' include/target.mk
+sed -i 's,-mcpu=generic,-march=armv8-a+crypto -mtune=cortex-a53,g' include/target.mk
+
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.11.11/g' package/base-files/files/bin/config_generate
 
@@ -65,11 +70,18 @@ echo '# Put your custom commands here that should be executed once
 
 #(ethtool --set-eee eth0 eee off) &
 
+/usr/sbin/balethirq.pl
+/etc/first_run.sh >/root/first_run.log 2>&1
 exit 0
 '> ./package/base-files/files/etc/rc.local
 
 # Default enable irqbalance
-#sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+
+# SSH password
+sed -i "25a\\
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
+" package/emortal/default-settings/files/99-default-settings
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
