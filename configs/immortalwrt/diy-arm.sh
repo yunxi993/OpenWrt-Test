@@ -46,5 +46,44 @@ sed -i "25a\\
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
 
-#cp -rf $GITHUB_WORKSPACE/diy/glib2 feeds/packages/libs/
-#cat feeds/packages/libs/glib2/Makefile
+# Some adjust
+sed -i  "33a\\
+uci set firewall.@defaults[0].flow_offloading='1'\n\
+uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+uci commit firewall\n\n\
+uci delete network.@globals[0].ula_prefix\n\
+#uci delete network.@globals[0].packet_steering='1'\n\
+#uci delete network.@globals[0].steering_flows='128'\n\n\
+#uci del network.wan\n\
+uci commit network\n\n\
+/etc/init.d/packet_steering disable\n\
+/etc/init.d/packet_steering stop\n\
+#/etc/init.d/irqbalance disable\n\
+#/etc/init.d/irqbalance stop\n\
+/etc/init.d/ddns disable\n\
+/etc/init.d/ddns stop\n\
+/etc/init.d/passwall2 disable\n\
+/etc/init.d/passwall2 stop\n\
+/etc/init.d/passwall2_server disable\n\
+/etc/init.d/passwall2_server stop\n\
+/etc/init.d/sing-box disable\n\
+/etc/init.d/sing-box stop\n\
+/etc/init.d/xray disable\n\
+/etc/init.d/xray stop\n\
+/etc/init.d/xray disable\n\
+/etc/init.d/xtay stop\n\n\
+" package/emortal/default-settings/files/99-default-settings
+
+# OpenWrt name
+echo '# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+for iface in eth0 eth1 eth2 eth3; do
+    ethtool -K $iface rx-gro-list off
+done
+
+/usr/sbin/balethirq.pl
+/etc/first_run.sh >/root/first_run.log 2>&1
+
+exit 0
+'> ./package/base-files/files/etc/rc.local
