@@ -4,7 +4,7 @@
 # GCC CFlags
 #sed -i 's/Os/O2/g' include/target.mk
 #sed -i 's/O2/O2 -march=x86-64-v3/g' include/target.mk
-#sed -i 's/-Os -pipe/-O2 -pipe -march=x86-64-v2/g' include/target.mk
+sed -i 's/-Os -pipe/-O2 -pipe -march=x86-64-v2/g' include/target.mk
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.11.13/g' package/base-files/files/bin/config_generate
@@ -82,6 +82,10 @@ if [ $? -ne 0 ];then
 else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
+
+for iface in eth0 eth1 eth2 eth3; do
+    ethtool -K $iface rx-gro-list off
+done
 
 #(sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on) &
 
