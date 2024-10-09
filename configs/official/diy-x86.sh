@@ -22,18 +22,20 @@ git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
-# Adjust curl version
-#cp -f $GITHUB_WORKSPACE/diy/curl/Makefile feeds/packages/net/curl/Makefile
+# Delete luci-mod-status file
+rm -rf feeds/luci/modules/luci-mod-status/root/usr/share/rpcd/acl.d/luci-mod-status.json
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
-# Remove snapshot tags
-sed -i 's,-SNAPSHOT,,g' include/version.mk
-sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
-sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='Sil'/g" package/base-files/files/etc/openwrt_release
-sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-23.05 $(date +%Y-%m-%d) (by Sil)' /g" package/base-files/files/etc/openwrt_release
-cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
+# Add i915 to 6.6 kernel
+mkdir -p package/firmware/i915/
+curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/adlp_dmc.bin -o package/firmware/i915/adlp_dmc.bin
+curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_huc.bin -o package/firmware/i915/tgl_huc.bin
+curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_guc_70.bin -o package/firmware/i915/tgl_guc_70.bin
+echo 'CONFIG_FIRMWARE_IN_KERNEL=y' >> target/linux/x86/64/config-6.6
+echo 'CONFIG_EXTRA_FIRMWARE="i915/adlp_dmc.bin i915/tgl_huc.bin i915/tgl_guc_70.bin"' >> target/linux/x86/64/config-6.6
+echo 'CONFIG_EXTRA_FIRMWARE_DIR="/workdir/openwrt/package/firmware/"' >> target/linux/x86/64/config-6.6
 
 # Some adjust
 sed -i  "33a\\
@@ -72,6 +74,13 @@ uci commit network\n\n\
 /etc/init.d/xtay stop\n\n\
 " package/extra/default-settings/files/99-default-settings-chinese
 
+# Remove snapshot tags
+sed -i 's,-SNAPSHOT,,g' include/version.mk
+sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='Sil'/g" package/base-files/files/etc/openwrt_release
+sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-23.05 $(date +%Y-%m-%d) (by Sil)' /g" package/base-files/files/etc/openwrt_release
+cp -f package/extra/banner/Sil  package/base-files/files/etc/banner
+
 # OpenWrt name
 echo '# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
@@ -94,15 +103,6 @@ exit 0
 
 # Default enable irqbalance
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
-
-# Add i915 to 6.6 kernel
-mkdir -p package/firmware/i915/
-curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/adlp_dmc.bin -o package/firmware/i915/adlp_dmc.bin
-curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_huc.bin -o package/firmware/i915/tgl_huc.bin
-curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_guc_70.bin -o package/firmware/i915/tgl_guc_70.bin
-echo 'CONFIG_FIRMWARE_IN_KERNEL=y' >> target/linux/x86/64/config-6.6
-echo 'CONFIG_EXTRA_FIRMWARE="i915/adlp_dmc.bin i915/tgl_huc.bin i915/tgl_guc_70.bin"' >> target/linux/x86/64/config-6.6
-echo 'CONFIG_EXTRA_FIRMWARE_DIR="/workdir/openwrt/package/firmware/"' >> target/linux/x86/64/config-6.6
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
