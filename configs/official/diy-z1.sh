@@ -8,6 +8,7 @@
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
 
+rm -rf target/linux/x86/config-6.6
 cp -f $GITHUB_WORKSPACE/diy/config-6.6 target/linux/x86/
 #cat target/linux/x86/config-6.6
 
