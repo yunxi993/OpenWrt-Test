@@ -1,0 +1,346 @@
+name: x86-build
+
+on:
+  workflow_dispatch:
+
+env:
+  REPO_URL: https://github.com/openwrt/openwrt
+  BRANCH_MAIN: main
+  BRANCH_2410: openwrt-24.10
+  FEEDS_MAIN: configs/official/feeds.main
+  FEEDS_2410: configs/official/feeds.2410
+  CONFIG_MAIN: configs/official/x86-main.config
+  CONFIG_2410: configs/official/x86-2410.config
+  DIY_P1_SH: configs/official/diy-z1.sh
+  DIY_P2_SH: configs/official/diy-x86.sh
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: x86-main
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq purge docker* ghc* zulu* dotnet* openjdk* mysql* php* snap*
+        sudo -E apt-get -qq full-upgrade
+        sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/depends)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo -E timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+        df -hT
+
+    - name: Free up space
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: true
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        git clone $REPO_URL -b $BRANCH_MAIN openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        df -hT
+
+    - name: Load custom feeds
+      run: |
+        [ -e $FEEDS_MAIN ] && mv $FEEDS_MAIN openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_MAIN ] && mv $CONFIG_MAIN openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: cache
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: x86-main
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j$(nproc)
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+        echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+        DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+        echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
+
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        df -hT
+        echo -e "$(($(nproc)+1)) thread compile"
+        make -j$(($(nproc)+1))
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "ACT_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
+        echo "REL_DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
+        #ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
+        df -hT
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Prepare artifact
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
+        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        find ${TARGETS_DIR} -type f -name "*efi*" -exec mv -t ${FIRMWARE_DIR} {} +
+        find ${PACKAGES_DIR} -type f -name "*.apk" -exec mv -t ${PACKAGE_DIR} {} +
+        #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
+        #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
+        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz openwrt-main-*.img.gz
+        find $GITHUB_WORKSPACE/openwrt/bin/ -type f
+        echo $PWD
+
+    - name: Deliver package
+      uses: actions/upload-artifact@v4
+      with:
+        name: main-IPK ${{ env.ACT_DATE }}
+        path: ./openwrt/bin/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: main-firmware ${{ env.ACT_DATE }}
+        path: ./openwrt/bin/firmware/
+
+    - name: Organize files
+      id: organize
+      run: |
+        cd openwrt/bin/package/
+        tar -zcvf main-IPK.tar.gz *
+        echo $PWD
+        mkdir -p ../../../combined-firmware
+        mv -f main-IPK.tar.gz ../../../combined-firmware/
+        mv -f ../firmware/*efi* ../../../combined-firmware/
+        echo $PWD
+
+  x86:
+    name: x86-2410
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq purge docker* ghc* zulu* dotnet* openjdk* mysql* php* snap*
+        sudo -E apt-get -qq full-upgrade
+        sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/depends)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo -E timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+        df -hT
+
+    - name: Free up space
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: true
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        git clone $REPO_URL -b $BRANCH_2410 openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        df -hT
+
+    - name: Load custom feeds
+      run: |
+        [ -e $FEEDS_2410 ] && mv $FEEDS_2410 openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_2410 ] && mv $CONFIG_2410 openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: cache
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: x86-2410
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j$(nproc)
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+        echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+        DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+        echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
+
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        df -hT
+        echo -e "$(($(nproc)+1)) thread compile"
+        make -j$(($(nproc)+1))
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "ACT_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
+        echo "REL_DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
+        #ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
+        df -hT
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Prepare artifact
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
+        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        find ${TARGETS_DIR} -type f -name "*efi*" -exec mv -t ${FIRMWARE_DIR} {} +
+        find ${PACKAGES_DIR} -type f -name "*.ipk" -exec mv -t ${PACKAGE_DIR} {} +
+        #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
+        #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
+        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz openwrt-2410-*.img.gz
+        find $GITHUB_WORKSPACE/openwrt/bin/ -type f
+        echo $PWD
+
+    - name: Deliver package
+      uses: actions/upload-artifact@v4
+      with:
+        name: 2410-IPK ${{ env.ACT_DATE }}
+        path: ./openwrt/bin/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: 2410-firmware ${{ env.ACT_DATE }}
+        path: ./openwrt/bin/firmware/
+
+    - name: Organize files
+      id: organize
+      run: |
+        cd openwrt/bin/package/
+        tar -zcvf 2410-IPK.tar.gz *
+        echo $PWD
+        mkdir -p ../../../combined-firmware
+        mv -f 2410-IPK.tar.gz ../../../combined-firmware/
+        mv -f ../firmware/*efi* ../../../combined-firmware/
+        echo $PWD
+
+  upload-release:
+    name: Upload to Release
+    runs-on: ubuntu-latest
+    needs: [build, x86]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    #- name: Download Artifacts from x86-main
+    #  uses: actions/download-artifact@main
+    #  with:
+    #    path: ./firmware/x86-main
+
+    #- name: Download Artifacts from x86
+    #  uses: actions/download-artifact@main
+    #  with:
+    #    path: ./firmware/
+
+    #- name: Combine Firmware Artifacts
+    #  run: |
+    #    mkdir -p ./combined-firmware
+    #    mv ./firmware/x86-main/* combined-firmware/
+    #    mv ./firmware/x86-2410/* combined-firmware/
+
+
+    - name: Upload Firmware to Release
+      uses: ncipollo/release-action@main
+      with:
+        name: x86_64 ${{ env.REL_DATE }}
+        tag: ${{ env.TAG_DATE }}
+        artifacts: combined-firmware/*
+        allowUpdates: true
+        removeArtifacts: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body: |
+          ## Firmware Details
+          - **x86-main Firmware**: x86_64
+          - **x86-2410 Firmware**: main, openwrt-24.10
+          - Default IP: `192.168.1.13`
+          - Username: `root`

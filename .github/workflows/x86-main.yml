@@ -1,0 +1,209 @@
+name: x86-main
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+
+env:
+  REPO_URL: https://github.com/openwrt/openwrt
+  REPO_BRANCH: main
+  FEEDS_CONF: configs/official/feeds.main
+  CONFIG_FILE: configs/official/x86-main.config
+  DIY_P1_SH: configs/official/diy-z1.sh
+  DIY_P2_SH: configs/official/diy-x86.sh
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: false
+  UPLOAD_RELEASE: false
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq purge docker* ghc* zulu* dotnet* openjdk* mysql* php* snap*
+        sudo -E apt-get -qq full-upgrade
+        sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/depends)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo -E timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+        df -hT
+
+    - name: Free up space
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: true
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        df -hT
+
+    - name: Load custom feeds
+      run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j$(nproc)
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+        echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+        DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+        echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
+
+    - name: cache
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: main-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        df -hT
+        echo -e "$(($(nproc)+1)) thread compile"
+        make -j$(($(nproc)+1)) || make -j1 V=s
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
+        echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
+        #ls . && echo "----" && find . -type d -name "*-cache-openwrt*" && echo "----" && find . -type f -name "*-cache-openwrt*"
+        df -hT
+#
+#    - name: Clean up server space
+#      run: |
+#        cd openwrt/
+#        rm -rf $(ls . | grep -vE "^bin$" | xargs) 2>/dev/null
+#        ls
+#        df -hT
+#        df -hT ${PWD}
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Prepare artifact
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
+        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        find ${TARGETS_DIR} -type f -name "*efi*" -exec mv -t ${FIRMWARE_DIR} {} +
+        find ${PACKAGES_DIR} -type f -name "*.apk" -exec mv -t ${PACKAGE_DIR} {} +
+        #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
+        #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
+        find $GITHUB_WORKSPACE/openwrt/bin/ -type f
+        echo $PWD
+
+    - name: Deliver package
+      uses: actions/upload-artifact@v4
+      with:
+        name: IPK ${{ env.FILE_DATE }}
+        path: ./openwrt/bin/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware ${{ env.FILE_DATE }}
+        path: ./openwrt/bin/firmware/
+
+    - name: Organize files
+      id: organize
+      run: |
+        cd openwrt/bin/package/
+        tar -zcvf IPK.tar.gz *
+        echo $PWD
+        mv -f IPK.tar.gz ../firmware/
+        cd ../firmware/
+        echo $PWD
+        rm -rf packages
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Upload OpenWrt Firmware to Release
+      uses: ncipollo/release-action@main
+      with:
+        name: x86-main ${{ env.DATE }}
+        tag: ${{ env.TAG_DATE }}
+        artifacts: ${{ env.FIRMWARE }}/*
+        allowUpdates: true
+        removeArtifacts: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body: |
+          * Default IP: 192.168.11.13
+          * Default username: root
+          * Default password: password
+
+#    - name: Delete workflow runs
+#      uses: Mattraks/delete-workflow-runs@v2
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        repository: ${{ github.repository }}
+#        retain_days: 1
+#        keep_minimum_runs: 2
+
+#    - name: Remove old Releases
+#      uses: dev-drprasad/delete-older-releases@v0.2.0
+#      with:
+#        repo: ${{ github.repository }}
+#        keep_latest: 8
+#        delete_tags: true
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#    - name: Telegram notification
+#      run: |
+#        MSG="
+#        编译时间：${{ env.DATE }}
+#        x86 main编译完成
+#        "
+#        curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MSG}"

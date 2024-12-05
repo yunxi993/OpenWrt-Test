@@ -1,0 +1,207 @@
+name: arm-lede
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  FEEDS_CONF: configs/lede/feeds.conf.default
+  CONFIG_FILE: configs/lede/build-arm.config
+  DIY_P1_SH: configs/lede/diy-z1.sh
+  DIY_P2_SH: configs/lede/diy-arm.sh
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: false
+  UPLOAD_COWTRANSFER: false
+  UPLOAD_WETRANSFER: false
+  UPLOAD_RELEASE: false
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq purge docker* ghc* zulu* dotnet* openjdk* mysql* php* snap*
+        sudo -E apt-get -qq full-upgrade
+        sudo -E apt-get -qq install $(curl -fsSL https://is.gd/depends_ubuntu_2204)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo -E timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+        df -hT
+
+    - name: Free up space
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: true
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true  
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        df -hT
+
+    - name: Load custom feeds
+      run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j16
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+        echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+        DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+        echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
+
+    - name: cache
+      uses: HiGarfield/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: arml-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        df -hT
+        echo -e "$(($(nproc)+1)) thread compile"
+        make -j$(($(nproc)+1)) || make -j1 V=s
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=$(date +"%Y-%m-%d %H%M")" >> $GITHUB_ENV
+        echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
+        df -hT
+#
+#    - name: Clean up server space
+#      run: |
+#        cd openwrt/
+#        rm -rf $(ls . | grep -v "^bin$" | xargs) 2>/dev/null
+#        df -hT
+#        df -hT ${PWD}
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Prepare artifact
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/package
+        mkdir -p $GITHUB_WORKSPACE/openwrt/bin/firmware
+        TARGETS_DIR=$GITHUB_WORKSPACE/openwrt/bin/targets/
+        PACKAGE_DIR=$GITHUB_WORKSPACE/openwrt/bin/package/
+        FIRMWARE_DIR=$GITHUB_WORKSPACE/openwrt/bin/firmware/
+        PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
+        rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
+        cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
+        cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
+        cd ${PACKAGE_DIR}
+        tar -zcvf IPK.tar.gz *
+        mv -f IPK.tar.gz ../
+        echo $PWD
+
+    - name: Deliver package
+      uses: actions/upload-artifact@v4
+      with:
+        name: IPK ${{ env.FILE_DATE }}
+        path: ./openwrt/bin/package/
+
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware ${{ env.FILE_DATE }}
+        path: ./openwrt/bin/firmware/
+
+#    - name: Organize files
+#      id: organize
+#      run: |
+#        cd openwrt
+#        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+#        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Package Armvirt as OpenWrt
+      uses: ophub/flippy-openwrt-actions@main
+      env:
+        OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
+        KERNEL_REPO_URL: https://github.com/yunxi993/OpenWrt-Test/releases/tag/kernel_stable
+        PACKAGE_SOC: s905d
+        KERNEL_AUTO_LATEST:  true
+        KERNEL_VERSION_NAME: 6.1.4_6.6.23
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WHOAMI: Sil
+
+    - name: copy update files
+      run: |
+        PACKIT_DIR=/opt/openwrt_packit
+        OPENWRT_BIN_DIR=$GITHUB_WORKSPACE/openwrt/bin/
+        cp ${PACKIT_DIR}/files/update-amlogic-openwrt.sh ${PACKIT_DIR}/output/
+        rm -rf $(find ${PACKIT_DIR}/output/ -name "sha256sums" -o -name "*.gz.sha" -o -name "*.tar.gz")
+        cp ${OPENWRT_BIN_DIR}IPK.tar.gz ${PACKIT_DIR}/output/
+
+    - name: Upload OpenWrt Firmware to Release
+      uses: ncipollo/release-action@v1
+      with:
+        name: arm-lede ${{ env.DATE }}
+        tag: ${{ env.TAG_DATE }}
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
+        allowUpdates: true
+        removeArtifacts: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body: |
+          * 自用固件，插件根据个人需要删减.
+          * Default IP: 192.168.11.11
+          * Default PW: password
+
+    - name: Telegram notification
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      run: curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=${{ steps.tag.outputs.release_tag }}😀😀😀Self use编译完成啦😀😀😀" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
