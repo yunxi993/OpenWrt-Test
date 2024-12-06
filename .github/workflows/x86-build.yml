@@ -335,6 +335,7 @@ jobs:
         (cd ./combined-firmware/ && unzip ./*.zip && rm -rf ./*.zip)
         echo "REL_DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
+        find ./combined-firmware/ -type f
         #mv ./firmware/* combined-firmware/
 
     - name: Upload Firmware to Release
