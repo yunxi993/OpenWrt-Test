@@ -330,7 +330,7 @@ jobs:
 
     - name: Combine Firmware Artifacts
       run: |
-        find ./downfiles/ -type -f
+        find ./downfiles/ -type f
         mkdir -p ./combined-firmware
         find ./downfiles/ -type f -name "*.zip" -exec mv -t ./combined-firmware/ {} +
         (cd ./combined-firmware/ && unzip ./*.zip && rm -rf ./*.zip)
