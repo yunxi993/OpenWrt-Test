@@ -341,7 +341,7 @@ jobs:
       uses: ncipollo/release-action@main
       with:
         name: x86_64 ${{ env.REL_DATE }}
-        tag: test ${{ env.TAG_DATE }}
+        tag: ${{ env.TAG_DATE }}
         artifacts: combined-firmware/*
         allowUpdates: true
         removeArtifacts: true
