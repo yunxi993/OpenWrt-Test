@@ -131,7 +131,7 @@ jobs:
         rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
         find ${TARGETS_DIR} -type f -name "*efi*" -exec mv -t ${FIRMWARE_DIR} {} +
         find ${PACKAGES_DIR} -type f -name "*.apk" -exec mv -t ${PACKAGE_DIR} {} +
-        (cd ./openwrt/bin/package/ && tar -zcvf 2410-IPK.tar.gz *)
+        (cd ./openwrt/bin/package/ && tar -zcvf main-IPK.tar.gz *)
         #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
         #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
         mv -f ${FIRMWARE_DIR}openwrt-*.img.gz ${FIRMWARE_DIR}openwrt-main-x86-64-generic-squashfs-combined-efi.img.gz
@@ -141,13 +141,13 @@ jobs:
     - name: Deliver package
       uses: actions/upload-artifact@v4
       with:
-        name: main-IPK ${{ env.ACT_DATE }}
+        name: main-IPK
         path: ./openwrt/bin/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@v4
       with:
-        name: main-firmware ${{ env.ACT_DATE }}
+        name: main-firmware
         path: ./openwrt/bin/firmware/
 
     - name: Organize files
@@ -287,13 +287,13 @@ jobs:
     - name: Deliver package
       uses: actions/upload-artifact@v4
       with:
-        name: 2410-IPK ${{ env.ACT_DATE }}
+        name: 2410-IPK
         path: ./openwrt/bin/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@v4
       with:
-        name: 2410-firmware ${{ env.ACT_DATE }}
+        name: 2410-firmware
         path: ./openwrt/bin/firmware/
 
     - name: Organize files
@@ -321,6 +321,7 @@ jobs:
       uses: actions/download-artifact@main
       with:
         path: ./downfiles
+        merge-multiple: true
 
     - name: Download Artifacts from x86
       if: false
@@ -332,8 +333,8 @@ jobs:
       run: |
         find ./downfiles/ -type f
         mkdir -p ./combined-firmware
-        find ./downfiles/ -type f -name "*.zip" -exec mv -t ./combined-firmware/ {} +
-        (cd ./combined-firmware/ && unzip ./*.zip && rm -rf ./*.zip)
+        find ./downfiles/ -type f -name "*efi*" -exec mv -t ./combined-firmware/ {} +
+        find ./downfiles/ -type f -name "*.gz" -exec mv -t ./combined-firmware/ {} +
         echo "REL_DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
         find ./combined-firmware/ -type f
