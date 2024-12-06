@@ -133,7 +133,9 @@ jobs:
         find ${PACKAGES_DIR} -type f -name "*.apk" -exec mv -t ${PACKAGE_DIR} {} +
         #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
         #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
-        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz openwrt-main-*.img.gz
+        echo "Moving file from ${FIRMWARE_DIR}openwrt-*.img.gz to ${FIRMWARE_DIR}openwrt-main-*.img.gz"
+        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz ${FIRMWARE_DIR}openwrt-main-*.img.gz
+        #mv -f ${FIRMWARE_DIR}openwrt-*.img.gz openwrt-main-*.img.gz
         find $GITHUB_WORKSPACE/openwrt/bin/ -type f
         echo $PWD
 
@@ -277,7 +279,9 @@ jobs:
         find ${PACKAGES_DIR} -type f -name "*.ipk" -exec mv -t ${PACKAGE_DIR} {} +
         #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
         #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
-        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz openwrt-2410-*.img.gz
+        echo "Moving file from ${FIRMWARE_DIR}openwrt-*.img.gz to ${FIRMWARE_DIR}openwrt-2410-*.img.gz"
+        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz ${FIRMWARE_DIR}openwrt-2410-*.img.gz
+        #mv -f ${FIRMWARE_DIR}openwrt-*.img.gz openwrt-2410-*.img.gz
         find $GITHUB_WORKSPACE/openwrt/bin/ -type f
         echo $PWD
 
