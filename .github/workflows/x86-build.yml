@@ -332,7 +332,7 @@ jobs:
       run: |
         mkdir -p ./combined-firmware
         mv ./downfiles/* combined-firmware/
-        unzip ./*.zip && rm -rf ./*.zip
+        (cd ./combined-firmware/ && unzip ./*.zip && rm -rf ./*.zip)
         echo "REL_DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
         #mv ./firmware/* combined-firmware/
@@ -342,7 +342,7 @@ jobs:
       with:
         name: x86_64 ${{ env.REL_DATE }}
         tag: ${{ env.TAG_DATE }}
-        artifacts: combined-firmware/*
+        artifacts: ./combined-firmware/*
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
