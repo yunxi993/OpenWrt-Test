@@ -80,13 +80,6 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    - name: cache
-      uses: stupidloud/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: x86-main
-        prefix: ${{ github.workspace }}/openwrt
-
     - name: Download package
       id: package
       run: |
@@ -99,6 +92,13 @@ jobs:
         echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
         DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
         echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
+
+    - name: cache
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: x86-main
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile
@@ -226,13 +226,6 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    - name: cache
-      uses: stupidloud/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: x86-2410
-        prefix: ${{ github.workspace }}/openwrt
-
     - name: Download package
       id: package
       run: |
@@ -245,6 +238,13 @@ jobs:
         echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
         DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
         echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
+
+    - name: cache
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: x86-2410
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile
@@ -350,7 +350,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
           ## Firmware Details
-          - **x86-main Firmware**: x86_64
-          - **x86-2410 Firmware**: main, openwrt-24.10
+          - **Devices**: x86_64
+          - **Branch**: main, openwrt-24.10
           - Default IP: `192.168.1.13`
           - Username: `root`
