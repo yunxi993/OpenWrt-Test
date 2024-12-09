@@ -82,9 +82,10 @@ etc/init.d/network restart\n\n\
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+sed -i "s/OPENWRT_RELEASE=\"[^\"]*\"/OPENWRT_RELEASE=\"$(date +%Y-%m-%d)-%D %V %C\"/g" package/base-files/files/usr/lib/os-release
 #sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='$(date +%Y-%m-%d)-%D %V %C'/g" package/base-files/files/etc/openwrt_release
 #sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='(by Sil)-%R'/g" package/base-files/files/etc/openwrt_release
-sed -i "s/OPENWRT_RELEASE='*.*'/OPENWRT_RELEASE='$(date +%Y-%m-%d)-%D %V %C'/g" package/base-files/files/usr/lib/os-release
+#sed -i "s/OPENWRT_RELEASE=\"*.*\"/OPENWRT_RELEASE=\"$(date +%Y-%m-%d)-%D %V %C\"/g" package/base-files/files/usr/lib/os-release
 #cp -f package/extra/banner/Sil  package/base-files/files/etc/banner/
 
 # OpenWrt name
