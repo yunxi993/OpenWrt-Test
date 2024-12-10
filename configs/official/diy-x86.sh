@@ -23,7 +23,7 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luc
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
 # Delete luci-mod-status file
-rm -rf feeds/luci/modules/luci-mod-status/root/usr/share/rpcd/acl.d/luci-mod-status.json
+#rm -rf feeds/luci/modules/luci-mod-status/root/usr/share/rpcd/acl.d/luci-mod-status.json
 
 # dnsmasq adjust
 #rm -rf package/network/services/dnsmasq/files/dnsmasq.init
