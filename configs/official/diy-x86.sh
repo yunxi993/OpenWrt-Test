@@ -42,7 +42,7 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 #echo 'CONFIG_EXTRA_FIRMWARE_DIR="/workdir/openwrt/package/firmware/"' >> target/linux/x86/64/config-6.6
 
 # Some adjust
-sed -i  "14a\\
+sed -i  "10a\\
 #uci set firewall.@defaults[0].flow_offloading='1'\n\
 #uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 #uci commit firewall\n\n\
@@ -50,8 +50,8 @@ sed -i  "14a\\
 #uci set fstab.@mount[1].enabled='1'\n\
 #uci set fstab.@mount[2].enabled='1'\n\
 #uci set fstab.@mount[3].enabled='1'\n\
-uci set fstab.@global[0].anon_mount=1\n\
-uci commit fstab\n\n\
+#uci set fstab.@global[0].anon_mount=1\n\
+#uci commit fstab\n\n\
 uci delete network.@globals[0].ula_prefix\n\
 #uci delete network.@globals[0].packet_steering='1'\n\
 #uci delete network.@globals[0].steering_flows='128'\n\n\
@@ -77,12 +77,12 @@ etc/init.d/network restart\n\n\
 /etc/init.d/sing-box stop\n\
 /etc/init.d/xray disable\n\
 /etc/init.d/xtay stop\n\n\
-" package/extra/default-settings/files/default-settings
+" package/extra/default-settings/files/zzz-default-settings
 
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
-sed -i "s/OPENWRT_RELEASE=\"[^\"]*\"/OPENWRT_RELEASE=\"$(date +%Y-%m-%d)-%D %V %C\"/g" package/base-files/files/usr/lib/os-release
+sed -i "s/OPENWRT_RELEASE=\"[^\"]*\"/OPENWRT_RELEASE=\"$(date +%Y-%m-%d) %D %V %C\"/g" package/base-files/files/usr/lib/os-release
 #sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='$(date +%Y-%m-%d)-%D %V %C'/g" package/base-files/files/etc/openwrt_release
 #sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='(by Sil)-%R'/g" package/base-files/files/etc/openwrt_release
 #sed -i "s/OPENWRT_RELEASE=\"*.*\"/OPENWRT_RELEASE=\"$(date +%Y-%m-%d)-%D %V %C\"/g" package/base-files/files/usr/lib/os-release
