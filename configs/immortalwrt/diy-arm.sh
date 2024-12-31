@@ -55,6 +55,6 @@ uci commit network\n\n\
 /etc/init.d/xray disable\n\
 /etc/init.d/xray stop\n\
 /etc/init.d/ttyd disable\n\
-/etc/init.d/ttyd stop\n\n
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\\n\
+/etc/init.d/ttyd stop\n\n\
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
