@@ -100,6 +100,18 @@ else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
+[ -f '/mnt/nvme0n1p3/passwall2' ] && \
+    cp -f '/mnt/nvme0n1p3/passwall2' '/mnt/nvme0n1p3/aaa/'
+[ -f '/mnt/nvme0n1p3/passwall2_server' ] && \
+    cp -f '/mnt/nvme0n1p3/passwall2_server' '/mnt/nvme0n1p3/aaa/'
+[ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && \
+    cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/mnt/nvme0n1p3/aaa/'
+
+sed -i '/passwall2/d' /etc/rc.local
+sed -i '/passwall2_server/d' /etc/rc.local
+sed -i '/ddns-go-config.yaml/d' /etc/rc.local
+sed -i '/sed -i\|ethtool/d' /etc/rc.local
+
 #(sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on) &
 
 exit 0
