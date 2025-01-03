@@ -100,7 +100,21 @@ else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
-#(sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on) &
+#{ sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on } &
+
+[ -f '/mnt/nvme0n1p3/passwall2' ] && \
+    cp -f '/mnt/nvme0n1p3/passwall2' '/etc/config/'
+[ -f '/mnt/nvme0n1p3/passwall2_server' ] && \
+    cp -f '/mnt/nvme0n1p3/passwall2_server' '/etc/config/'
+[ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && \
+    cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/etc/ddns-go/'
+
+sed -i '/passwall2/d' /etc/rc.local
+sed -i '/passwall2_server/d' /etc/rc.local
+sed -i '/ddns-go-config.yaml/d' /etc/rc.local
+
+{ sed -i '/sed -i\\|ethtool/d' /etc/rc.local; } &
+wait
 
 exit 0
 '> ./package/base-files/files/etc/rc.local

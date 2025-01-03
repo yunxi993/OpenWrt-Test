@@ -28,7 +28,7 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luc
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
-sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-24.10 $(date +%Y-%m-%d)'/g" package/base-files/files/etc/openwrt_release
+sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"$(date +"%y/%m/%d %H:%M") %D %V\",g" package/base-files/files/usr/lib/os-release
 
 # Some adjust
 sed -i  "19a\\
@@ -55,6 +55,6 @@ uci commit network\n\n\
 /etc/init.d/xray disable\n\
 /etc/init.d/xray stop\n\
 /etc/init.d/ttyd disable\n\
-/etc/init.d/ttyd stop\n\n
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\\n\
+/etc/init.d/ttyd stop\n\n\
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config\n\
 " package/emortal/default-settings/files/99-default-settings
