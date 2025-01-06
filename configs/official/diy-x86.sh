@@ -113,7 +113,7 @@ sed -i '/passwall2/d' /etc/rc.local
 sed -i '/passwall2_server/d' /etc/rc.local
 sed -i '/ddns-go-config.yaml/d' /etc/rc.local
 
-{ sed -i '/sed -i\\|ethtool/d' /etc/rc.local; } &
+{ sed -i '/sed -i\|ethtool/d' /etc/rc.local; } &
 wait
 
 exit 0
