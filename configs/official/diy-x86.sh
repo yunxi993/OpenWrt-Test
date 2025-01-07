@@ -108,7 +108,6 @@ fi
 
 sed -i '/ethtool/d; /passwall2/d; /ddns/d; /sed/d' /etc/rc.local
 
-wait
 exit 0
 '> ./package/base-files/files/etc/rc.local
 
