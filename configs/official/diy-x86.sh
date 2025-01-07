@@ -106,7 +106,8 @@ fi
 [ -f '/mnt/nvme0n1p3/passwall2_server' ] && cp -f '/mnt/nvme0n1p3/passwall2_server' '/etc/config/'
 [ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/etc/ddns-go/'
 
-sed -i '/ethtool/d; /passwall2/d; /ddns/d; /sed/d' /etc/rc.local
+{ sed -i '/ethtool\|passwall2\|ddns\|sed/d' /etc/rc.local; } &
+wait
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
