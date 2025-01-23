@@ -12,7 +12,7 @@ sed -i 's/192.168.1.1/192.168.11.11/g' package/base-files/files/bin/config_gener
 sed -i 's/ImmortalWrt/N1/g' package/base-files/files/bin/config_generate
 
 # Modify localtime
-# sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
+#sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
 
 #sed -i 's/[+]dockerd //' feeds/luci/applications/luci-app-dockerman/Makefile
 #sed -i '39,42d' feeds/packages/utils/dockerd/Makefile
@@ -28,7 +28,7 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luc
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
-sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"$(date +"%y/%m/%d %H:%M") %D %V\",g" package/base-files/files/usr/lib/os-release
+sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"%D %V $(date +"%y/%m/%d %H:%M")\",g" package/base-files/files/usr/lib/os-release
 
 # Some adjust
 sed -i  "19a\\
