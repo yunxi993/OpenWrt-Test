@@ -23,8 +23,8 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luc
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
 # Modify Sing-box version
-sed -i 's,1.11.0,1.10.7,g' package/openwrt-passwall-packages/sing-box/Makefile
-sed -i 's,d4a48b.*,402b618148b58f5ff6c1bee4f4fdcf7cdcb88a2df6a8bd682ea742a89b5be9ec,g' package/openwrt-passwall-packages/sing-box/Makefile
+#sed -i 's,1.11.0,1.10.7,g' package/openwrt-passwall-packages/sing-box/Makefile
+#sed -i 's,d4a48b.*,402b618148b58f5ff6c1bee4f4fdcf7cdcb88a2df6a8bd682ea742a89b5be9ec,g' package/openwrt-passwall-packages/sing-box/Makefile
 
 # Delete luci-mod-status file
 #rm -rf feeds/luci/modules/luci-mod-status/root/usr/share/rpcd/acl.d/luci-mod-status.json
