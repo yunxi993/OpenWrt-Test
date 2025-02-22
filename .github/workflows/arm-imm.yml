@@ -80,7 +80,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: cache
-      uses: HiGarfield/cachewrtbuild@main
+      uses: stupidloud/cachewrtbuild@main
       with:
         ccache: 'true'
         mixkey: armi-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
