@@ -19,7 +19,7 @@ sed -i 's/ImmortalWrt/N1/g' package/base-files/files/bin/config_generate
 #sed -i -e '39,42d' -e '45d' feeds/packages/utils/dockerd/Makefile
 
 # Add additional packages
-rm -rf feeds/luci/applications/{luci-app-ssr-plus, luci-app-passwall}
+rm -rf feeds/luci/applications/{luci-app-ssr-plus, luci-app-passwall, luci-app-passwall2, luci-app-ddns-go}
 rm -rf feeds/packages/net/{xray-core,v2ray-core,sing-box}
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
 #git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
