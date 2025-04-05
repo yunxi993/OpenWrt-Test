@@ -25,6 +25,9 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luc
 #git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 #git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
+# Update Go Version
+rm -rf feeds/packages/lang/golang && git clone -b 24.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in

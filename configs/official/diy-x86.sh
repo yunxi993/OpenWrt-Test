@@ -22,6 +22,9 @@ git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/op
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
+# Update Go Version
+rm -rf feeds/packages/lang/golang && git clone -b 24.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+
 # Modify Sing-box version
 #sed -i 's,1.11.0,1.10.7,g' package/openwrt-passwall-packages/sing-box/Makefile
 #sed -i 's,d4a48b.*,402b618148b58f5ff6c1bee4f4fdcf7cdcb88a2df6a8bd682ea742a89b5be9ec,g' package/openwrt-passwall-packages/sing-box/Makefile
@@ -32,9 +35,6 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git p
 # dnsmasq adjust
 #rm -rf package/network/services/dnsmasq/files/dnsmasq.init
 #cp -f $GITHUB_WORKSPACE/diy/dnsmasq/dnsmasq.init package/network/services/dnsmasq/files/
-
-# Update Go Version
-#rm -rf feeds/packages/lang/golang && git clone -b 22.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # Add i915 to 6.6 kernel
 #mkdir -p package/firmware/i915/
@@ -126,7 +126,6 @@ exit 0
 
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
 #curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
-#curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/diy/Makefile feeds/packages/lang/golang/golang/Makefile
 
 # sing-box
 #cp -f $GITHUB_WORKSPACE/diy/singbox/files/* package/openwrt-passwall-packages/sing-box/
