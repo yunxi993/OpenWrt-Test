@@ -6,11 +6,11 @@ on:
 env:
   REPO_URL: https://github.com/openwrt/openwrt
   BRANCH_MAIN: main
-  BRANCH_2410: openwrt-24.10
+  BRANCH_2512: openwrt-25.12
   FEEDS_MAIN: configs/official/feeds.main
-  FEEDS_2410: configs/official/feeds.2410
+  FEEDS_2512: configs/official/feeds.2512
   CONFIG_MAIN: configs/official/x86-main.config
-  CONFIG_2410: configs/official/x86-2410.config
+  CONFIG_2512: configs/official/x86-2512.config
   DIY_P1_SH: configs/official/diy-z1.sh
   DIY_P2_SH: configs/official/diy-x86.sh
   TZ: Asia/Shanghai
@@ -28,6 +28,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        docker image prune -f
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Test/main/depends)
         sudo -E apt-get -qq autoremove --purge
@@ -162,7 +163,7 @@ jobs:
         echo $PWD
 
   x86:
-    name: x86-2410
+    name: x86-2512
     runs-on: ubuntu-latest
 
     steps:
@@ -196,13 +197,13 @@ jobs:
     - name: Clone source code
       working-directory: /workdir
       run: |
-        git clone $REPO_URL -b $BRANCH_2410 openwrt
+        git clone $REPO_URL -b $BRANCH_2512 openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         df -hT
 
     - name: Load custom feeds
       run: |
-        [ -e $FEEDS_2410 ] && mv $FEEDS_2410 openwrt/feeds.conf.default
+        [ -e $FEEDS_2512 ] && mv $FEEDS_2512 openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
@@ -216,7 +217,7 @@ jobs:
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_2410 ] && mv $CONFIG_2410 openwrt/.config
+        [ -e $CONFIG_2512 ] && mv $CONFIG_2512 openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
@@ -240,7 +241,7 @@ jobs:
       uses: stupidloud/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: x86-2410
+        mixkey: x86-2512
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
@@ -274,8 +275,8 @@ jobs:
         rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
         find ${TARGETS_DIR} -type f -name "*efi*" -exec mv -t ${FIRMWARE_DIR} {} +
         find ${PACKAGES_DIR} -type f -name "*.ipk" -exec mv -t ${PACKAGE_DIR} {} +
-        (cd ./openwrt/bin/package/ && tar -zcvf 2410-IPK.tar.gz * && rm -rf *.ipk)
-        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz ${FIRMWARE_DIR}openwrt-2410-${{ env.KVERSION }}-x86-64-generic-squashfs-combined-efi.img.gz
+        (cd ./openwrt/bin/package/ && tar -zcvf 2512-IPK.tar.gz * && rm -rf *.ipk)
+        mv -f ${FIRMWARE_DIR}openwrt-*.img.gz ${FIRMWARE_DIR}openwrt-2512-${{ env.KVERSION }}-x86-64-generic-squashfs-combined-efi.img.gz
         echo $PWD
         #cp -rf $(find ${TARGETS_DIR} -type f -name "*efi*") ${FIRMWARE_DIR}
         #cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
@@ -283,13 +284,13 @@ jobs:
     - name: Deliver package
       uses: actions/upload-artifact@v4
       with:
-        name: 2410-IPK
+        name: 2512-IPK
         path: ./openwrt/bin/package/
 
     - name: Deliver firmware
       uses: actions/upload-artifact@v4
       with:
-        name: 2410-firmware
+        name: 2512-firmware
         path: ./openwrt/bin/firmware/
 
     - name: Organize files
@@ -297,10 +298,10 @@ jobs:
       id: organize
       run: |
         cd openwrt/bin/package/
-        tar -zcvf 2410-IPK.tar.gz *
+        tar -zcvf 2512-IPK.tar.gz *
         echo $PWD
         mkdir -p ../../../combined-firmware
-        mv -f 2410-IPK.tar.gz ../../../combined-firmware/
+        mv -f 2512-IPK.tar.gz ../../../combined-firmware/
         mv -f ../firmware/*efi* ../../../combined-firmware/
         echo $PWD
 

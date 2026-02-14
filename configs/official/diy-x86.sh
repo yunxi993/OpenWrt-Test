@@ -23,7 +23,7 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luc
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
 # Update Go Version
-rm -rf feeds/packages/lang/golang && git clone -b 24.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # Modify Sing-box version
 #sed -i 's,1.11.0,1.10.7,g' package/openwrt-passwall-packages/sing-box/Makefile
@@ -86,6 +86,8 @@ etc/init.d/network restart\n\n\
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+sed -i '/CONFIG_BUILDBOT/d' include/feeds.mk
+sed -i 's/;)\s*\\/; \\/' include/feeds.mk
 sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"%D %V $(date +"%y/%m/%d %H:%M")\",g" package/base-files/files/usr/lib/os-release
 #sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='$(date +%Y-%m-%d)-%D %V %C'/g" package/base-files/files/etc/openwrt_release
 #sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='(by Sil)-%R'/g" package/base-files/files/etc/openwrt_release
@@ -93,7 +95,8 @@ sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"%D %V $(date +"%y/%m/%d %
 #cp -f package/extra/banner/Sil  package/base-files/files/etc/banner/
 
 # OpenWrt name
-echo '# Put your custom commands here that should be executed once
+echo '#!/bin/sh
+# Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
 grep "Default string" /tmp/sysinfo/model >> /dev/null
