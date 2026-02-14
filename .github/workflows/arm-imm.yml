@@ -8,7 +8,7 @@ on:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-24.10
+  REPO_BRANCH: openwrt-25.12
   FEEDS_CONF: configs/immortalwrt/feeds.conf.default
   CONFIG_FILE: configs/immortalwrt/build-arm.config
   DIY_P1_SH: configs/immortalwrt/diy-z1.sh
