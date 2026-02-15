@@ -105,7 +105,7 @@ jobs:
         cd openwrt
         df -hT
         echo -e "$(($(nproc)+1)) thread compile"
-        make -j$(($(nproc)+1))
+        make -j$(($(nproc)+1)) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
@@ -135,7 +135,7 @@ jobs:
         PACKAGES_DIR=$GITHUB_WORKSPACE/openwrt/bin/packages/
         rm -rf $(find ${TARGETS_DIR} -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest")
         cp -rf $(find ${TARGETS_DIR} -type f) ${FIRMWARE_DIR}
-        cp -rf $(find ${PACKAGES_DIR} -type f -name "*.ipk") ${PACKAGE_DIR}
+        cp -rf $(find ${PACKAGES_DIR} -type f -name "*.apk") ${PACKAGE_DIR}
         cd ${PACKAGE_DIR}
         tar -zcvf IPK.tar.gz *
         mv -f IPK.tar.gz ../
