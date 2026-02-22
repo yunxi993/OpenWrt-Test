@@ -31,6 +31,8 @@ rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
 sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+sed -i '/CONFIG_BUILDBOT/d' include/feeds.mk
+sed -i 's/;)\s*\\/; \\/' include/feeds.mk
 sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"%D %V $(date +"%y/%m/%d %H:%M")\",g" package/base-files/files/usr/lib/os-release
 
 # Some adjust
