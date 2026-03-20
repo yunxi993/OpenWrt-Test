@@ -56,10 +56,17 @@ jobs:
         swap-storage: true
 
     - name: Clone source code
-      working-directory: /workdir
+      working-directory: ${{ github.workspace }}
       run: |
-        git clone $REPO_URL -b ${{ matrix.branch }} openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        git clone --depth 1 $REPO_URL -b ${{ matrix.branch }} openwrt
+        ln -sf ${{ github.workspace }}/openwrt $GITHUB_WORKSPACE/openwrt
+
+    - name: Cache Build
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: x86-${{ matrix.name }}
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: Load and Update feeds
       run: |
@@ -86,13 +93,6 @@ jobs:
         find dl -size -1024c -exec rm -f {} \;
         KVERSION=$(grep 'LINUX_VERSION' target/linux/generic/kernel-* | awk -F '[-= ]+' '{print $2$3}' | tr -d ' ')
         echo "KVERSION=${KVERSION}" >> $GITHUB_ENV
-
-    - name: Cache Build
-      uses: stupidloud/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: x86-${{ matrix.name }}
-        prefix: ${{ github.workspace }}/openwrt
 
     - name: Compile the firmware
       id: compile
@@ -166,9 +166,8 @@ jobs:
         allowUpdates: true
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-          ## Firmware Details
-          - **Devices**: x86_64
-          - **Branches**: main, openwrt-25.12
-          - Default IP: `192.168.1.13`
-          - Username: `root`
-          
+          ## Firmware for personal use, plug-ins can be deleted according to personal needs.
+          - **Devices:** x86_64
+          - **Branches:** ${{ matrix.name }}
+          - **Default IP:** `192.168.11.13`
+          - **Username:** `root`
