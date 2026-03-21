@@ -61,11 +61,11 @@ jobs:
         git clone --depth 1 $REPO_URL -b ${{ matrix.branch }} openwrt
         ln -sf ${{ github.workspace }}/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Cache Build
-      uses: stupidloud/cachewrtbuild@main
+    - name: Cache Management
+      uses: HiGarfield/cachewrtbuild@main
       with:
-        ccache: 'true'
-        mixkey: x86-${{ matrix.name }}
+        ccache: true
+        mixkey: ARM-${{ matrix.name }}
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Load and Update feeds
