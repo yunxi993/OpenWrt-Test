@@ -74,6 +74,7 @@ jobs:
         chmod +x $DIY_P1_SH
         ./$DIY_P1_SH
         cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
         ./scripts/feeds update -a && ./scripts/feeds install -a
 
     - name: Load custom configuration
