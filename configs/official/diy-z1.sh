@@ -1,10 +1,13 @@
 #!/bin/bash
 #
 
-cp -f $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.12/
-cp -f $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.18/
-find target/linux/x86/patches-6.12/ -name "996-intel-igc-i225-i226-disable-eee.patch"
-find target/linux/x86/patches-6.18/ -name "996-intel-igc-i225-i226-disable-eee.patch"
+ls -d target/linux/x86/patches-*/ | xargs -I {} cp -f "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
+find target/linux/x86/patches-*/ -name "996-intel-igc-i225-i226-disable-eee.patch" 2>/dev/null
+
+#find target/linux/x86/patches-6.12/ -name "996-intel-igc-i225-i226-disable-eee.patch"
+#find target/linux/x86/patches-6.18/ -name "996-intel-igc-i225-i226-disable-eee.patch"
+#cp -f $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.12/
+#cp -f $GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.18/
 
 # Uncomment a feed source
 #sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
