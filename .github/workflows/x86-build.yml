@@ -114,13 +114,14 @@ jobs:
         FIRMWARE_DIR="openwrt/bin/firmware"
         PACKAGE_DIR="openwrt/bin/package"
         TARGETS_DIR="openwrt/bin/targets"
-        mkdir -p "$FIRMWARE_DIR" "$PACKAGE_DIR"
+        PACKAGES_DIR="openwrt/bin/packages"
+        mkdir -p "$FIRMWARE_DIR" "$PACKAGE_DIR" "$PACKAGES_DIR"
         find "$TARGETS_DIR" -type f \( -name "packages" -o -name "*.buildinfo" -o -name "sha256sums" -o -name "*.manifest" \) -delete
-        KVER=$(awk -F '[-= ]+' '/LINUX_VERSION/ {print $2$3}' openwrt/target/linux/generic/kernel-* | tr -d ' ')
-        find "$TARGETS_DIR" -type f -name "*efi.img.gz" -exec mv -f {} "${FIRMWARE_DIR}/openwrt-${{ matrix.name }}-${KVER}-x86-64-generic-squashfs-combined-efi.img.gz" \;
-        find openwrt/bin/packages/ -type f -name "*.apk" -exec mv -t "$PACKAGE_DIR" {} +
-        tar -zcvf "${PACKAGE_DIR}/${{ matrix.name }}-IPK.tar.gz *" -C "$PACKAGE_DIR"
-        rm -rf "$PACKAGE_DIR" *.apk
+        [[ "${{ matrix.branch }}" == "main" ]] && K_TARGET="6.18" || K_TARGET="6.12"
+        KVER=$(awk -F '[-= ]+' '/LINUX_VERSION/ {print $2$3}' target/linux/generic/kernel-$K_TARGET | tr -d ' ')
+        find "$TARGETS_DIR" -type f -name "*efi*" -exec mv -f {} "${FIRMWARE_DIR}/openwrt-${{ matrix.name }}-${KVER}-x86-64-generic-squashfs-combined-efi.img.gz" \;
+        find "$PACKAGES_DIR" -type f -name "*.apk" -exec mv -t "$PACKAGE_DIR" {} +
+        (cd "$PACKAGE_DIR" && tar --exclude="./${{ matrix.name }}-IPK.tar.gz" -zcvf "${{ matrix.name }}-IPK.tar.gz" . && rm -rf *.apk)
 
     - name: Deliver package
       uses: actions/upload-artifact@main
