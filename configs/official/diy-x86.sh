@@ -68,19 +68,19 @@ uci set network.wan.device='eth0'\n\
 uci set network.wan.proto='pppoe'\n\
 uci del network.wan6\n\
 uci commit network\n\
-etc/init.d/network restart\n\n\
-#/etc/init.d/packet_steering disable\n\
-#/etc/init.d/packet_steering stop\n\
+/etc/init.d/network restart\n\n\
+/etc/init.d/packet_steering disable\n\
+/etc/init.d/packet_steering stop\n\
 /etc/init.d/irqbalance disable\n\
 /etc/init.d/irqbalance stop\n\
 /etc/init.d/ddns disable\n\
 /etc/init.d/ddns stop\n\
 #/etc/init.d/passwall2_server disable\n\
 #/etc/init.d/passwall2_server stop\n\
-/etc/init.d/sing-box disable\n\
-/etc/init.d/sing-box stop\n\
-/etc/init.d/xray disable\n\
-/etc/init.d/xtay stop\n\n\
+#/etc/init.d/sing-box disable\n\
+#/etc/init.d/sing-box stop\n\
+#/etc/init.d/xray disable\n\
+#/etc/init.d/xtay stop\n\n\
 " package/extra/default-settings/files/zzz-default-settings
 
 # Remove snapshot tags
