@@ -57,7 +57,7 @@ sed -i  "10a\\
 #uci set fstab.@global[0].anon_mount=1\n\
 #uci commit fstab\n\n\
 uci delete network.@globals[0].ula_prefix\n\
-#uci delete network.@globals[0].packet_steering='1'\n\
+uci delete network.@globals[0].packet_steering='0'\n\
 #uci delete network.@globals[0].steering_flows='128'\n\n\
 uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
