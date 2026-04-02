@@ -25,26 +25,6 @@ git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-package
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
-# Modify Sing-box version
-#sed -i 's,1.11.0,1.10.7,g' package/openwrt-passwall-packages/sing-box/Makefile
-#sed -i 's,d4a48b.*,402b618148b58f5ff6c1bee4f4fdcf7cdcb88a2df6a8bd682ea742a89b5be9ec,g' package/openwrt-passwall-packages/sing-box/Makefile
-
-# Delete luci-mod-status file
-#rm -rf feeds/luci/modules/luci-mod-status/root/usr/share/rpcd/acl.d/luci-mod-status.json
-
-# dnsmasq adjust
-#rm -rf package/network/services/dnsmasq/files/dnsmasq.init
-#cp -f $GITHUB_WORKSPACE/diy/dnsmasq/dnsmasq.init package/network/services/dnsmasq/files/
-
-# Add i915 to 6.6 kernel
-#mkdir -p package/firmware/i915/
-#curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/adlp_dmc.bin -o package/firmware/i915/adlp_dmc.bin
-#curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_huc.bin -o package/firmware/i915/tgl_huc.bin
-#curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/tgl_guc_70.bin -o package/firmware/i915/tgl_guc_70.bin
-#echo 'CONFIG_FIRMWARE_IN_KERNEL=y' >> target/linux/x86/64/config-6.6
-#echo 'CONFIG_EXTRA_FIRMWARE="i915/adlp_dmc.bin i915/tgl_huc.bin i915/tgl_guc_70.bin"' >> target/linux/x86/64/config-6.6
-#echo 'CONFIG_EXTRA_FIRMWARE_DIR="/workdir/openwrt/package/firmware/"' >> target/linux/x86/64/config-6.6
-
 # Some adjust
 sed -i  "10a\\
 #uci set firewall.@defaults[0].flow_offloading='1'\n\
@@ -57,7 +37,7 @@ sed -i  "10a\\
 #uci set fstab.@global[0].anon_mount=1\n\
 #uci commit fstab\n\n\
 uci delete network.@globals[0].ula_prefix\n\
-uci delete network.@globals[0].packet_steering='0'\n\
+uci set network.@globals[0].packet_steering='0'\n\
 #uci delete network.@globals[0].steering_flows='128'\n\n\
 uci del_list network.@device[0].ports='eth0'\n\
 uci add_list network.@device[0].ports='eth1'\n\
@@ -73,8 +53,8 @@ uci commit network\n\
 /etc/init.d/packet_steering stop\n\
 /etc/init.d/irqbalance disable\n\
 /etc/init.d/irqbalance stop\n\
-/etc/init.d/ddns disable\n\
-/etc/init.d/ddns stop\n\
+#/etc/init.d/ddns disable\n\
+#/etc/init.d/ddns stop\n\
 #/etc/init.d/passwall2_server disable\n\
 #/etc/init.d/passwall2_server stop\n\
 #/etc/init.d/sing-box disable\n\
@@ -126,31 +106,3 @@ exit 0
 
 # Modify localtime
 #sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
-
-#curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/Makefile > feeds/packages/utils/dockerd/Makefile
-#curl -fsSL https://raw.githubusercontent.com/yunxi993/OpenWrt-Patch/mast/docerdpatch/dockerd.init > feeds/packages/utils/dockerd/files/dockerd.init
-
-# sing-box
-#cp -f $GITHUB_WORKSPACE/diy/singbox/files/* package/openwrt-passwall-packages/sing-box/
-#sed -i '135,150d' package/openwrt-passwall-packages/sing-box/Makefile
-#cat << "EOF" >> package/openwrt-passwall-packages/sing-box/Makefile
-#define Package/$(PKG_NAME)/conffiles
-#/etc/config/sing-box
-#/etc/sing-box/
-#endef
-#
-#define Package/$(PKG_NAME)/install
-#	$(call GoPackage/Package/Install/Bin,$(1))
-#
-#	$(INSTALL_DIR) $(1)/etc/sing-box
-#	$(INSTALL_DATA) $(PKG_BUILD_DIR)/release/config/config.json $(1)/etc/sing-box
-#
-#	$(INSTALL_DIR) $(1)/etc/config/
-#	$(INSTALL_CONF) ./files/sing-box.conf $(1)/etc/config/sing-box
-#	$(INSTALL_DIR) $(1)/etc/init.d/
-#	$(INSTALL_BIN) ./files/sing-box.init $(1)/etc/init.d/sing-box
-#endef
-#
-#$(eval $(call GoBinPackage,sing-box))
-#$(eval $(call BuildPackage,sing-box))
-#EOF
