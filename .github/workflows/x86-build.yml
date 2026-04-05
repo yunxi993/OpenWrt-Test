@@ -58,7 +58,7 @@ jobs:
     - name: Clone source code
       working-directory: ${{ github.workspace }}
       run: |
-        git clone --depth 1 $REPO_URL -b ${{ matrix.branch }} openwrt
+        git clone --depth 1 --single-branch $REPO_URL -b ${{ matrix.branch }} openwrt
         ln -sf ${{ github.workspace }}/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Cache Management

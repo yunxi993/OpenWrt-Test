@@ -1,8 +1,13 @@
 #!/bin/bash
 #
 
-ls -d target/linux/x86/patches-*/ | xargs -I {} cp -f "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
+# Add EEE Patches
+ls -d target/linux/x86/patches-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
 find target/linux/x86/patches-*/ -name "996-intel-igc-i225-i226-disable-eee.patch" 2>/dev/null
+
+# Add BBR Patches
+ls -d target/linux/generic/backport-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/bbr3/*" "{}"
+find target/linux/generic/backport-*/ -name "BBR" 2>/dev/null
 
 #find target/linux/x86/patches-6.12/ -name "996-intel-igc-i225-i226-disable-eee.patch"
 #find target/linux/x86/patches-6.18/ -name "996-intel-igc-i225-i226-disable-eee.patch"
