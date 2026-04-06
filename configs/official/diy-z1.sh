@@ -5,9 +5,9 @@
 ls -d target/linux/x86/patches-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
 find target/linux/x86/patches-*/ -name "996-intel-igc-i225-i226-disable-eee.patch" 2>/dev/null
 
-# Add BBR Patches
-ls -d target/linux/generic/backport-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/bbr3/*" "{}"
-find target/linux/generic/backport-*/ -name "BBR" 2>/dev/null
+# Add BBR Patches 6.12
+ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr3/* {}"
+find target/linux/generic/backport-6.12/ -iname "*bbr*" 2>/dev/null
 
 #find target/linux/x86/patches-6.12/ -name "996-intel-igc-i225-i226-disable-eee.patch"
 #find target/linux/x86/patches-6.18/ -name "996-intel-igc-i225-i226-disable-eee.patch"
@@ -19,16 +19,6 @@ find target/linux/generic/backport-*/ -name "BBR" 2>/dev/null
 
 # Add a feed source
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
-
-
-#rm -rf target/linux/x86/config-6.6
-#cp -f $GITHUB_WORKSPACE/diy/config-6.6 target/linux/x86/
-#cat target/linux/x86/config-6.6
-
-#sed -i 's,LINUX_VERSION-6.6 = .54,LINUX_VERSION-6.6 = .52,g' include/kernel-6.6
-#sed -i 's,6.6.54 = 5fae86.*,6.6.52 = 1591ab348399d4aa53121158525056a69c8cf0fe0e90935b0095e9a58e37b4b8,g' include/kernel-6.6
-#sed -i 's,6.6.54 = ^5fae86.*,6.6.52 = 1591ab348399d4aa53121158525056a69c8cf0fe0e90935b0095e9a58e37b4b8,g' include/kernel-6.6
-#cat include/kernel-6.6
 
 #ls target/linux/generic/hack-6.6/
 
