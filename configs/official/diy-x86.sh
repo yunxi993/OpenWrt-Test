@@ -26,29 +26,29 @@ git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-package
 rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # Some adjust
-sed -i  "10a\\
+#sed -i  "10a\\
 #uci set firewall.@defaults[0].flow_offloading='1'\n\
 #uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
 #uci commit firewall\n\n\
 #uci set fstab.@global[0].anon_mount=1\n\
 #uci commit fstab\n\n\
-uci delete network.@globals[0].ula_prefix\n\
-uci set network.@globals[0].packet_steering='0'\n\
+#uci delete network.@globals[0].ula_prefix\n\
+#uci set network.@globals[0].packet_steering='0'\n\
 #uci delete network.@globals[0].steering_flows='128'\n\n\
-uci del_list network.@device[0].ports='eth0'\n\
-uci add_list network.@device[0].ports='eth1'\n\
-uci add_list network.@device[0].ports='eth2'\n\
-uci add_list network.@device[0].ports='eth3'\n\
+#uci del_list network.@device[0].ports='eth0'\n\
+#uci add_list network.@device[0].ports='eth1'\n\
+#uci add_list network.@device[0].ports='eth2'\n\
+#uci add_list network.@device[0].ports='eth3'\n\
 #uci del network.wan\n\
-uci set network.wan.device='eth0'\n\
-uci set network.wan.proto='pppoe'\n\
-uci del network.wan6\n\
-uci commit network\n\
-/etc/init.d/network restart\n\n\
-/etc/init.d/packet_steering disable\n\
-/etc/init.d/packet_steering stop\n\
-/etc/init.d/irqbalance disable\n\
-/etc/init.d/irqbalance stop\n\
+#uci set network.wan.device='eth0'\n\
+#uci set network.wan.proto='pppoe'\n\
+#uci del network.wan6\n\
+#uci commit network\n\
+#/etc/init.d/network restart\n\n\
+#/etc/init.d/packet_steering disable\n\
+#/etc/init.d/packet_steering stop\n\
+#/etc/init.d/irqbalance disable\n\
+#/etc/init.d/irqbalance stop\n\
 #/etc/init.d/ddns disable\n\
 #/etc/init.d/ddns stop\n\
 #/etc/init.d/passwall2_server disable\n\
@@ -57,7 +57,7 @@ uci commit network\n\
 #/etc/init.d/sing-box stop\n\
 #/etc/init.d/xray disable\n\
 #/etc/init.d/xtay stop\n\n\
-" package/extra/default-settings/files/zzz-default-settings
+#" package/extra/default-settings/files/zzz-default-settings
 
 # Remove snapshot tags
 sed -i 's,-SNAPSHOT,,g' include/version.mk
@@ -75,11 +75,16 @@ echo '#!/bin/sh
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
-grep "Default string" /tmp/sysinfo/model >> /dev/null
-if [ $? -ne 0 ];then
+if ! grep "Default string" /tmp/sysinfo/model > /dev/null; then
     echo should be fine
 else
     echo "Generic x86_64" > /tmp/sysinfo/model
+fi
+
+status=$(cat /sys/devices/system/cpu/intel_pstate/status)
+
+if [ "$status" = "passive" ]; then
+    echo "active" | tee /sys/devices/system/cpu/intel_pstate/status
 fi
 
 #{ sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on; } &
