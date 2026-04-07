@@ -89,10 +89,10 @@ fi
 
 #{ sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on; } &
 
-[ -f '/mnt/nvme0n1p3/passwall2' ] && cp -f '/mnt/nvme0n1p3/passwall2' '/etc/config/'
-[ -f '/mnt/nvme0n1p3/push_nft.rule' ] && cp -f '/mnt/nvme0n1p3/push_nft.rule' '/etc/'
-[ -f '/mnt/nvme0n1p3/passwall2_server' ] && cp -f '/mnt/nvme0n1p3/passwall2_server' '/etc/config/'
-[ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/etc/ddns-go/'
+#[ -f '/mnt/nvme0n1p3/passwall2' ] && cp -f '/mnt/nvme0n1p3/passwall2' '/etc/config/'
+#[ -f '/mnt/nvme0n1p3/push_nft.rule' ] && cp -f '/mnt/nvme0n1p3/push_nft.rule' '/etc/'
+#[ -f '/mnt/nvme0n1p3/passwall2_server' ] && cp -f '/mnt/nvme0n1p3/passwall2_server' '/etc/config/'
+#[ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/etc/ddns-go/'
 
 sed -i -E "/(ethtool|passwall2|push|ddns|sed)/{N;/^\s*$/D;d}" /etc/rc.local
 
