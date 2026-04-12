@@ -102,7 +102,7 @@ ls /mnt/nvme0n1p3/*.dat >/dev/null && cp -f /mnt/nvme0n1p3/*.dat /usr/share/v2ra
 #[ -f '/mnt/nvme0n1p3/passwall2_server' ] && cp -f '/mnt/nvme0n1p3/passwall2_server' '/etc/config/'
 #[ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/etc/ddns-go/'
 ) &
-sed -i '/^#{/,/^sed/d' /etc/rc.local && sed -i '/^$/N;/^\n$/D' /etc/rc.local
+sed -i '/^#{/,/^sed/d' /etc/rc.local && sed -i "/^$/N;/^\n$/D" /etc/rc.local
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
