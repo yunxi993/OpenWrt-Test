@@ -17,6 +17,7 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 
 # Add additional packages
 rm -rf feeds/packages/net/{xray-core,v2ray-core,sing-box}
+rm -rf feeds/luci/applications/{luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,luci-app-ddns}
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
@@ -108,7 +109,7 @@ exit 0
 '> ./package/base-files/files/etc/rc.local
 
 # Default enable irqbalance
-#sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 
 # dockerd去版本验证
 #sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
