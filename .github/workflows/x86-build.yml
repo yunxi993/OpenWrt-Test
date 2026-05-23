@@ -28,7 +28,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@main
+      uses: actions/checkout@v6
 
     - name: Initialization environment
       env:
@@ -44,16 +44,11 @@ jobs:
         sudo chown $USER:$GROUPS /workdir
         df -hT
 
-    - name: Free up space
-      uses: jlumbroso/free-disk-space@main
-      with:
-        tool-cache: true
-        android: true
-        dotnet: true
-        haskell: true
-        large-packages: true
-        docker-images: true
-        swap-storage: true
+    - name: Fast Free Space
+      run: |
+        sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /usr/share/swift /usr/share/sbt /usr/src/linux-headers*
+        sudo docker image prune -a -f
+        df -hT
 
     - name: Clone source code
       working-directory: ${{ github.workspace }}
@@ -124,13 +119,13 @@ jobs:
         (cd "$PACKAGE_DIR" && tar -zcvf ${{ matrix.name }}-IPK.tar.gz * && rm -rf *.apk)
 
     - name: Deliver package
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.name }}-IPK
         path: ./openwrt/bin/package/
 
     - name: Deliver firmware
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.name }}-firmware
         path: ./openwrt/bin/firmware/
@@ -141,10 +136,10 @@ jobs:
     needs: build
     steps:
     - name: Checkout
-      uses: actions/checkout@main
+      uses: actions/checkout@v6
 
     - name: Download Artifacts
-      uses: actions/download-artifact@main
+      uses: actions/download-artifact@v8
       with:
         path: ./downfiles
         merge-multiple: true
@@ -157,7 +152,7 @@ jobs:
         echo "TAG_DATE=$(date +"%m%d-%H%M%S")" >> $GITHUB_ENV
 
     - name: Upload Firmware to Release
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: x86_64 ${{ env.REL_DATE }}
         tag: ${{ env.TAG_DATE }}
