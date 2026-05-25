@@ -10,8 +10,8 @@ ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WO
 find target/linux/generic/backport-6.12/ -iname "*bbr*" 2>/dev/null
 
 # PPPoE RPS
-ls -d package/network/config/netifd/files/etc/hotplug.d/iface/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/pppoe-rps/99-pppoe-rps" "{}"
-find package/network/config/netifd/files/etc/hotplug.d/iface/ -name "99-pppoe-rps" 2>/dev/null
+#ls -d package/network/config/netifd/files/etc/hotplug.d/iface/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/pppoe-rps/99-pppoe-rps" "{}"
+#find package/network/config/netifd/files/etc/hotplug.d/iface/ -name "99-pppoe-rps" 2>/dev/null
 
 #find target/linux/x86/patches-6.12/ -name "996-intel-igc-i225-i226-disable-eee.patch"
 #find target/linux/x86/patches-6.18/ -name "996-intel-igc-i225-i226-disable-eee.patch"
