@@ -25,7 +25,7 @@ git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-package
 rm -rf package/openwrt-passwall-packages/xray-core
 
 # Update Go Version
-#rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # Some adjust
 #sed -i  "10a\\
