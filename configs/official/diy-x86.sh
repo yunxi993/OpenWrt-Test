@@ -117,3 +117,10 @@ exit 0
 
 # Modify localtime
 #sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
+
+SRC_DIR="$GITHUB_WORKSPACE/diy/pass"
+cp -rf "$SRC_DIR/acl.js" feeds/luci/applications/luci-app-acl/htdocs/luci-static/resources/view/system/ && \
+cp -rf "$SRC_DIR/luci-app-acl.json" feeds/luci/applications/luci-app-acl/root/usr/share/rpcd/acl.d/ && \
+cp -rf "$SRC_DIR/luci-mod-system.json" feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/ && \
+cp -rf "$SRC_DIR/luci-mod-systema.json" feeds/luci/modules/luci-mod-system/root/usr/share/rpcd/acl.d/luci-mod-system.json && \
+cp -rf "$SRC_DIR/password.js" feeds/luci/modules/luci-mod-system/htdocs/luci-static/resources/view/system/
