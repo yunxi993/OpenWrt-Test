@@ -16,13 +16,13 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
 # Add additional packages
-rm -rf feeds/packages/net/{v2ray-core,sing-box}
+rm -rf feeds/packages/net/{xray-core,v2ray-core,sing-box}
 rm -rf feeds/luci/applications/{luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,luci-app-ddns}
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
-rm -rf package/openwrt-passwall-packages/xray-core
+#rm -rf package/openwrt-passwall-packages/xray-core
 
 # Update Go Version
 rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
