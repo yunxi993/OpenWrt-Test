@@ -5,20 +5,29 @@
 ls -d target/linux/x86/patches-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
 find target/linux/x86/patches-*/ -name "996-intel-igc-i225-i226-disable-eee.patch" 2>/dev/null
 
-SRC_DIR="$GITHUB_WORKSPACE/diy/pass"
-cp -rf "$SRC_DIR/acl.js" applications/luci-app-acl/htdocs/luci-static/resources/view/system/ && \
-cp -rf "$SRC_DIR/luci-app-acl.json" applications/luci-app-acl/root/usr/share/rpcd/acl.d/ && \
-cp -rf "$SRC_DIR/luci-mod-system.json" modules/luci-mod-system/root/usr/share/luci/menu.d/ && \
-cp -rf "$SRC_DIR/luci-mod-systema.json" modules/luci-mod-system/root/usr/share/rpcd/acl.d/luci-mod-system.json && \
-cp -rf "$SRC_DIR/password.js" modules/luci-mod-system/htdocs/luci-static/resources/view/system/
+if [ -d "target/linux/generic/backport-6.12/" ]; then
+    echo "检测到 6.12 内核目录，正在应用 BBR3 补丁..."
+    cp -rf "$GITHUB_WORKSPACE/diy/bbr3/"* target/linux/generic/backport-6.12/
+    find target/linux/generic/backport-6.12/ -iname "*-00*" 2>/dev/null
+else
+    echo "跳过 6.12 内核补丁（目录不存在）"
+fi
+
+if [ -d "target/linux/generic/backport-6.18/" ]; then
+    echo "检测到 6.18 内核目录，正在应用 BBR6.18 补丁..."
+    cp -rf "$GITHUB_WORKSPACE/diy/bbr6.18/"* target/linux/generic/backport-6.18/
+    find target/linux/generic/backport-6.18/ -iname "*bbr3*" 2>/dev/null
+else
+    echo "跳过 6.18 内核补丁（目录不存在）"
+fi
 
 # Add BBR Patches 6.12.x
-ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr3/* {}"
-find target/linux/generic/backport-6.12/ -iname "*-00*" 2>/dev/null
+#ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr3/* {}"
+#find target/linux/generic/backport-6.12/ -iname "*-00*" 2>/dev/null
 
 # Add BBR Patches 6.18.x
-ls -d target/linux/generic/backport-6.18/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr6.18/* {}"
-find target/linux/generic/backport-6.18/ -iname "*bbr3*" 2>/dev/null
+#ls -d target/linux/generic/backport-6.18/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr6.18/* {}"
+#find target/linux/generic/backport-6.18/ -iname "*bbr3*" 2>/dev/null
 
 # PPPoE RPS
 #ls -d package/network/config/netifd/files/etc/hotplug.d/iface/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/pppoe-rps/99-pppoe-rps" "{}"
