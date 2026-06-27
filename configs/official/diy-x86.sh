@@ -83,12 +83,6 @@ else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
-status=$(cat /sys/devices/system/cpu/intel_pstate/status)
-
-if [ "$status" = "passive" ]; then
-    echo "active" | tee /sys/devices/system/cpu/intel_pstate/status
-fi
-
 #{ sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on; } &
 
 (
