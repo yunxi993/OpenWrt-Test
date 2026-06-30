@@ -28,7 +28,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
 
     - name: Initialization environment
       env:
@@ -136,7 +136,7 @@ jobs:
     needs: build
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
 
     - name: Download Artifacts
       uses: actions/download-artifact@v8
