@@ -62,10 +62,10 @@ rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/
 #" package/extra/default-settings/files/zzz-default-settings
 
 # Remove snapshot tags
-sed -i 's,-SNAPSHOT,,g' include/version.mk
-sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
-sed -i '/CONFIG_BUILDBOT/d' include/feeds.mk
-sed -i 's/;)\s*\\/; \\/' include/feeds.mk
+#sed -i 's,-SNAPSHOT,,g' include/version.mk
+#sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+#sed -i '/CONFIG_BUILDBOT/d' include/feeds.mk
+#sed -i 's/;)\s*\\/; \\/' include/feeds.mk
 sed -i "s,OPENWRT_RELEASE=\"[^\"]*\",OPENWRT_RELEASE=\"%D %V $(date +"%y/%m/%d %H:%M")\",g" package/base-files/files/usr/lib/os-release
 #sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='$(date +%Y-%m-%d)-%D %V %C'/g" package/base-files/files/etc/openwrt_release
 #sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION='(by Sil)-%R'/g" package/base-files/files/etc/openwrt_release
