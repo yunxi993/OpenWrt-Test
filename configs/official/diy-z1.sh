@@ -5,21 +5,21 @@
 ls -d target/linux/x86/patches-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
 find target/linux/x86/patches-*/ -name "996-intel-igc-i225-i226-disable-eee.patch" 2>/dev/null
 
-if [ -d "target/linux/generic/backport-6.12/" ]; then
-    echo "检测到 6.12 内核目录，正在应用 BBR3 补丁..."
-    cp -rf "$GITHUB_WORKSPACE/diy/bbr3/"* target/linux/generic/backport-6.12/
-    find target/linux/generic/backport-6.12/ -iname "*-00*" 2>/dev/null
-else
-    echo "跳过 6.12 内核补丁（目录不存在）"
-fi
+#if [ -d "target/linux/generic/backport-6.12/" ]; then
+#    echo "检测到 6.12 内核目录，正在应用 BBR3 补丁..."
+#    cp -rf "$GITHUB_WORKSPACE/diy/bbr3/"* target/linux/generic/backport-6.12/
+#    find target/linux/generic/backport-6.12/ -iname "*-00*" 2>/dev/null
+#else
+#    echo "跳过 6.12 内核补丁（目录不存在）"
+#fi
 
-if [ -d "target/linux/generic/backport-6.18/" ]; then
-    echo "检测到 6.18 内核目录，正在应用 BBR6.18 补丁..."
-    cp -rf "$GITHUB_WORKSPACE/diy/bbr6.18/"* target/linux/generic/backport-6.18/
-    find target/linux/generic/backport-6.18/ -iname "*bbr3*" 2>/dev/null
-else
-    echo "跳过 6.18 内核补丁（目录不存在）"
-fi
+#if [ -d "target/linux/generic/backport-6.18/" ]; then
+#    echo "检测到 6.18 内核目录，正在应用 BBR6.18 补丁..."
+#    cp -rf "$GITHUB_WORKSPACE/diy/bbr6.18/"* target/linux/generic/backport-6.18/
+#    find target/linux/generic/backport-6.18/ -iname "*bbr3*" 2>/dev/null
+#else
+#    echo "跳过 6.18 内核补丁（目录不存在）"
+#fi
 
 # Add BBR Patches 6.12.x
 #ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr3/* {}"
