@@ -29,8 +29,6 @@ echo "::endgroup::"
 if [ "$openwrt_branch" = "main" ]; then
     rm -rf package/network/services/dnsmasq
     cp -rf "$GITHUB_WORKSPACE/diy/dnsmasq" package/network/services/
-    rm -rf feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dns.js
-    cp -rf "$GITHUB_WORKSPACE/diy/dnsmasqredir/." feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/
 
     cp -rf "$GITHUB_WORKSPACE/diy/fullcone/fullconenat-nft" package/network/utils/
 
@@ -42,9 +40,6 @@ if [ "$openwrt_branch" = "main" ]; then
 
     rm -rf package/network/config/firewall4
     cp -rf "$GITHUB_WORKSPACE/diy/fullcone/firewall4" package/network/config/
-
-    rm -rf feeds/luci/applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js
-    cp -rf "$GITHUB_WORKSPACE/diy/fullcone/zones.js" feeds/luci/applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/
 fi
 ls -d package/network/services/dnsmasq
 ls -d package/network/utils/fullconenat-nft

@@ -104,13 +104,16 @@ exit 0
 '> ./package/base-files/files/etc/rc.local
 
 # main
-#if [ "$OPENWRT_BRANCH" = "main" ]; then
-#    rm -rf package/network/services/dnsmasq
-#    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/dnsmasq" package/network/services/
-#fi
+if [ "$openwrt_branch" = "main" ]; then
+    rm -rf feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dns.js
+    cp -rf "$GITHUB_WORKSPACE/diy/dnsmasqredir/." feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/
+
+    rm -rf feeds/luci/applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js
+    cp -rf "$GITHUB_WORKSPACE/diy/fullcone/zones.js" feeds/luci/applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/
+fi
 
 # 2512
-#if [ "$OPENWRT_BRANCH" = "openwrt-25.12" ]; then
+#if [ "$openwrt_branch" = "openwrt-25.12" ]; then
 #    rm -rf package/network/services/dnsmasq
 #    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/dnsmasq" package/network/services/
 #fi
