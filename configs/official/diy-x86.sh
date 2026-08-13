@@ -110,6 +110,14 @@ if [ "$openwrt_branch" = "main" ]; then
 
     rm -rf feeds/luci/applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js
     cp -rf "$GITHUB_WORKSPACE/diy/fullcone/zones.js" feeds/luci/applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/
+
+    echo '
+msgid "DNS redirect"
+msgstr "DNS 重定向"
+
+msgid "Force redirect all local DNS queries to DNSMasq, a.k.a. DNS Hijacking."
+msgstr "强制将所有本地 DNS 查询重定向到 DNSMasq，即 DNS 劫持。"
+'>> feeds/luci/modules/luci-base/po/zh_Hans/base.po
 fi
 
 # 2512
