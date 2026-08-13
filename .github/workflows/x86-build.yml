@@ -75,6 +75,8 @@ jobs:
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Load and Update feeds
+      env:
+        openwrt_branch: ${{ matrix.branch }}
       run: |
         set -euo pipefail
         [ -e ${{ matrix.feeds }} ] && mv ${{ matrix.feeds }} openwrt/feeds.conf.default
@@ -91,6 +93,8 @@ jobs:
         echo "=============================================="
 
     - name: Load custom configuration
+      env:
+        openwrt_branch: ${{ matrix.branch }}
       run: |
         set -euo pipefail
         [ -e files ] && mv files openwrt/files

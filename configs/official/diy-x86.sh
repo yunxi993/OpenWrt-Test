@@ -103,14 +103,17 @@ sed -i '/^#{/,/^sed/d' /etc/rc.local && sed -i "/^$/N;/^\n$/D" /etc/rc.local
 exit 0
 '> ./package/base-files/files/etc/rc.local
 
-# Default enable irqbalance
-#sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+# main
+#if [ "$OPENWRT_BRANCH" = "main" ]; then
+#    rm -rf package/network/services/dnsmasq
+#    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/dnsmasq" package/network/services/
+#fi
 
-# dockerd去版本验证
-#sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
-
-# Modify localtime
-#sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
+# 2512
+#if [ "$OPENWRT_BRANCH" = "openwrt-25.12" ]; then
+#    rm -rf package/network/services/dnsmasq
+#    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/dnsmasq" package/network/services/
+#fi
 
 #SRC_DIR="$GITHUB_WORKSPACE/diy/pass"
 #cp -rf "$SRC_DIR/acl.js" feeds/luci/applications/luci-app-acl/htdocs/luci-static/resources/view/system/ && \

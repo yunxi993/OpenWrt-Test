@@ -25,6 +25,30 @@ else
 fi
 echo "::endgroup::"
 
+# main
+if [ "$openwrt_branch" = "main" ]; then
+    rm -rf package/network/services/dnsmasq
+    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/dnsmasq" package/network/services/
+    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/fullcone/fullconenat-nft" package/network/utils/
+    rm -rf package/libs/libnftnl
+    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/libnftnl" package/libs/
+    rm -rf package/network/utils/nftables
+    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/nftables" package/network/utils/
+    rm -rf package/network/config/firewall4
+    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/firewall4" package/network/config/
+fi
+ls package/network/services/dnsmasq
+ls package/network/utils/fullconenat-nft
+ls package/libs/libnftnl
+ls package/network/utils/nftables
+ls package/network/config/firewall4
+
+# 2512
+#if [ "$openwrt_branch" = "openwrt-25.12" ]; then
+#    rm -rf package/network/services/dnsmasq
+#    cp -rf "$GITHUB_WORKSPACE/diy/${openwrt_branch}/dnsmasq" package/network/services/
+#fi
+
 # Add BBR Patches 6.12.x
 #ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr3/* {}"
 #find target/linux/generic/backport-6.12/ -iname "*-00*" 2>/dev/null
