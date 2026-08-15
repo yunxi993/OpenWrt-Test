@@ -87,16 +87,19 @@ fi
 
 (
 sleep 10
-[ -f '/mnt/nvme0n1p3/adguardhome.yaml' ] && cp -f '/mnt/nvme0n1p3/adguardhome.yaml' '/etc/adguardhome/'
-/etc/init.d/adguardhome restart 
+
+if [ -f '/mnt/nvme0n1p3/adguardhome.yaml' ]; then
+    mkdir -p '/etc/adguardhome/'
+    cp -f '/mnt/nvme0n1p3/adguardhome.yaml' '/etc/adguardhome/'
+    /etc/init.d/adguardhome restart
+fi
 
 [ -f '/mnt/nvme0n1p3/passwall2' ] && cp -f '/mnt/nvme0n1p3/passwall2' '/etc/config/'
 
-ls /mnt/nvme0n1p3/*.dat >/dev/null && cp -f /mnt/nvme0n1p3/*.dat /usr/share/v2ray/
+if ls /mnt/nvme0n1p3/*.dat >/dev/null 2>&1; then
+    cp -f /mnt/nvme0n1p3/*.dat /usr/share/v2ray/
+fi
 
-#[ -f '/mnt/nvme0n1p3/push_nft.rule' ] && cp -f '/mnt/nvme0n1p3/push_nft.rule' '/etc/'
-#[ -f '/mnt/nvme0n1p3/passwall2_server' ] && cp -f '/mnt/nvme0n1p3/passwall2_server' '/etc/config/'
-#[ -f '/mnt/nvme0n1p3/ddns-go-config.yaml' ] && cp -f '/mnt/nvme0n1p3/ddns-go-config.yaml' '/etc/ddns-go/'
 ) &
 sed -i '/^#{/,/^sed/d' /etc/rc.local && sed -i "/^$/N;/^\n$/D" /etc/rc.local
 
@@ -117,7 +120,16 @@ msgstr "DNS 重定向"
 
 msgid "Force redirect all local DNS queries to DNSMasq, a.k.a. DNS Hijacking."
 msgstr "强制将所有本地 DNS 查询重定向到 DNSMasq，即 DNS 劫持。"
-'>> feeds/luci/modules/luci-base/po/zh_Hans/base.po
+' >> feeds/luci/modules/luci-base/po/zh_Hans/base.po
+
+    echo '
+#: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js:43
+msgid "Enable FullCone NAT"
+msgstr "启用 FullCone NAT"
+
+msgid "Enable FullCone NAT6"
+msgstr "启用 FullCone NAT6"
+' >> feeds/luci/applications/luci-app-firewall/po/zh_Hans/firewall.po
 fi
 
 # 2512

@@ -56,11 +56,9 @@ jobs:
         df -hT
 
     - name: Clone source code
-      working-directory: ${{ github.workspace }}
       run: |
         set -euo pipefail
         git clone --depth 1 --single-branch $REPO_URL -b ${{ matrix.branch }} openwrt
-        ln -sf ${{ github.workspace }}/openwrt $GITHUB_WORKSPACE/openwrt
 
         echo "=============================================="
         echo "Current Release Date: $(date +"%Y-%m-%d %H:%M:%S")"
@@ -184,8 +182,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-    - name: Checkout
-      uses: actions/checkout@v7
 
     - name: Download Artifacts
       uses: actions/download-artifact@v8

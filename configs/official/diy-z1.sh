@@ -5,7 +5,7 @@
 ls -d target/linux/x86/patches-*/ | xargs -I {} cp -rf "$GITHUB_WORKSPACE/diy/disable-eee/996-intel-igc-i225-i226-disable-eee.patch" "{}"
 find target/linux/x86/patches-*/ -name "996-intel-igc-i225-i226-disable-eee.patch" 2>/dev/null
 
-echo "::group::Print 6.12 kernelBBR patch info..."
+echo "::group::Print 6.12 kernel BBR patch info..."
 if [ -d "target/linux/generic/backport-6.12/" ]; then
     echo "检测到 6.12 内核目录，正在应用 BBR3 补丁..."
     cp -rf "$GITHUB_WORKSPACE/diy/bbr3/"* target/linux/generic/backport-6.12/
@@ -15,7 +15,7 @@ else
 fi
 echo "::endgroup::"
 
-echo "::group::Print 6.18 kernelBBR patch info..."
+echo "::group::Print 6.18 kernel BBR patch info..."
 if [ -d "target/linux/generic/backport-6.18/" ]; then
     echo "检测到 6.18 内核目录，正在应用 BBR6.18 补丁..."
     cp -rf "$GITHUB_WORKSPACE/diy/bbr6.18/"* target/linux/generic/backport-6.18/
