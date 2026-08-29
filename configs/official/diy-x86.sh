@@ -96,8 +96,8 @@ fi
 
 mkdir -m 0700 -p /etc/adguardhome2
 mkdir -m 0700 -p /var/lib/adguardhome2
-chown adguardhome:adguardhome /etc/adguardhome2
-chown adguardhome:adguardhome /var/lib/adguardhome2
+#chown adguardhome:adguardhome /etc/adguardhome2
+#chown adguardhome:adguardhome /var/lib/adguardhome2
 cp -f '/mnt/nvme0n1p3/adguardhome2/adguardhome2' '/etc/init.d/'
 sed -i 's/\r$//' /etc/init.d/adguardhome2
 chmod 0755 /etc/init.d/adguardhome2
