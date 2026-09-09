@@ -54,16 +54,16 @@ ls -d package/network/config/firewall4
 #fi
 
 # Add bridge offload patches for nft_flow_offload
-if [ "$openwrt_branch" = "main" ]; then
-    rm -rf package/kernel/linux/modules/netfilter.mk
-    cp -rf "$GITHUB_WORKSPACE/diy/offload/netfilter.mk" package/kernel/linux/modules/
-
-    cp -rf "$GITHUB_WORKSPACE/diy/offload/001-add-bridge-flowtable-support.patch" package/network/config/firewall4/
-
-    cp -rf "$GITHUB_WORKSPACE/diy/offload/hack/." target/linux/generic/hack-6.18/
-
-    cp -rf "$GITHUB_WORKSPACE/diy/offload/pending-6.18/." target/linux/generic/pending-6.18/
-fi
+#if [ "$openwrt_branch" = "main" ]; then
+#    rm -rf package/kernel/linux/modules/netfilter.mk
+#    cp -rf "$GITHUB_WORKSPACE/diy/offload/netfilter.mk" package/kernel/linux/modules/
+#
+#    cp -rf "$GITHUB_WORKSPACE/diy/offload/001-add-bridge-flowtable-support.patch" package/network/config/firewall4/
+#
+#    cp -rf "$GITHUB_WORKSPACE/diy/offload/hack/." target/linux/generic/hack-6.18/
+#
+#    cp -rf "$GITHUB_WORKSPACE/diy/offload/pending-6.18/." target/linux/generic/pending-6.18/
+#fi
 
 # Add BBR Patches 6.12.x
 #ls -d target/linux/generic/backport-6.12/ | xargs -I {} sh -c "cp -rf $GITHUB_WORKSPACE/diy/bbr3/* {}"
