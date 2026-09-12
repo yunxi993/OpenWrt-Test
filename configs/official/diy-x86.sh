@@ -83,6 +83,7 @@ else
     echo "Generic x86_64" > /tmp/sysinfo/model
 fi
 
+# BEGIN ONCE
 #{ sleep 15; ethtool -A eth0 autoneg off rx on tx on; ethtool -A eth1 autoneg off rx on tx on; } &
 
 (
@@ -111,7 +112,9 @@ fi
 
 ) &
 
-sed -i '/^#{/,/^sed/d' /etc/rc.local && sed -i "/^$/N;/^\n$/D" /etc/rc.local
+#sed -i '/^#{/,/^sed/d' /etc/rc.local && sed -i "/^$/N;/^\n$/D" /etc/rc.local
+sed -i '/^# BEGIN ONCE$/,/^# END ONCE$/d' /etc/rc.local && sed -i "/^$/N;/^\n$/D" /etc/rc.local
+# END ONCE
 
 exit 0
 '> ./package/base-files/files/etc/rc.local
