@@ -27,6 +27,13 @@ git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-package
 # Update Go Version
 #rm -rf feeds/packages/lang/golang && git clone -b 27.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
+if [ ! -f "target/linux/generic/kernel-6.18" ]; then
+    echo "未检测到 6.18 内核文件, 替换golang..."
+    rm -rf feeds/packages/lang/golang && git clone -b 27.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+else
+    echo "检测到 6.18 内核文件，跳过 golang 替换..."
+fi
+
 # Some adjust
 #sed -i  "10a\\
 #uci set firewall.@defaults[0].flow_offloading='1'\n\
