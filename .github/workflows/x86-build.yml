@@ -12,7 +12,7 @@ env:
 jobs:
   build:
     name: Build x86 (${{ matrix.name }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       rel_date: ${{ steps.clone.outputs.rel_date }}
       tag_date: ${{ steps.clone.outputs.tag_date }}
@@ -179,7 +179,7 @@ jobs:
 
   upload-release:
     name: Upload to Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: build
     steps:
 
