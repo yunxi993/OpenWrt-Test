@@ -38,8 +38,8 @@ if [ "$openwrt_branch" = "main" ]; then
     rm -rf package/network/utils/nftables
     cp -rf "$GITHUB_WORKSPACE/diy/fullcone/nftables" package/network/utils/
 
-    rm -rf package/network/config/firewall4
-    cp -rf "$GITHUB_WORKSPACE/diy/fullcone/firewall4" package/network/config/
+#    rm -rf package/network/config/firewall4
+#    cp -rf "$GITHUB_WORKSPACE/diy/fullcone/firewall4" package/network/config/
 fi
 ls -d package/network/services/dnsmasq
 ls -d package/network/utils/fullconenat-nft
