@@ -160,13 +160,12 @@ jobs:
         echo "::group::Print apk info..."
         find "$PACKAGES_DIR" -type f -name "*.apk" -exec mv -t "$PACKAGE_DIR" {} +
         echo "::endgroup::"
-        (cd "$PACKAGE_DIR" && tar -zcvf ${{ matrix.name }}-IPK.tar.gz * && rm -rf *.apk)
-
+        (cd "$PACKAGE_DIR" && tar -zcvf ${{ matrix.name }}-apk.tar.gz * && rm -rf *.apk)
 
     - name: Deliver package
       uses: actions/upload-artifact@v7
       with:
-        name: ${{ matrix.name }}-IPK
+        name: ${{ matrix.name }}-apk
         path: ./openwrt/bin/package/
         retention-days: 1
 

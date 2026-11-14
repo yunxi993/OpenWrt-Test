@@ -34,40 +34,6 @@ else
     echo "检测到 6.18 内核文件，跳过 golang 替换..."
 fi
 
-# Some adjust
-#sed -i  "10a\\
-#uci set firewall.@defaults[0].flow_offloading='1'\n\
-#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
-#uci commit firewall\n\n\
-#uci set fstab.@global[0].anon_mount=1\n\
-#uci commit fstab\n\n\
-#uci delete network.@globals[0].ula_prefix\n\
-#uci set network.@globals[0].packet_steering='0'\n\
-#uci delete network.@globals[0].steering_flows='128'\n\n\
-#uci del_list network.@device[0].ports='eth0'\n\
-#uci add_list network.@device[0].ports='eth1'\n\
-#uci add_list network.@device[0].ports='eth2'\n\
-#uci add_list network.@device[0].ports='eth3'\n\
-#uci del network.wan\n\
-#uci set network.wan.device='eth0'\n\
-#uci set network.wan.proto='pppoe'\n\
-#uci del network.wan6\n\
-#uci commit network\n\
-#/etc/init.d/network restart\n\n\
-#/etc/init.d/packet_steering disable\n\
-#/etc/init.d/packet_steering stop\n\
-#/etc/init.d/irqbalance disable\n\
-#/etc/init.d/irqbalance stop\n\
-#/etc/init.d/ddns disable\n\
-#/etc/init.d/ddns stop\n\
-#/etc/init.d/passwall2_server disable\n\
-#/etc/init.d/passwall2_server stop\n\
-#/etc/init.d/sing-box disable\n\
-#/etc/init.d/sing-box stop\n\
-#/etc/init.d/xray disable\n\
-#/etc/init.d/xtay stop\n\n\
-#" package/extra/default-settings/files/zzz-default-settings
-
 # Remove snapshot tags
 #sed -i 's,-SNAPSHOT,,g' include/version.mk
 #sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
@@ -162,3 +128,37 @@ fi
 #cp -rf "$SRC_DIR/luci-mod-system.json" feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/ && \
 #cp -rf "$SRC_DIR/luci-mod-systema.json" feeds/luci/modules/luci-mod-system/root/usr/share/rpcd/acl.d/luci-mod-system.json && \
 #cp -rf "$SRC_DIR/password.js" feeds/luci/modules/luci-mod-system/htdocs/luci-static/resources/view/system/
+
+# Some adjust
+#sed -i  "10a\\
+#uci set firewall.@defaults[0].flow_offloading='1'\n\
+#uci set firewall.@defaults[0].flow_offloading_hw='0'\n\
+#uci commit firewall\n\n\
+#uci set fstab.@global[0].anon_mount=1\n\
+#uci commit fstab\n\n\
+#uci delete network.@globals[0].ula_prefix\n\
+#uci set network.@globals[0].packet_steering='0'\n\
+#uci delete network.@globals[0].steering_flows='128'\n\n\
+#uci del_list network.@device[0].ports='eth0'\n\
+#uci add_list network.@device[0].ports='eth1'\n\
+#uci add_list network.@device[0].ports='eth2'\n\
+#uci add_list network.@device[0].ports='eth3'\n\
+#uci del network.wan\n\
+#uci set network.wan.device='eth0'\n\
+#uci set network.wan.proto='pppoe'\n\
+#uci del network.wan6\n\
+#uci commit network\n\
+#/etc/init.d/network restart\n\n\
+#/etc/init.d/packet_steering disable\n\
+#/etc/init.d/packet_steering stop\n\
+#/etc/init.d/irqbalance disable\n\
+#/etc/init.d/irqbalance stop\n\
+#/etc/init.d/ddns disable\n\
+#/etc/init.d/ddns stop\n\
+#/etc/init.d/passwall2_server disable\n\
+#/etc/init.d/passwall2_server stop\n\
+#/etc/init.d/sing-box disable\n\
+#/etc/init.d/sing-box stop\n\
+#/etc/init.d/xray disable\n\
+#/etc/init.d/xtay stop\n\n\
+#" package/extra/default-settings/files/zzz-default-settings
