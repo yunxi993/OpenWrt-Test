@@ -15,12 +15,16 @@ sed -i 's,OpenWrt,N100,g' package/base-files/files/bin/config_generate
 # Timezone
 #sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
+# Default enable irqbalance
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+
 # Add additional packages
 rm -rf feeds/packages/net/{xray-core,v2ray-core,sing-box}
 rm -rf feeds/luci/applications/{luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,luci-app-ddns}
 git clone --depth=1 https://github.com/yunxi993/extra.git package/extra
 git clone --depth=1 https://github.com/yunxi993/openwrt-passwall2.git package/openwrt-passwall2
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
+#git clone --depth=1 https://github.com/anothaDev/luci-theme-vantage.git package/luci-theme-vantage
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
 #rm -rf package/openwrt-passwall-packages/xray-core
 
