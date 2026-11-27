@@ -27,8 +27,8 @@ echo "::endgroup::"
 
 # main
 if [ "$openwrt_branch" = "main" ]; then
-    rm -rf package/network/services/dnsmasq
-    cp -rf "$GITHUB_WORKSPACE/diy/dnsmasq" package/network/services/
+#    rm -rf package/network/services/dnsmasq
+#    cp -rf "$GITHUB_WORKSPACE/diy/dnsmasq/" package/network/services/
 
     cp -rf "$GITHUB_WORKSPACE/diy/fullcone/fullconenat-nft" package/network/utils/
 
@@ -41,7 +41,7 @@ if [ "$openwrt_branch" = "main" ]; then
 #    rm -rf package/network/config/firewall4
 #    cp -rf "$GITHUB_WORKSPACE/diy/fullcone/firewall4" package/network/config/
 fi
-ls -d package/network/services/dnsmasq
+ls package/network/services/dnsmasq
 ls -d package/network/utils/fullconenat-nft
 ls -d package/libs/libnftnl
 ls -d package/network/utils/nftables
